@@ -1,6 +1,5 @@
 import cmd, textwrap
 from ships import *
-
 from ports import *
 
 
@@ -46,7 +45,7 @@ class IlhaFormosa(cmd.Cmd):
         """Get information about your fleet"""
         print("Your fleet has %s ship(s)" % len(myFleet))
         for k in myFleet:
-            print(k.description)
+            print(k.information)
 
     def do_quit(self, line):
         return True
