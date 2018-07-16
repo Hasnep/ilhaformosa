@@ -21,7 +21,7 @@ def set_sail(destination):
     return world[destination]
 
 
-class Tradewinds(cmd.Cmd):
+class IlhaFormosa(cmd.Cmd):
     prompt = '\n> '
 
     def do_map(self, line):
@@ -49,5 +49,5 @@ class Tradewinds(cmd.Cmd):
 
 
 print('Ilha Formosa')
-Tradewinds().cmdloop()
+IlhaFormosa().cmdloop()
 print('Thank you for playing Ilha Formosa!')
