@@ -1,6 +1,6 @@
 """Defining the ports classes"""
 from buildings import *
-import random
+
 
 class Port(object):
     def __init__(self, name):
@@ -9,8 +9,7 @@ class Port(object):
         self.description = "%s is a port" % self.name
         self.buildings = []
         for k in all_building_types:
-            if random.uniform(0, 1) > 0.5:
-                self.buildings.append(k(self.name))
+            self.buildings.append(k(self.name))
 
 
 all_ports = ["taipei", "shanghai", "tokyo"]
