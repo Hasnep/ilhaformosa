@@ -25,21 +25,25 @@ class IlhaFormosa(cmd.Cmd):
     prompt = '\n> '
 
     def do_map(self, line):
+        """List the locations on the map."""
         print("You are in %s" % myLocation.name)
         print("The map has these ports on it:")
         for key, value in world.items():
             print(value.name)
 
     def do_look(self, line):
+        """Look around the port you are currently in."""
         print("You are in %s" % myLocation.name)
         print("There is a ")
         for k in myLocation.buildings:
             print(k.type)
 
     def do_sail(self, destination):
+        """Set sail for a port."""
         myLocation = set_sail(destination)
 
     def do_fleet(self, line):
+        """Get information about your fleet"""
         print("Your fleet has %s ship(s)" % len(myFleet))
         for k in myFleet:
             print(k.description)

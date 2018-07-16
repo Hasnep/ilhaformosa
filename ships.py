@@ -2,6 +2,7 @@
 
 
 def random_ship_name():
+    """A function to generate a random starting name for every ship."""
     return "seven"
 
 
