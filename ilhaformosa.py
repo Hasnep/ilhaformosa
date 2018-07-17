@@ -9,6 +9,7 @@ import datetime
 
 
 def money(amount):
+    """Add the currency symbol to money."""
     return "£" + amount
 
 
@@ -22,6 +23,7 @@ day = 0
 
 
 def day_to_date(x):
+    """Convert the number of days to a readable string."""
     x = start_date + datetime.timedelta(days=x)
     x = x.strftime("%Y-%m-%d")
     return x
@@ -32,7 +34,7 @@ my_location = world["taipei"]
 
 
 def set_sail(destination):
-    """A helper function that travels to a location."""
+    """A function that travels to a location."""
     print("You set sail for %s" % world[destination].name)
     print(world[destination].landing_message)
     print(world[destination].description)
