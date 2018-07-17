@@ -1,11 +1,9 @@
-import cmd, textwrap
+import cmd, textwrap, pyreadline
 # from pdb import * # use set_trace() to debug
 from ships import *
 from ports import *
 
-
 SCREEN_WIDTH = 80
-
 
 myFleet = [Junk()]
 myLocation = world["taipei"]
@@ -47,6 +45,9 @@ class IlhaFormosa(cmd.Cmd):
         """Set sail for a port.
         sail [destination]"""
         myLocation = set_sail(destination)
+
+    def complete_sail(self, text, line, begidx, endidx):
+        return [key for key, value in world.items() if key.startswith(text)]
 
     def do_rename(self, nicknames):
         """Rename a ship.
