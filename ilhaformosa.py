@@ -44,10 +44,13 @@ class IlhaFormosa(cmd.Cmd):
             print(k.type)
 
     def do_sail(self, destination):
-        """Set sail for a port."""
+        """Set sail for a port.
+        sail [destination]"""
         myLocation = set_sail(destination)
 
     def do_rename(self, nicknames):
+        """Rename a ship.
+        rename [old name]>[new name]"""
         nicknames = nicknames.split(">")
         if len(nicknames) != 2:
             print("Use [old name]>[new name] to rename a ship.")
@@ -56,12 +59,13 @@ class IlhaFormosa(cmd.Cmd):
             print("%s is now named %s" % (nicknames[0], nicknames[1]))
 
     def do_fleet(self, line):
-        """Get information about your fleet"""
+        """Get information about your fleet."""
         print("Your fleet has %s ship(s)" % len(myFleet))
         for k in myFleet:
             print_ship_information(k)
 
     def do_quit(self, line):
+        """Quit the game."""
         return True
 
 
