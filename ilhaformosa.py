@@ -5,6 +5,11 @@ from ports import *
 
 SCREEN_WIDTH = 80
 
+
+myCash = 0
+myBalance = 0
+myDebt = 0
+
 myFleet = [Junk()]
 myLocation = world["taipei"]
 
