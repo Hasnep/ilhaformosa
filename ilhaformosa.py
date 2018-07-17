@@ -1,4 +1,5 @@
 import cmd, textwrap
+# from pdb import * # use set_trace() to debug
 from ships import *
 from ports import *
 
@@ -9,12 +10,20 @@ SCREEN_WIDTH = 80
 myFleet = [Junk()]
 myLocation = world["taipei"]
 
+
 def set_sail(destination):
     """A helper function that travels to a location."""
     print("You set sail for %s" % world[destination].name)
     print(world[destination].landing_message)
     print(world[destination].description)
     return world[destination]
+
+
+def rename_ship(old_nickname, new_nickname):
+    """A function that changes the nickname of a ship."""
+    for k in myFleet:
+        if k.nickname == old_nickname:
+            k.nickname = new_nickname
 
 
 class IlhaFormosa(cmd.Cmd):
@@ -38,12 +47,19 @@ class IlhaFormosa(cmd.Cmd):
         """Set sail for a port."""
         myLocation = set_sail(destination)
 
+    def do_rename(self, nicknames):
+        nicknames = nicknames.split(">")
+        if len(nicknames) != 2:
+            print("Use [old name]>[new name] to rename a ship.")
+        else:
+            rename_ship(nicknames[0], nicknames[1])
+            print("%s is now named %s" % (nicknames[0], nicknames[1]))
+
     def do_fleet(self, line):
         """Get information about your fleet"""
         print("Your fleet has %s ship(s)" % len(myFleet))
         for k in myFleet:
-            print(k.information)
-        print("\n")
+            print_ship_information(k)
 
     def do_quit(self, line):
         return True

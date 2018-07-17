@@ -5,6 +5,10 @@ def random_ship_name():
     """A function to generate a random starting name for every ship."""
     return "Seven"
 
+def print_ship_information(ship):
+    """A function that prints a ship's stats."""
+    print("Name: %s\nType: %s\nHealth: %s/%s\nCannons: %s/%s\nCargo: ?/%s\n" % (ship.nickname, ship.type, ship.health, ship.maxHealth, ship.cannons, ship.maxCannons, ship.cargoCapacity))
+
 
 class Ship(object):
     nickname = random_ship_name()
@@ -13,8 +17,6 @@ class Ship(object):
         self.health = self.maxHealth
         self.cargo = []
         self.cannons = 0
-        self.information = "Name: %s\nType: %s\nHealth: %s/%s\nCannons: %s/%s\nCargo: ?/%s\n" % (self.nickname, self.type, self.health, self.maxHealth, self.cannons, self.maxCannons, self.cargoCapacity)
-
 
 class Junk(Ship):
     def __init__(self):
