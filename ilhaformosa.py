@@ -1,7 +1,7 @@
 import cmd, textwrap, pyreadline
-# from pdb import * # use set_trace() to debug
 from ships import *
 from ports import *
+# from pdb import * # use set_trace() to debug
 
 SCREEN_WIDTH = 80
 
@@ -75,6 +75,6 @@ class IlhaFormosa(cmd.Cmd):
         return True
 
 
-print('Ilha Formosa')
+print('Ilha Formosa!')
 IlhaFormosa().cmdloop()
 print('Thank you for playing Ilha Formosa!')
