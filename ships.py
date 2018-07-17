@@ -10,7 +10,10 @@ class Ship(object):
     nickname = random_ship_name()
 
     def __init__(self):
-        self.information = "Name: %s\nType: %s\nHealth: ?/%s\nCargo: ?/%s\n" % (self.nickname, self.type, self.maxHealth, self.capacity)
+        self.health = self.maxHealth
+        self.cargo = []
+        self.cannons = 0
+        self.information = "Name: %s\nType: %s\nHealth: %s/%s\nCannons: %s/%s\nCargo: ?/%s\n" % (self.nickname, self.type, self.health, self.maxHealth, self.cannons, self.maxCannons, self.cargoCapacity)
 
 
 class Junk(Ship):
@@ -18,7 +21,8 @@ class Junk(Ship):
         self.type = "Junk"
         self.description = "A standard ship."
         self.maxHealth = 50
-        self.capacity = 30
+        self.maxCannons = 10
+        self.cargoCapacity = 30
         Ship.__init__(self)
 
 
@@ -27,5 +31,6 @@ class Baochuan(Ship):
         self.type = "Baochuan"
         self.description = "A cargo ship."
         self.maxHealth = 60
-        self.capacity = 100
+        self.maxCannons = 5
+        self.cargoCapacity = 100
         Ship.__init__(self)

@@ -6,11 +6,8 @@ from ports import *
 SCREEN_WIDTH = 80
 
 
-myFleet = []
-myFleet.append(Junk())
+myFleet = [Junk()]
 myLocation = world["taipei"]
-print(myLocation)
-
 
 def set_sail(destination):
     """A helper function that travels to a location."""
@@ -46,6 +43,7 @@ class IlhaFormosa(cmd.Cmd):
         print("Your fleet has %s ship(s)" % len(myFleet))
         for k in myFleet:
             print(k.information)
+        print("\n")
 
     def do_quit(self, line):
         return True
