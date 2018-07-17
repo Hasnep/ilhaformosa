@@ -1,8 +1,8 @@
+from title import *
 import cmd, textwrap, pyreadline
 from ships import *
 from ports import *
 import datetime
-
 # from pdb import * # use set_trace() to debug
 
 SCREEN_WIDTH = 80
@@ -87,7 +87,5 @@ class IlhaFormosa(cmd.Cmd):
         """Quit the game."""
         return True
 
-
-print('Ilha Formosa!')
 IlhaFormosa().cmdloop()
 print('Thank you for playing Ilha Formosa!')
