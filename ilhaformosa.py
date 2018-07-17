@@ -45,6 +45,12 @@ def rename_ship(old_nickname, new_nickname):
 class IlhaFormosa(cmd.Cmd):
     prompt = '\n> '
 
+    def do_calendar(self, line):
+        """Find out what the date is."""
+        print("It is %s." % day_to_date(day))
+
+    do_cal = do_calendar
+
     def do_map(self, line):
         """List the locations on the map."""
         print("You are in %s" % myLocation.name)

@@ -7,6 +7,7 @@ A text game to teach myself some OOP stuff. Very nooby.
 
 Current commands:
 * `help/? [command]`
+* `calendar/cal`
 * `fleet`
 * `look`
 * `map`
