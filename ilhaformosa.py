@@ -43,7 +43,7 @@ def rename_ship(old_nickname, new_nickname):
 
 
 class IlhaFormosa(cmd.Cmd):
-    prompt = '\n> '
+    prompt = '\n > '
 
     def do_calendar(self, line):
         """Find out what the date is."""
