@@ -5,8 +5,6 @@ from ports import *
 import datetime
 # from pdb import * # use set_trace() to debug
 
-SCREEN_WIDTH = 80
-
 # Money
 myCash = 0
 myBalance = 0
