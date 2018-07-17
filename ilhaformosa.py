@@ -6,9 +6,15 @@ import datetime
 # from pdb import * # use set_trace() to debug
 
 # Money
-myCash = 0
-myBalance = 0
-myDebt = 0
+
+
+def money(amount):
+    return "£" + amount
+
+
+my_cash = 1000
+my_balance = 0
+my_debt = 0
 
 # Time
 start_date = datetime.date(1700, 1, 1)
@@ -21,8 +27,8 @@ def day_to_date(x):
     return x
 
 
-myFleet = [Junk()]
-myLocation = world["taipei"]
+my_fleet = [Junk()]
+my_location = world["taipei"]
 
 
 def set_sail(destination):
@@ -35,7 +41,7 @@ def set_sail(destination):
 
 def rename_ship(old_nickname, new_nickname):
     """A function that changes the nickname of a ship."""
-    for k in myFleet:
+    for k in my_fleet:
         if k.nickname == old_nickname:
             k.nickname = new_nickname
 
@@ -51,16 +57,16 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_map(self, line):
         """List the locations on the map."""
-        print("You are in %s" % myLocation.name)
+        print("You are in %s" % my_location.name)
         print("The map has these ports on it:")
         for key, value in world.items():
             print(value.name)
 
     def do_look(self, line):
         """Look around the port you are currently in."""
-        print("You are in %s" % myLocation.name)
+        print("You are in %s" % my_location.name)
         print("There is a ")
-        for k in myLocation.buildings:
+        for k in my_location.buildings:
             print(k.type)
 
     def do_sail(self, destination):
@@ -83,8 +89,8 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_fleet(self, line):
         """Get information about your fleet."""
-        print("Your fleet has %s ship(s)" % len(myFleet))
-        for k in myFleet:
+        print("Your fleet has %s ship(s)" % len(my_fleet))
+        for k in my_fleet:
             print_ship_information(k)
 
     def do_quit(self, line):
