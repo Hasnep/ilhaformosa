@@ -1,14 +1,27 @@
 import cmd, textwrap, pyreadline
 from ships import *
 from ports import *
+import datetime
+
 # from pdb import * # use set_trace() to debug
 
 SCREEN_WIDTH = 80
 
-
+# Money
 myCash = 0
 myBalance = 0
 myDebt = 0
+
+# Time
+start_date = datetime.date(1700, 1, 1)
+day = 0
+
+
+def day_to_date(x):
+    x = start_date + datetime.timedelta(days=x)
+    x = x.strftime("%Y-%m-%d")
+    return x
+
 
 myFleet = [Junk()]
 myLocation = world["taipei"]
