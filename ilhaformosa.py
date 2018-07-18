@@ -1,16 +1,17 @@
-from title import *
+# from title import *
 import cmd, textwrap, pyreadline
+from options import *
 from ships import *
 from ports import *
 import datetime
-# from pdb import * # use set_trace() to debug
+from pdb import * # use set_trace() to debug
 
 # Money
 
 
 def money(amount):
     """Add the currency symbol to money."""
-    return "£" + amount
+    return options["currency"] + " " + amount
 
 
 my_cash = 1000
@@ -51,6 +52,27 @@ def rename_ship(old_nickname, new_nickname):
 class IlhaFormosa(cmd.Cmd):
     prompt = '\n > '
 
+    def do_options(self, args):
+        """Vew or modify an option or reset all options to default.
+        options [option] [new value/default] or options default to reset to defaults"""
+        args = args.split()
+        if len(args) > 2:  # if too many options have been entered
+            print("Use options [option] [new value] to set an option.")
+        elif len(args) == 2:  # if an option and a value were specified
+            if args[1] == "default":
+                reset_option(args[0])
+            else:
+                set_option(args[0], args[1])
+        elif len(args) == 1:  # if only an option was specified
+            if args[0] == "default":  # if resetting all options to default
+                reset_all_options()
+            else:  # if only an option name was specified
+                print_option(args[0])
+        elif len(args) == 0:  # if no option name was specified
+            print_all_options()
+        else:
+            print("idk.")
+
     def do_calendar(self, line):
         """Find out what the date is."""
         print("It is %s." % day_to_date(day))
@@ -74,7 +96,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_sail(self, destination):
         """Set sail for a port.
         sail [destination]"""
-        myLocation = set_sail(destination)
+        my_location = set_sail(destination)
 
     def complete_sail(self, text, line, begidx, endidx):
         return [key for key, value in world.items() if key.startswith(text)]
