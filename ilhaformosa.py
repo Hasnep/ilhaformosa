@@ -64,14 +64,28 @@ class IlhaFormosa(cmd.Cmd):
         for k in player["location"].buildings:
             print(k.type)
 
-    def do_sail(self, destination):
+    def do_sail(self, arg):
         """Set sail for a port.
         sail [destination]"""
-        # TODO: Check if you're already there
-        print("You set sail for %s" % world[destination].name)
-        print(world[destination].landing_message)
-        print(world[destination].description)
-        player["location"] = world[destination]
+        if arg == "":
+            print("Use sail [destination] to sail to a port. You can see a list of ports using the 'map' command.")
+            return
+        else:
+            arg = arg.lower()
+            if arg in world:
+                # TODO: Find out if it is more efficient to compare names or dicts.
+                if player["location"].name == world[arg].name:
+                    print("You are already in %s." % player["location"].name)
+                    return
+                else:
+                    print("You set sail for %s." % world[arg].name)
+                    print(world[arg].landing_message)
+                    print(world[arg].description)
+                    player["location"] = world[arg]
+                    return
+            else:
+                print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
+                return
 
     def complete_sail(self, text, line, begidx, endidx):
         """Tab completion for the sail command."""
