@@ -26,7 +26,10 @@ day = 0
 def day_to_date(x):
     """Convert the number of days to a readable string."""
     x = start_date + datetime.timedelta(days=x)
-    x = x.strftime("%Y-%m-%d")
+    if options['date'] == "ymd":
+        x = x.strftime("%Y-%m-%d")
+    elif options['date'] == "dmy":
+        x = x.strftime("%d/%m/%Y")
     return x
 
 
@@ -70,8 +73,6 @@ class IlhaFormosa(cmd.Cmd):
                 print_option(args[0])
         elif len(args) == 0:  # if no option name was specified
             print_all_options()
-        else:
-            print("idk.")
 
     def do_calendar(self, line):
         """Find out what the date is."""
@@ -120,6 +121,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_quit(self, line):
         """Quit the game."""
         return True
+
 
 IlhaFormosa().cmdloop()
 print('Thank you for playing Ilha Formosa!')

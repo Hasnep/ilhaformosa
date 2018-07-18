@@ -1,7 +1,7 @@
 """Creates the functions that can read or change options."""
 
-options_choices = {"currency": ["£", "$"], "distance": ["modern", "ancient"]}
-default_options = {"currency": "£", "distance": "modern"}
+options_choices = {"currency": ["£", "$"], "distance": ["modern", "ancient"], "date": ["ymd", "dmy"]}
+default_options = {"currency": "£", "distance": "modern", "date": "ymd"}
 options = default_options
 
 
