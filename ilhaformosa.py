@@ -27,10 +27,22 @@ class IlhaFormosa(cmd.Cmd):
         elif len(args) == 0:  # if no option name was specified
             print_all_options()
 
-    def do_calendar(self, line):
-        """Find out what the date is."""
-        # TODO: Add the ability to find out what the date will be in a certain number of days.
-        print("It is %s." % day_to_date(player["day"]))
+    def do_calendar(self, args):
+        """Find out what the date is or what the date will be in the future.
+        calendar [days]"""
+        if args == "":
+            print("It is %s." % day_to_date(player["day"]))
+            return
+        else:
+            try:
+                args = float(args)
+            except:
+                print("Use calendar [days] to find out what the date will be in the future.")
+                return
+        if args < 365*10:
+            print("In %s days it will be %s." % (math.floor(args), day_to_date(player["day"] + args)))
+        else:
+            print("Your calendar only has pages for the next 10 years.")
 
     do_cal = do_calendar
 
