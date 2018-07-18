@@ -11,6 +11,7 @@ Current commands:
 * `fleet`
 * `look`
 * `map`
+* `options [option/default] [new value/default]`
 * `quit`
 * `rename [old name]>[new name]`
 * `sail [destination]`
