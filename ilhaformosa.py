@@ -1,10 +1,11 @@
-# from title import *
+from title import *
+import math
 import cmd, textwrap, pyreadline
 from options import *
 from ships import *
 from ports import *
 import datetime
-from pdb import * # use set_trace() to debug
+#from pdb import * # use set_trace() to debug
 
 # Money
 
@@ -33,6 +34,13 @@ def day_to_date(x):
     return x
 
 
+def days_passed(x):
+    """Increase the time by a certain number of days"""
+    global day
+    day = day + x
+
+
+# Initialise variables
 my_fleet = [Junk()]
 my_location = world["taipei"]
 
@@ -117,6 +125,21 @@ class IlhaFormosa(cmd.Cmd):
         print("Your fleet has %s ship(s)" % len(my_fleet))
         for k in my_fleet:
             print_ship_information(k)
+
+    def do_wait(self, args):
+        """Wait for a specified number of days.
+        wait [number of days]"""
+        try:
+            args = float(args)
+        except:
+            print("%s is not a valid number" % args)
+            return
+        if args <= 7:
+            days_passed(args)
+            print("You wait around for %s days." % math.floor(args))
+        else:
+            print("You can only wait for one week at a time.")
+
 
     def do_quit(self, line):
         """Quit the game."""

@@ -15,3 +15,4 @@ Current commands:
 * `quit`
 * `rename [old name]>[new name]`
 * `sail [destination]`
+* `wait [number of days]`
