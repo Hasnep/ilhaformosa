@@ -14,5 +14,7 @@ def print_title():
     title = title.replace(" " * title_width + "\n", "")
     print("=" * terminal_width + title + "\n" + "=" * terminal_width)
 
-
-print_title()
+try:
+    print_title()
+except:
+    print("Ilha Formosa!")
