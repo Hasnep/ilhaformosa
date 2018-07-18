@@ -87,12 +87,21 @@ class IlhaFormosa(cmd.Cmd):
             rename_ship(args[0], args[1])
             print("%s is now named %s" % (args[0], args[1]))
 
-    def do_fleet(self, line):
-        """Get information about your fleet."""
-        # TODO: get information about a single ship
-        print("Your fleet has %s ship(s)" % len(player["fleet"]))
-        for k in player["fleet"]:
-            print_ship_information(k)
+    def do_fleet(self, arg):
+        """Get information about a single ship or your whole fleet.
+        fleet [ship name]"""
+        # TODO: Properly test this command with a large fleet.
+        if arg == "":
+            print("Your fleet has %s ship(s)" % len(player["fleet"]))
+            for k in player["fleet"]:
+                print_ship_information(k)
+        else:
+            for k in player["fleet"]:
+                if arg == k.nickname:
+                    print_ship_information(k)
+                    return
+            print("Use fleet [ship name] to get information about a ship.")
+
 
     def do_wait(self, args):
         """Wait for a specified number of days.
