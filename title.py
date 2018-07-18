@@ -3,7 +3,8 @@ from pyfiglet import Figlet
 from math import floor
 
 
-def print_title():
+def title_print():
+    """A function that prints the title in a fancy way."""
     terminal_width = os.get_terminal_size()[0]
     title = Figlet(font='script').renderText('Ilha Formosa')
     title_width = len(title.split("\n", 1)[0])
@@ -15,6 +16,6 @@ def print_title():
     print("=" * terminal_width + title + "\n" + "=" * terminal_width)
 
 try:
-    print_title()
+    title_print()
 except:
     print("Ilha Formosa!")
