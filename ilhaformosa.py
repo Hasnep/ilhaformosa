@@ -1,63 +1,8 @@
 from title import *
-import math
 import cmd, textwrap, pyreadline
-from options import *
-from ships import *
-from ports import *
-import datetime
-#from pdb import * # use set_trace() to debug
-
-# Money
-
-
-def money(amount):
-    """Add the currency symbol to money."""
-    return options["currency"] + " " + amount
-
-
-my_cash = 1000
-my_balance = 0
-my_debt = 0
-
-# Time
-start_date = datetime.date(1700, 1, 1)
-day = 0
-
-
-def day_to_date(x):
-    """Convert the number of days to a readable string."""
-    x = start_date + datetime.timedelta(days=x)
-    if options['date'] == "ymd":
-        x = x.strftime("%Y-%m-%d")
-    elif options['date'] == "dmy":
-        x = x.strftime("%d/%m/%Y")
-    return x
-
-
-def days_passed(x):
-    """Increase the time by a certain number of days"""
-    global day
-    day = day + x
-
-
-# Initialise variables
-my_fleet = [Junk()]
-my_location = world["taipei"]
-
-
-def set_sail(destination):
-    """A function that travels to a location."""
-    print("You set sail for %s" % world[destination].name)
-    print(world[destination].landing_message)
-    print(world[destination].description)
-    return world[destination]
-
-
-def rename_ship(old_nickname, new_nickname):
-    """A function that changes the nickname of a ship."""
-    for k in my_fleet:
-        if k.nickname == old_nickname:
-            k.nickname = new_nickname
+import math
+from player import *
+# from pdb import * # use set_trace() to debug
 
 
 class IlhaFormosa(cmd.Cmd):
@@ -84,46 +29,57 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_calendar(self, line):
         """Find out what the date is."""
-        print("It is %s." % day_to_date(day))
+        # TODO: Add the ability to find out what the date will be in a certain number of days.
+        print("It is %s." % day_to_date(player["day"]))
 
     do_cal = do_calendar
 
     def do_map(self, line):
         """List the locations on the map."""
-        print("You are in %s" % my_location.name)
+        # TODO: Add an argument to look at the buildings of a certain port.
+        print("You are in %s" % player["location"].name)
         print("The map has these ports on it:")
         for key, value in world.items():
             print(value.name)
 
+    # TODO: Make a function to go into a building.
+
     def do_look(self, line):
         """Look around the port you are currently in."""
-        print("You are in %s" % my_location.name)
+        # TODO: Make this command the gointobuilding command with no arguments.
+        print("You are in %s" % player["location"].name)
         print("There is a ")
-        for k in my_location.buildings:
+        for k in player["location"].buildings:
             print(k.type)
 
     def do_sail(self, destination):
         """Set sail for a port.
         sail [destination]"""
-        my_location = set_sail(destination)
+        # TODO: Check if you're already there
+        print("You set sail for %s" % world[destination].name)
+        print(world[destination].landing_message)
+        print(world[destination].description)
+        player["location"] = world[destination]
 
     def complete_sail(self, text, line, begidx, endidx):
+        """Tab completion for the sail command."""
         return [key for key, value in world.items() if key.startswith(text)]
 
-    def do_rename(self, nicknames):
+    def do_rename(self, args):
         """Rename a ship.
         rename [old name]>[new name]"""
-        nicknames = nicknames.split(">")
-        if len(nicknames) != 2:
+        args = args.split(">")
+        if len(args) != 2:
             print("Use [old name]>[new name] to rename a ship.")
         else:
-            rename_ship(nicknames[0], nicknames[1])
-            print("%s is now named %s" % (nicknames[0], nicknames[1]))
+            rename_ship(args[0], args[1])
+            print("%s is now named %s" % (args[0], args[1]))
 
     def do_fleet(self, line):
         """Get information about your fleet."""
-        print("Your fleet has %s ship(s)" % len(my_fleet))
-        for k in my_fleet:
+        # TODO: get information about a single ship
+        print("Your fleet has %s ship(s)" % len(player["fleet"]))
+        for k in player["fleet"]:
             print_ship_information(k)
 
     def do_wait(self, args):
@@ -139,7 +95,6 @@ class IlhaFormosa(cmd.Cmd):
             print("You wait around for %s days." % math.floor(args))
         else:
             print("You can only wait for one week at a time.")
-
 
     def do_quit(self, line):
         """Quit the game."""

@@ -1,5 +1,5 @@
 """Defining the buildings classes"""
-
+from ships import *
 
 def building_namer(type, location):
     """Helper function for generating building names."""
