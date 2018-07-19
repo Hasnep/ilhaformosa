@@ -1,27 +1,21 @@
 """Defining the ports classes"""
 from buildings import *
+from distances import *
 
 
 class Port(object):
-    def __init__(self, name):
-        self.name = name
-        self.landing_message = "You land in %s" % name
+    def __init__(self, port_name):
+        self.name = port_name
+        self.landing_message = "You land in %s" % self.name
         self.description = "%s is a port" % self.name
         self.visited = False
         self.discovered = False
         self.buildings = []
+        self.distances = ports_distances[self.name]
         for k in all_building_types:
             self.buildings.append(k(self.name))
 
 
-all_ports = ["taipei", "shanghai", "tokyo"]
+all_ports = ["Hong Kong", "Incheon", "Naha", "Shanghai", "Taipei", "Tianjin", "Tokyo"]
 
-# TODO: add distances
-# ports_distances = {}
-# for city1, cords1 in cords.items():
-#     ports_distances[city1] = {}
-#     for city2, cords2 in cords.items():
-#         ports_distances[city1][city2] = dist(cords1, cords2)
-
-
-world = {k: Port(k.title()) for k in all_ports}  # create port objects for all ports
+world = {k.lower().replace(" ", ""): Port(k) for k in all_ports}  # create port objects for all ports
