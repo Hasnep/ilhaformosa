@@ -24,6 +24,13 @@ class Palace(Building):
         Building.__init__(self, location)
 
 
+class Bank(Building):
+    def __init__(self, location):
+        self.type = "Bank"
+        self.description = "Money is here."
+        Building.__init__(self, location)
+
+
 class Shipyard(Building):
     def __init__(self, location):
         self.type = "Shipyard"
@@ -31,4 +38,4 @@ class Shipyard(Building):
         Building.__init__(self, location)
 
 
-all_building_types = [Palace, Shipyard]
+all_building_types = [Palace, Bank, Shipyard]
