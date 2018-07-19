@@ -103,10 +103,20 @@ class IlhaFormosa(cmd.Cmd):
         rename [old name]>[new name]"""
         args = args.split(">")
         if len(args) != 2:
-            print("Use [old name]>[new name] to rename a ship.")
+            print("Use rename [old name]>[new name] to rename a ship.")
+            return
         else:
-            rename_ship(args[0], args[1])
-            print("%s is now named %s" % (args[0], args[1]))
+            old_nickname = args[0]
+            new_nickname = args[1]
+            if new_nickname == "":
+                print("Use rename [old name]>[new name] to rename a ship.")
+                return
+            for k in player["fleet"]:
+                if k.nickname == old_nickname:
+                    k.nickname = new_nickname
+                    print("%s is now named %s" % (old_nickname, new_nickname))
+                    return
+            print("No ship with the name %s found." % old_nickname)
 
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.
