@@ -26,6 +26,7 @@ class Junk(Ship):
         self.maxHealth = 50
         self.maxCannons = 10
         self.cargoCapacity = 30
+        self.topSpeed = 8
         Ship.__init__(self)
 
 
@@ -36,4 +37,5 @@ class Baochuan(Ship):
         self.maxHealth = 60
         self.maxCannons = 5
         self.cargoCapacity = 100
+        self.topSpeed = 7
         Ship.__init__(self)
