@@ -1,9 +1,5 @@
 """Defining the ships classes"""
-
-
-def random_ship_name():
-    """A function to generate a random starting name for every ship."""
-    return "Seven"
+from randomwords import *
 
 
 def print_ship_information(ship):
@@ -12,12 +8,12 @@ def print_ship_information(ship):
 
 
 class Ship(object):
-    nickname = random_ship_name()
-
     def __init__(self):
+        self.nickname = random_ship_name()
         self.health = self.maxHealth
         self.cargo = []
         self.cannons = 0
+
 
 class Junk(Ship):
     def __init__(self):

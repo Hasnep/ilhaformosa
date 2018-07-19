@@ -8,7 +8,7 @@ player = {"cash": 1000,
           "debt": 0,
           "day": 0,
           "location": world["taipei"],
-          "fleet": [Junk()]
+          "fleet": [Junk(), Junk(), Baochuan()]
           }
 
 start_date = datetime.date(1700, 1, 1)
