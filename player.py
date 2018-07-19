@@ -29,7 +29,7 @@ def day_to_date(x):
     return x
 
 
-def days_passed(x):
+def day_increase(x):
     """Increase the time by a certain number of days"""
     player["day"] = player["day"] + x
 
