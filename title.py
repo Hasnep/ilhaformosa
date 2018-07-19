@@ -2,9 +2,10 @@ import os
 from pyfiglet import Figlet
 from math import floor
 
+
 def title_print():
     """A function that prints the title in a fancy way."""
-    title = Figlet(font='script').renderText('Ilha Formosa')
+    title = Figlet(font="script").renderText("Ilha Formosa")
     title_width = len(title.split("\n", 1)[0])
     try:
         terminal_width = os.get_terminal_size()[0]
