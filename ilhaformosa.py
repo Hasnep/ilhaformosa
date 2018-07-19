@@ -62,25 +62,32 @@ class IlhaFormosa(cmd.Cmd):
         print("You are in %s" % player["location"].name)
         print("There is a ")
         for k in player["location"].buildings:
-            print(k.type)
+            print("%s called %s" % (k.type, k.name))
 
     def do_sail(self, arg):
         """Set sail for a port.
         sail [destination]"""
-        if arg == "":
+        if arg == "":  # check if an argument was entered
             print("Use sail [destination] to sail to a port. You can see a list of ports using the 'map' command.")
             return
         else:
-            arg = arg.lower()
-            if arg in world:
+            arg = arg.lower()  # make the argument lowercase
+            arg = arg.replace(" ", "")  # remove spaces from argument
+            if arg in world:  # check if port object exists as a key
                 # TODO: Find out if it is more efficient to compare names or dicts.
-                if player["location"].name == world[arg].name:
+                if player["location"].name == world[arg].name:  # check if the player is already at their destination
                     print("You are already in %s." % player["location"].name)
                     return
                 else:
-                    print("You set sail for %s." % world[arg].name)
-                    print(world[arg].landing_message)
-                    print(world[arg].description)
+                    from_name = player["location"].name
+                    to_name = world[arg].name
+                    journey_distance = ports_distances[from_name][to_name]
+                    journey_speed = 8  # TODO: Change this to top speed.
+                    journey_time = (journey_distance / 8)/24
+                    day_increase(journey_time)
+                    print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
+                    print("You land in %s." % to_name)
+                    print("It is %s." % day_to_date(player["day"]))
                     player["location"] = world[arg]
                     return
             else:
@@ -130,6 +137,11 @@ class IlhaFormosa(cmd.Cmd):
             print("You wait around for %s days." % math.floor(args))
         else:
             print("You can only wait for one week at a time.")
+
+    def do_credits(self, line):
+        """Print the credits for the game."""
+        print("Game by Hannes Smit (hasnep.github.io)")
+        print("Map modified from Wikimedia Commons (Asia Countries Gray)")
 
     def do_quit(self, line):
         """Quit the game."""
