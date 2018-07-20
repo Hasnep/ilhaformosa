@@ -3,11 +3,13 @@ import datetime
 from options import *
 from ports import *
 
+# TODO: Change player to a class.
 player = {"cash": 1000,
           "balance": 0,
           "debt": 0,
           "day": 0,
           "location": world["taipei"],
+          "building": None,
           "fleet": [Junk(), Junk(), Baochuan()]
           }
 

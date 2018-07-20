@@ -9,6 +9,7 @@ Current commands:
 * `help/? [command]`
 * `calendar/cal [days]`
 * `cash`
+* `enter [building type]`
 * `fleet [ship name]`
 * `look`
 * `map`

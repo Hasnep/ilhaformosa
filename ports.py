@@ -8,10 +8,10 @@ class Port(object):
         self.name = port_name
         self.visited = False
         self.discovered = False
-        self.buildings = []
+        self.buildings = {}
         self.distances = ports_distances[self.name]
-        for k in all_building_types:
-            self.buildings.append(k(self.name))
+        for key, value in all_building_types.items():
+            self.buildings[key] = value(self.name)
 
 
 all_ports = [*ports_distances]

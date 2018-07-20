@@ -55,14 +55,33 @@ class IlhaFormosa(cmd.Cmd):
             print(value.name)
 
     # TODO: Make a function to go into a building.
+    def do_enter(self, arg):
+        """Enter a building.
+        enter [building type]"""
+        arg = arg.split()
+        if len(arg) == 1:  # check if a valid name was entered
+            arg = arg[0]
+            if arg in all_building_types:  # check if argument is a building that exists
+                if arg in player["location"].buildings:  # check if argument is in this port
+                    print("You enter %s" % world["taipei"].buildings[arg].name)
+                    return
+                else:
+                    print("There is no %s in %s." % (arg, player["location"]))
+                    return
+            else:
+                print("There is no building called %s. Use look to see the buildings in this port." % arg)
+                return
+        else:
+            print("Use enter [building type] to go into a building.")
+            return
 
     def do_look(self, line):
         """Look around the port you are currently in."""
         # TODO: Make this command the gointobuilding command with no arguments.
         print("You are in %s" % player["location"].name)
         print("There is a ")
-        for k in player["location"].buildings:
-            print("%s called %s" % (k.type, k.name))
+        for key, value in player["location"].buildings.items():
+            print("%s called %s" % (value.type, value.name))
 
     def do_sail(self, arg):
         """Set sail for a port.
@@ -79,6 +98,7 @@ class IlhaFormosa(cmd.Cmd):
                     print("You are already in %s." % player["location"].name)
                     return
                 else:
+                    player["building"] = None
                     from_name = player["location"].name
                     to_name = world[arg].name
                     journey_distance = ports_distances[from_name][to_name]

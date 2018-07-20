@@ -38,4 +38,4 @@ class Shipyard(Building):
         Building.__init__(self, location)
 
 
-all_building_types = [Palace, Bank, Shipyard]
+all_building_types = {"palace": Palace, "bank": Bank, "shipyard": Shipyard}
