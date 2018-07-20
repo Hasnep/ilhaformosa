@@ -190,4 +190,4 @@ class IlhaFormosa(cmd.Cmd):
 
 
 IlhaFormosa().cmdloop()
-print('Thank you for playing Ilha Formosa!')
+print("Thank you for playing Ilha Formosa!")
