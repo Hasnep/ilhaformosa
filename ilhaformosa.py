@@ -151,7 +151,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_credits(self, line):
         """Print the credits for the game."""
         print("Game by Hannes Smit (hasnep.github.io)")
-        print("Map modified from Wikimedia Commons (Asia Countries Gray)")
+        # print("Map modified from Wikimedia Commons (Asia Countries Gray)")
 
     def do_quit(self, line):
         """Quit the game."""
