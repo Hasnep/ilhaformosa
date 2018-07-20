@@ -2,6 +2,7 @@ import os
 from pyfiglet import Figlet
 from math import floor
 
+version_number = "v0.1.0"
 
 def title_print():
     """A function that prints the title in a fancy way."""
@@ -16,7 +17,10 @@ def title_print():
         title = title.replace(" " * title_width + "\n", "")
         print("=" * terminal_width + title + "\n" + "=" * terminal_width)
     except:
+        title = title.replace(" " * title_width + "\n", "")
+        title = title + " " * title_width + "\n"
         print("=" * title_width + "\n" + title + "=" * title_width)
 
 
 title_print()
+print(version_number)
