@@ -2,10 +2,11 @@ import os
 from pyfiglet import Figlet
 from math import floor
 
-version_number = "v0.1.060"
+version_number = "v0.1.061"
 
 def title_print():
     """A function that prints the title in a fancy way."""
+    global version_number
     try:
         title = Figlet(font="script").renderText("Ilha Formosa")
         title_width = len(title.split("\n", 1)[0])
