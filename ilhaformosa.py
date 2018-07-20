@@ -96,6 +96,7 @@ class IlhaFormosa(cmd.Cmd):
 
     def complete_sail(self, text, line, begidx, endidx):
         """Tab completion for the sail command."""
+        # TODO: Remove the current port from the tab completion list.
         return [key for key, value in world.items() if key.startswith(text)]
 
     def do_rename(self, args):
@@ -118,6 +119,8 @@ class IlhaFormosa(cmd.Cmd):
                     return
             print("No ship with the name %s found." % old_nickname)
 
+    # TODO: Add tab completion for the rename command
+
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.
         fleet [ship name]"""
@@ -132,6 +135,14 @@ class IlhaFormosa(cmd.Cmd):
                     print_ship_information(k)
                     return
             print("Use fleet [ship name] to get information about a ship.")
+
+
+    def do_cash(self, line):
+        """Show your current cash, bank balance and debt."""
+        print("Cash: " + money(player["cash"]))
+        print("Bank balance: " + money(player["balance"]))
+        print("Debt: " + money(player["debt"]))
+        print("Total: " + money(player["cash"] + player["balance"] - player["debt"]))
 
 
     def do_wait(self, args):

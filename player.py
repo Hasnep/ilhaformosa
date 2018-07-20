@@ -16,7 +16,8 @@ start_date = datetime.date(1700, 1, 1)
 
 def money(amount):
     """A function to add the currency symbol to money."""
-    return options["currency"] + " " + amount
+    # TODO: Add commas to currency.
+    return options["currency"] + str(amount)
 
 
 def day_to_date(x):
