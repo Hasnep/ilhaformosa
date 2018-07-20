@@ -16,4 +16,5 @@ class Port(object):
 
 all_ports = [*ports_distances]
 
+# TODO: Change world dict into a class.
 world = {k.lower().replace(" ", ""): Port(k) for k in all_ports}  # create port objects for all ports

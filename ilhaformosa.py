@@ -6,7 +6,7 @@ from player import *
 
 
 class IlhaFormosa(cmd.Cmd):
-    prompt = '\n > '
+    prompt = '\n > '  # set the prompt
 
     def do_options(self, args):
         """Vew or modify an option or reset all options to default.
@@ -53,6 +53,7 @@ class IlhaFormosa(cmd.Cmd):
         print("The map has these ports on it:")
         for key, value in world.items():
             print(value.name)
+        # TODO: Show an ascii map of the world.
 
     # TODO: Make a function to go into a building.
     def do_enter(self, arg):
@@ -77,7 +78,7 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_look(self, line):
         """Look around the port you are currently in."""
-        # TODO: Make this command the gointobuilding command with no arguments.
+        # TODO: Make this command the enter building command with no arguments.
         print("You are in %s" % player["location"].name)
         print("There is a ")
         for key, value in player["location"].buildings.items():
@@ -105,6 +106,7 @@ class IlhaFormosa(cmd.Cmd):
                     journey_speed = 8  # TODO: Change this to top speed.
                     journey_time = (journey_distance / 8)/24
                     day_increase(journey_time)
+                    # TODO: Add a sailing animation.
                     print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
                     print("You land in %s." % to_name)
                     print("It is %s." % day_to_date(player["day"]))
@@ -156,14 +158,12 @@ class IlhaFormosa(cmd.Cmd):
                     return
             print("Use fleet [ship name] to get information about a ship.")
 
-
     def do_cash(self, line):
         """Show your current cash, bank balance and debt."""
         print("Cash: " + money(player["cash"]))
         print("Bank balance: " + money(player["balance"]))
         print("Debt: " + money(player["debt"]))
         print("Total: " + money(player["cash"] + player["balance"] - player["debt"]))
-
 
     def do_wait(self, args):
         """Wait for a specified number of days.

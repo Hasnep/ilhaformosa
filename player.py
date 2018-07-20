@@ -3,7 +3,8 @@ import datetime
 from options import *
 from ports import *
 
-# TODO: Change player to a class.
+# TODO: Change player dict to a class.
+# TODO: Add a wallet class.
 player = {"cash": 1000,
           "balance": 0,
           "debt": 0,
