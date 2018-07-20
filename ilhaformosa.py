@@ -143,7 +143,7 @@ class IlhaFormosa(cmd.Cmd):
             print("%s is not a valid number" % args)
             return
         if args <= 7:
-            days_passed(args)
+            day_increase(args)
             print("You wait around for %s days." % math.floor(args))
         else:
             print("You can only wait for one week at a time.")
