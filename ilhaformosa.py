@@ -63,7 +63,7 @@ class IlhaFormosa(cmd.Cmd):
             arg = arg[0]
             if arg in all_building_types:  # check if argument is a building that exists
                 if arg in player.location.buildings:  # check if argument is in this port
-                    print("You enter %s" % world["taipei"].buildings[arg].name)  # TODO: Fix the location name
+                    print("You enter %s" % world[player.location.name.lower().replace(" ", "")].buildings[arg].name)  # TODO: Fix the location name
                     return
                 else:
                     print("There is no %s in %s." % (arg, player.location))
