@@ -2,7 +2,8 @@ import os
 from pyfiglet import Figlet
 from math import floor
 
-version_number = "v0.1.064"
+version_number = "v0.1.065"
+
 
 def title_print():
     """A function that prints the title in a fancy way."""

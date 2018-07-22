@@ -31,7 +31,7 @@ class IlhaFormosa(cmd.Cmd):
         """Find out what the date is or what the date will be in the future.
         calendar [days]"""
         if args == "":
-            print("It is %s." % day_to_date(player["day"]))
+            print("It is %s." % day_to_date(player.day))
             return
         else:
             try:
@@ -40,7 +40,7 @@ class IlhaFormosa(cmd.Cmd):
                 print("Use calendar [days] to find out what the date will be in the future.")
                 return
         if args < 365*10:
-            print("In %s days it will be %s." % (math.floor(args), day_to_date(player["day"] + args)))
+            print("In %s days it will be %s." % (math.floor(args), day_to_date(player.day + args)))
         else:
             print("Your calendar only has pages for the next 10 years.")
 
@@ -49,13 +49,12 @@ class IlhaFormosa(cmd.Cmd):
     def do_map(self, line):
         """List the locations on the map."""
         # TODO: Add an argument to look at the buildings of a certain port.
-        print("You are in %s" % player["location"].name)
+        print("You are in %s" % player.location.name)
         print("The map has these ports on it:")
         for key, value in world.items():
             print(value.name)
         # TODO: Show an ascii map of the world.
 
-    # TODO: Make a function to go into a building.
     def do_enter(self, arg):
         """Enter a building.
         enter [building type]"""
@@ -63,11 +62,11 @@ class IlhaFormosa(cmd.Cmd):
         if len(arg) == 1:  # check if a valid name was entered
             arg = arg[0]
             if arg in all_building_types:  # check if argument is a building that exists
-                if arg in player["location"].buildings:  # check if argument is in this port
-                    print("You enter %s" % world["taipei"].buildings[arg].name)
+                if arg in player.location.buildings:  # check if argument is in this port
+                    print("You enter %s" % world["taipei"].buildings[arg].name)  # TODO: Fix the location name
                     return
                 else:
-                    print("There is no %s in %s." % (arg, player["location"]))
+                    print("There is no %s in %s." % (arg, player.location))
                     return
             else:
                 print("There is no building called %s. Use look to see the buildings in this port." % arg)
@@ -79,9 +78,9 @@ class IlhaFormosa(cmd.Cmd):
     def do_look(self, line):
         """Look around the port you are currently in."""
         # TODO: Make this command the enter building command with no arguments.
-        print("You are in %s" % player["location"].name)
+        print("You are in %s" % player.location.name)
         print("There is a ")
-        for key, value in player["location"].buildings.items():
+        for key, value in player.location.buildings.items():
             print("%s called %s" % (value.type, value.name))
 
     def do_sail(self, arg):
@@ -95,22 +94,22 @@ class IlhaFormosa(cmd.Cmd):
             arg = arg.replace(" ", "")  # remove spaces from argument
             if arg in world:  # check if port object exists as a key
                 # TODO: Find out if it is more efficient to compare names or dicts.
-                if player["location"].name == world[arg].name:  # check if the player is already at their destination
-                    print("You are already in %s." % player["location"].name)
+                if player.location.name == world[arg].name:  # check if the player is already at their destination
+                    print("You are already in %s." % player.location.name)
                     return
                 else:
-                    player["building"] = None
-                    from_name = player["location"].name
+                    player.leave_building()
+                    from_name = player.location.name
                     to_name = world[arg].name
                     journey_distance = ports_distances[from_name][to_name]
                     journey_speed = 8  # TODO: Change this to top speed.
                     journey_time = (journey_distance / 8)/24
-                    day_increase(journey_time)
+                    player.day_increase(journey_time)
                     # TODO: Add a sailing animation.
                     print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
                     print("You land in %s." % to_name)
-                    print("It is %s." % day_to_date(player["day"]))
-                    player["location"] = world[arg]
+                    print("It is %s." % day_to_date(player.day))
+                    player.set_location(arg)
                     return
             else:
                 print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
@@ -134,7 +133,7 @@ class IlhaFormosa(cmd.Cmd):
             if new_nickname == "":
                 print("Use rename [old name]>[new name] to rename a ship.")
                 return
-            for k in player["fleet"]:
+            for k in player.fleet:
                 if k.nickname == old_nickname:
                     k.nickname = new_nickname
                     print("%s is now named %s" % (old_nickname, new_nickname))
@@ -148,11 +147,11 @@ class IlhaFormosa(cmd.Cmd):
         fleet [ship name]"""
         # TODO: Properly test this command with a large fleet.
         if arg == "":
-            print("Your fleet has %s ship(s)" % len(player["fleet"]))
-            for k in player["fleet"]:
+            print("Your fleet has %s ship(s)" % len(player.fleet))
+            for k in player.fleet:
                 print_ship_information(k)
         else:
-            for k in player["fleet"]:
+            for k in player.fleet:
                 if arg == k.nickname:
                     print_ship_information(k)
                     return
@@ -160,10 +159,10 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_cash(self, line):
         """Show your current cash, bank balance and debt."""
-        print("Cash: " + money(player["cash"]))
-        print("Bank balance: " + money(player["balance"]))
-        print("Debt: " + money(player["debt"]))
-        print("Total: " + money(player["cash"] + player["balance"] - player["debt"]))
+        print("Cash: " + money(player.cash))
+        print("Bank balance: " + money(player.balance))
+        print("Debt: " + money(player.debt))
+        print("Total: " + money(player.cash + player.balance - player.debt))
 
     def do_wait(self, args):
         """Wait for a specified number of days.
@@ -174,7 +173,7 @@ class IlhaFormosa(cmd.Cmd):
             print("%s is not a valid number" % args)
             return
         if args <= 7:
-            day_increase(args)
+            player.day_increase(args)
             print("You wait around for %s days." % math.floor(args))
         else:
             print("You can only wait for one week at a time.")
