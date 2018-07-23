@@ -24,3 +24,31 @@ I'm using this project to teach myself object-oriented programming in Python, so
 * `wait [number of days]`
 
 Use the `tab` key to autocomplete commands and arguments.
+
+## Planned features
+
+In no particular order:
+
+* combat
+    * cannons
+	* pirates
+	* powerups
+    * loot
+* ships
+	* health
+	* repairs
+	* special attributes
+* shops
+    * buy special items
+    * buy ships
+    * banks
+    * moneylenders
+* missions
+	* dialogue
+	* discovering new ports
+* trade
+	* cargo
+	* economy
+* visuals
+	* ASCII artwork
+	* animation

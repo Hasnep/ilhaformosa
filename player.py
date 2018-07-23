@@ -21,7 +21,7 @@ class Player(object):
         self.building = None
 
         # fleet related variables
-        self.fleet = [Junk(), Junk(), Baochuan()]
+        self.fleet = [Junk()]
 
     def set_location(self, location_string):
         """Sets the location of the player to the string."""

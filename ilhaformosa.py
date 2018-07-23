@@ -217,6 +217,10 @@ class IlhaFormosa(cmd.Cmd):
         """Quit the game."""
         return True
 
+    # TODO: Add unknown command support.
+    # def default(self, arg):
+    # print("%s is not a known command. Type ? for a list of commands." % arg.lower())
+
 
 IlhaFormosa().cmdloop()
 print("Thank you for playing Ilha Formosa!")
