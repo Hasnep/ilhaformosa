@@ -54,7 +54,7 @@ class IlhaFormosa(cmd.Cmd):
             except:
                 print("Use calendar [days] to find out what the date will be in the future.")
                 return
-        if args < 365*10:
+        if args <= 365*10:
             print("In %s days it will be %s." % (math.floor(args), day_to_date(_player.day + args)))
         else:
             print("Your calendar only has pages for the next 10 years.")

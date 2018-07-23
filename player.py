@@ -1,4 +1,4 @@
-"""Initialises information about the player and creates helper functions about money and time."""
+"""Initialises information about the player and creates helper functions about time."""
 import datetime
 from ports import *
 
