@@ -5,27 +5,42 @@ from player import *
 # from pdb import * # use set_trace() to debug
 
 
+def parse_args(input_string):
+    input_string = input_string.lower()
+    input_string = input_string.split()
+    return input_string
+
+
 class IlhaFormosa(cmd.Cmd):
     prompt = '\n > '  # set the prompt
 
     def do_options(self, args):
         """Vew or modify an option or reset all options to default.
-        options [option] [new value/default] or options default to reset to defaults"""
-        args = args.split()
+        options [option name/default] [new value/default] or options default to reset to defaults"""
+        args = parse_args(args)
         if len(args) > 2:  # if too many options have been entered
-            print("Use options [option] [new value] to set an option.")
+            print("Use options [option name] [new value] to set an option.")
+            return
         elif len(args) == 2:  # if an option and a value were specified
-            if args[1] == "default":
-                reset_option(args[0])
+            option_name = args[0]
+            option_value = args[1]
+            if option_value == "default":  # if the value specified was "default"
+                reset_option(option_name)
+                return
             else:
-                set_option(args[0], args[1])
+                set_option(option_name, option_value)  # set the option to the specified value
+                return
         elif len(args) == 1:  # if only an option was specified
-            if args[0] == "default":  # if resetting all options to default
+            option_name = args[0]
+            if option_name == "default":  # if resetting all options to default
                 reset_all_options()
+                return
             else:  # if only an option name was specified
-                print_option(args[0])
+                print_option(option_name)
+                return
         elif len(args) == 0:  # if no option name was specified
             print_all_options()
+            return
 
     def do_calendar(self, args, _player=player):
         """Find out what the date is or what the date will be in the future.

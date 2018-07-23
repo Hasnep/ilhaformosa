@@ -2,7 +2,7 @@ import os
 from pyfiglet import Figlet
 from math import floor
 
-version_number = "v0.1.068"
+version_number = "v0.1.069 (nice!)"
 
 
 def title_print():
