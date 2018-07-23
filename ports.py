@@ -5,6 +5,7 @@ from distances import *
 
 class Port(object):
     def __init__(self, port_name):
+        self.id = port_name.lower().replace(" ", "")
         self.name = port_name
         self.visited = False
         self.discovered = False
@@ -16,5 +17,16 @@ class Port(object):
 
 all_ports = [*ports_distances]
 
-# TODO: Change world dict into a class.
-world = {k.lower().replace(" ", ""): Port(k) for k in all_ports}  # create port objects for all ports
+world = {port_name.lower().replace(" ", ""): Port(port_name) for port_name in all_ports}  # create port objects for all ports
+
+
+def id_to_port(port_id, _world=world):
+    return _world[port_id]
+
+
+def port_name_to_id(port_name):
+    return port_name.lower().replace(" ", "")
+
+
+def name_to_port(port_name):
+    return id_to_port(port_name_to_id(port_name))

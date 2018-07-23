@@ -27,11 +27,11 @@ class IlhaFormosa(cmd.Cmd):
         elif len(args) == 0:  # if no option name was specified
             print_all_options()
 
-    def do_calendar(self, args):
+    def do_calendar(self, args, _player=player):
         """Find out what the date is or what the date will be in the future.
         calendar [days]"""
         if args == "":
-            print("It is %s." % day_to_date(player.day))
+            print("It is %s." % day_to_date(_player.day))
             return
         else:
             try:
@@ -40,7 +40,7 @@ class IlhaFormosa(cmd.Cmd):
                 print("Use calendar [days] to find out what the date will be in the future.")
                 return
         if args < 365*10:
-            print("In %s days it will be %s." % (math.floor(args), day_to_date(player.day + args)))
+            print("In %s days it will be %s." % (math.floor(args), day_to_date(_player.day + args)))
         else:
             print("Your calendar only has pages for the next 10 years.")
 
@@ -63,7 +63,7 @@ class IlhaFormosa(cmd.Cmd):
             arg = arg[0]
             if arg in all_building_types:  # check if argument is a building that exists
                 if arg in player.location.buildings:  # check if argument is in this port
-                    print("You enter %s" % world[player.location.name.lower().replace(" ", "")].buildings[arg].name)  # TODO: Fix the location name
+                    print("You enter %s" % player.location.buildings[arg].name)
                     return
                 else:
                     print("There is no %s in %s." % (arg, player.location))
