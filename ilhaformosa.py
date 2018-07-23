@@ -15,8 +15,8 @@ class IlhaFormosa(cmd.Cmd):
     prompt = '\n > '  # set the prompt
 
     def do_options(self, args):
-        """Vew or modify an option or reset all options to default.
-        options [option name/default] [new value/default] or options default to reset to defaults"""
+        """View or modify an option or reset all options to default.
+        options [option name] [new value/default] or options default to reset to defaults"""
         args = parse_args(args)
         if len(args) > 2:  # if too many options have been entered
             print("Use options [option name] [new value] to set an option.")

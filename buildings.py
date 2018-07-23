@@ -6,7 +6,12 @@ from options import *
 def money(amount):
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
-    return options["currency"] + str(amount)
+    currency_option = options["currency"]
+    if currency_option == "pound":
+        symbol = "£"
+    elif currency_option == "dollar":
+        symbol = "$"
+    return symbol + str(amount)
 
 
 def building_namer(type, location):
