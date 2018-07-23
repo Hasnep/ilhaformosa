@@ -1,5 +1,13 @@
 """Defining the buildings classes"""
 from ships import *
+from options import *
+
+
+def money(amount):
+    """A function to add the currency symbol to money."""
+    # TODO: Add commas to currency.
+    return options["currency"] + str(amount)
+
 
 def building_namer(type, location):
     """Helper function for generating building names."""
@@ -15,6 +23,7 @@ class Building(object):
         self.location = location
         self.name = building_namer(self.type, self.location)
         self.description = "%s is a %s in %s" % (self.name, self.type, self.location)
+        self.wares = None
 
 
 class Palace(Building):
@@ -36,6 +45,21 @@ class Shipyard(Building):
         self.type = "Shipyard"
         self.description = "Where you can buy ships."
         Building.__init__(self, location)
+
+        self.sale_price = None
+
+    def reset_wares(self):
+        ship_type_class = random.choice(all_ship_types)
+        self.wares = ship_type_class()
+        self.sale_price = self.wares.value * (1 + random.gauss(0, 0.1))
+
+    def print_wares(self):
+        print("Price: %s" % money(self.sale_price))
+        print_ship_information(self.wares)
+
+    def enter_building(self):
+        self.reset_wares()
+        self.print_wares()
 
 
 all_building_types = {"palace": Palace, "bank": Bank, "shipyard": Shipyard}

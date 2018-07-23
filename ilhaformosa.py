@@ -64,6 +64,8 @@ class IlhaFormosa(cmd.Cmd):
             if arg in all_building_types:  # check if argument is a building that exists
                 if arg in player.location.buildings:  # check if argument is in this port
                     print("You enter %s" % player.location.buildings[arg].name)
+                    player.building = player.location.buildings[arg]
+                    player.location.buildings[arg].enter_building()
                     return
                 else:
                     print("There is no %s in %s." % (arg, player.location))
@@ -74,6 +76,7 @@ class IlhaFormosa(cmd.Cmd):
         else:
             print("Use enter [building type] to go into a building.")
             return
+
 
     def do_look(self, line):
         """Look around the port you are currently in."""
@@ -141,6 +144,18 @@ class IlhaFormosa(cmd.Cmd):
             print("No ship with the name %s found." % old_nickname)
 
     # TODO: Add tab completion for the rename command
+
+    def do_buy(self, arg):  # TODO: Add the ability to buy ships.
+        if player.building is None:
+            print("Enter a building to buy something.")
+            return
+        else:
+            if player.building.wares is None:
+                print("You can't buy anything here.")
+                return
+            else:
+                player.fleet.append(player.building.wares)
+                player.building.reset_wares()
 
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.
