@@ -10,6 +10,7 @@ def split_args(input_string):
     input_string = input_string.split()
     return input_string
 
+
 def format_arg(input_string):
     input_string = input_string.lower()
     input_string = input_string.replace(" ", "")
