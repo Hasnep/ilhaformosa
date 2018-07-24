@@ -181,6 +181,64 @@ class IlhaFormosa(cmd.Cmd):
                     print("Not enough money.")
                     return
 
+    def do_deposit(self, arg):
+        """Deposits money into a bank account.
+        deposit [amount/max/all]"""
+        if player.building is not None and player.building.type == "bank":
+            if arg == "max" or arg == "all":
+                player.deposit_cash(player.cash)
+                return
+            else:
+                try:
+                    deposit_amount = float(arg)
+                except:
+                    print("Use deposit [amount] to deposit.")
+                    return
+                if deposit_amount > player.cash:
+                    print("You cannot deposit more money than you have on you.")
+                    return
+                elif deposit_amount == 0:
+                    print("You cannot deposit nothing.")
+                    return
+                elif deposit_amount < 0:
+                    print("Use withdraw [amount] to withdraw money.")
+                    return
+                else:
+                    player.deposit_cash(deposit_amount)
+                    return
+        else:
+            print("Visit a bank to deposit money.")
+            return
+
+    def do_withdraw(self, arg):
+        """Withdraws money from a bank account.
+        withdraw [amount/max/all]"""
+        if player.building is not None and player.building.type == "bank":
+            if arg == "max" or arg == "all":
+                player.withdraw_cash(player.cash)
+                return
+            else:
+                try:
+                    withdraw_amount = float(arg)
+                except:
+                    print("Use withdraw [amount] to withdraw.")
+                    return
+                if withdraw_amount > player.balance:
+                    print("You cannot withdraw more money than you have in the bank.")
+                    return
+                elif withdraw_amount == 0:
+                    print("You cannot withdraw nothing.")
+                    return
+                elif withdraw_amount < 0:
+                    print("Use deposit [amount] to deposit money.")
+                    return
+                else:
+                    player.withdraw_cash(withdraw_amount)
+                    return
+        else:
+            print("Visit a bank to withdraw money.")
+            return
+
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.
         fleet [ship name]"""

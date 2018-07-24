@@ -44,6 +44,13 @@ class Bank(Building):
         self.description = "Money is here."
         Building.__init__(self, location)
 
+    def enter_building(self):
+        global player
+        print("Cash: " + money(player.cash))
+        print("Bank balance: " + money(player.balance))
+        print("Debt: " + money(player.debt))
+        print("Total: " + money(player.cash + player.balance - player.debt))
+
 
 class Shipyard(Building):
     def __init__(self, location):

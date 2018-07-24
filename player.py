@@ -43,6 +43,24 @@ class Player(object):
         """Decrease the player's cash. Calls cash_increase()."""
         self.cash_increase(-decrease_by)
 
+    def balance_increase(self, increase_by):
+        """Increase the player's bank balance."""
+        self.balance = self.balance + increase_by
+
+    def balance_decrease(self, decrease_by):
+        """Decrease the player's bank balance. Calls balance_increase()."""
+        self.balance_increase(-decrease_by)
+
+    def deposit_cash(self, deposit_amount):
+        """Deposit money into the bank."""
+        self.cash_decrease(deposit_amount)
+        self.balance_increase(deposit_amount)
+
+    def withdraw_cash(self, withdraw_amount):
+        """Withdraw money from the bank."""
+        self.cash_increase(withdraw_amount)
+        self.balance_decrease(withdraw_amount)
+
     # TODO: add function to rename ship?
 
 
