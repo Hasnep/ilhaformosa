@@ -30,6 +30,9 @@ class Building(object):
         self.description = "%s is a %s in %s" % (self.name, self.type, self.location)
         self.wares = None
 
+    def enter_building(self):
+        pass
+
 
 class Palace(Building):
     def __init__(self, location):
