@@ -3,6 +3,10 @@ import datetime
 from ports import *
 
 
+def compound_interest(principal_amount, interest_rate, days_passed):
+    return principal_amount * (1 + interest_rate)**(days_passed/365)
+
+
 class Player(object):
     """Define the player class."""
     def __init__(self):
@@ -10,8 +14,8 @@ class Player(object):
         self.cash = 1000
         self.balance = 0
         self.debt = 0
-        self.bank_rate = 0.1  # bank interest rate per year
-        self.lend_rate = 0.2  # moneylender interest rate per year
+        self.bank_rate = 0.10  # bank interest rate per year
+        self.lend_rate = 0.20  # moneylender interest rate per year
 
         # time related variables
         self.day = 0
@@ -29,6 +33,7 @@ class Player(object):
 
     def day_increase(self, increase_by):
         """Increase the time by a certain number of days"""
+        self.balance = compound_interest(self.balance, self.bank_rate, increase_by)
         self.day = self.day + increase_by
 
     def leave_building(self):

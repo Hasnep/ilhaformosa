@@ -1,6 +1,5 @@
 from title import *
 import cmd, textwrap, pyreadline
-import math
 from player import *
 # from pdb import * # use set_trace() to debug
 

@@ -1,7 +1,7 @@
 """Defining the buildings classes"""
 from ships import *
 from options import *
-
+import math
 
 def money(amount):
     """A function to add the currency symbol to money."""
@@ -11,7 +11,12 @@ def money(amount):
         symbol = "£"
     elif currency_option == "dollar":
         symbol = "$"
-    return symbol + str(amount)
+    return symbol + str(int(math.floor(amount)))
+
+
+def percent(decimal):
+    """A function to convert a decimal to a percentage string."""
+    return str(100 * decimal) + "%"
 
 
 def building_namer(type, location):
@@ -48,6 +53,7 @@ class Bank(Building):
         Building.__init__(self, location)
 
     # def enter_building(self):
+    #     print("Interest rate: " + percent(player.bank_rate))
     #     print("Cash: " + money(player.cash))
     #     print("Bank balance: " + money(player.balance))
     #     print("Debt: " + money(player.debt))
