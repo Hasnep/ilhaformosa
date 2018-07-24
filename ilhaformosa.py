@@ -185,10 +185,9 @@ class IlhaFormosa(cmd.Cmd):
     def do_deposit(self, arg):
         """Deposits money into a bank account.
         deposit [amount/max/all]"""
-        if player.building is not None and player.building.type == "bank":
+        if player.building is not None and player.building.type.lower() == "bank":
             if arg == "max" or arg == "all":
-                player.deposit_cash(player.cash)
-                return
+                deposit_amount = player.cash
             else:
                 try:
                     deposit_amount = float(arg)
@@ -204,9 +203,9 @@ class IlhaFormosa(cmd.Cmd):
                 elif deposit_amount < 0:
                     print("Use withdraw [amount] to withdraw money.")
                     return
-                else:
-                    player.deposit_cash(deposit_amount)
-                    return
+            player.deposit_cash(deposit_amount)
+            print("You deposit %s into the bank." % money(deposit_amount))
+            return
         else:
             print("Visit a bank to deposit money.")
             return
@@ -214,10 +213,9 @@ class IlhaFormosa(cmd.Cmd):
     def do_withdraw(self, arg):
         """Withdraws money from a bank account.
         withdraw [amount/max/all]"""
-        if player.building is not None and player.building.type == "bank":
+        if player.building is not None and player.building.type.lower() == "bank":
             if arg == "max" or arg == "all":
-                player.withdraw_cash(player.cash)
-                return
+                withdraw_amount = player.balance
             else:
                 try:
                     withdraw_amount = float(arg)
@@ -233,9 +231,9 @@ class IlhaFormosa(cmd.Cmd):
                 elif withdraw_amount < 0:
                     print("Use deposit [amount] to deposit money.")
                     return
-                else:
-                    player.withdraw_cash(withdraw_amount)
-                    return
+            player.withdraw_cash(withdraw_amount)
+            print("You withdraw %s from the bank." % money(withdraw_amount))
+            return
         else:
             print("Visit a bank to withdraw money.")
             return

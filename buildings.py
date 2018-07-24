@@ -26,7 +26,7 @@ class Building(object):
 
     def __init__(self, location):
         self.location = location
-        self.name = building_namer(self.type, self.location)
+        self.name = building_namer(self.type.title(), self.location)
         self.description = "%s is a %s in %s" % (self.name, self.type, self.location)
         self.wares = None
 
@@ -36,14 +36,14 @@ class Building(object):
 
 class Palace(Building):
     def __init__(self, location):
-        self.type = "Palace"
+        self.type = "palace"
         self.description = "A super fancy building."
         Building.__init__(self, location)
 
 
 class Bank(Building):
     def __init__(self, location):
-        self.type = "Bank"
+        self.type = "bank"
         self.description = "Money is here."
         Building.__init__(self, location)
 
@@ -56,7 +56,7 @@ class Bank(Building):
 
 class Shipyard(Building):
     def __init__(self, location):
-        self.type = "Shipyard"
+        self.type = "shipyard"
         self.description = "Where you can buy ships."
         Building.__init__(self, location)
 
