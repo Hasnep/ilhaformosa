@@ -93,6 +93,8 @@ class IlhaFormosa(cmd.Cmd):
             print("There is no building called %s. Use look to see the buildings in this port." % building_type)
             return
 
+    # TODO: Add tab completion for the enter command.
+
     def do_look(self, line):
         """Look around the port you are currently in."""
         # TODO: Make this command the enter building command with no arguments.
@@ -170,8 +172,14 @@ class IlhaFormosa(cmd.Cmd):
                 print("You can't buy anything here.")
                 return
             else:
-                player.fleet.append(player.building.wares)
-                player.building.reset_wares()
+                if player.cash >= player.building.sale_price:
+                    player.cash_decrease(player.building.sale_price)
+                    player.fleet.append(player.building.wares)
+                    player.building.reset_wares()
+                    return
+                else:
+                    print("Not enough money.")
+                    return
 
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.

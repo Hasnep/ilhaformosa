@@ -35,6 +35,14 @@ class Player(object):
         """Make the player leave whatever building they are in."""
         self.building = None
 
+    def cash_increase(self, increase_by):
+        """Increase the player's cash."""
+        self.cash = self.cash + increase_by
+
+    def cash_decrease(self, decrease_by):
+        """Decrease the player's cash. Calls cash_increase()."""
+        self.cash_increase(-decrease_by)
+
     # TODO: add function to rename ship?
 
 
