@@ -5,9 +5,14 @@ from player import *
 # from pdb import * # use set_trace() to debug
 
 
-def parse_args(input_string):
+def split_args(input_string):
     input_string = input_string.lower()
     input_string = input_string.split()
+    return input_string
+
+def format_arg(input_string):
+    input_string = input_string.lower()
+    input_string = input_string.replace(" ", "")
     return input_string
 
 
@@ -17,7 +22,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_options(self, args):
         """View or modify an option or reset all options to default.
         options [option name] [new value/default] or options default to reset to defaults"""
-        args = parse_args(args)
+        args = split_args(args)
         if len(args) > 2:  # if too many options have been entered
             print("Use options [option name] [new value] to set an option.")
             return
@@ -73,25 +78,20 @@ class IlhaFormosa(cmd.Cmd):
     def do_enter(self, arg):
         """Enter a building.
         enter [building type]"""
-        arg = arg.split()
-        if len(arg) == 1:  # check if a valid name was entered
-            arg = arg[0]
-            if arg in all_building_types:  # check if argument is a building that exists
-                if arg in player.location.buildings:  # check if argument is in this port
-                    print("You enter %s" % player.location.buildings[arg].name)
-                    player.building = player.location.buildings[arg]
-                    player.location.buildings[arg].enter_building()
-                    return
-                else:
-                    print("There is no %s in %s." % (arg, player.location))
-                    return
+        building_type = format_arg(arg)
+        if building_type in all_building_types:  # check if argument is a building that exists
+            if building_type in player.location.buildings:  # check if argument is in this port
+                building_object = player.location.buildings[building_type]
+                print("You enter %s" % building_object.name)
+                player.building = building_object
+                building_object.enter_building()
+                return
             else:
-                print("There is no building called %s. Use look to see the buildings in this port." % arg)
+                print("There is no %s in %s." % (building_type, player.location))
                 return
         else:
-            print("Use enter [building type] to go into a building.")
+            print("There is no building called %s. Use look to see the buildings in this port." % building_type)
             return
-
 
     def do_look(self, line):
         """Look around the port you are currently in."""
@@ -108,12 +108,12 @@ class IlhaFormosa(cmd.Cmd):
             print("Use sail [destination] to sail to a port. You can see a list of ports using the 'map' command.")
             return
         else:
-            arg = arg.lower()  # make the argument lowercase
-            arg = arg.replace(" ", "")  # remove spaces from argument
-            if arg in world:  # check if port object exists as a key
+            destination_id = format_arg(arg)
+            if destination_id in world:  # check if port object exists as a key
+                destination_port = world[destination_id]
                 # TODO: Find out if it is more efficient to compare names or dicts.
-                if player.location.name == world[arg].name:  # check if the player is already at their destination
-                    print("You are already in %s." % player.location.name)
+                if player.location == destination_port:  # check if the player is already at their destination
+                    print("You are already in %s." % destination_port.name)
                     return
                 else:
                     player.leave_building()
@@ -142,21 +142,22 @@ class IlhaFormosa(cmd.Cmd):
         """Rename a ship.
         rename [old name]>[new name]"""
         args = args.split(">")
-        if len(args) != 2:
-            print("Use rename [old name]>[new name] to rename a ship.")
-            return
-        else:
+        if len(args) == 2:
             old_nickname = args[0]
             new_nickname = args[1]
-            if new_nickname == "":
+            if old_nickname == "" or new_nickname == "":
                 print("Use rename [old name]>[new name] to rename a ship.")
                 return
-            for k in player.fleet:
-                if k.nickname == old_nickname:
-                    k.nickname = new_nickname
-                    print("%s is now named %s" % (old_nickname, new_nickname))
-                    return
-            print("No ship with the name %s found." % old_nickname)
+            else:
+                for k in player.fleet:
+                    if k.nickname == old_nickname:
+                        k.nickname = new_nickname
+                        print("%s is now named %s" % (old_nickname, new_nickname))
+                        return
+                print("No ship with the name %s found." % old_nickname)
+        else:
+            print("Use rename [old name]>[new name] to rename a ship.")
+            return
 
     # TODO: Add tab completion for the rename command
 
@@ -181,8 +182,9 @@ class IlhaFormosa(cmd.Cmd):
             for k in player.fleet:
                 print_ship_information(k)
         else:
+            ship_nickname = arg
             for k in player.fleet:
-                if arg == k.nickname:
+                if ship_nickname == k.nickname:
                     print_ship_information(k)
                     return
             print("Use fleet [ship name] to get information about a ship.")
@@ -198,13 +200,13 @@ class IlhaFormosa(cmd.Cmd):
         """Wait for a specified number of days.
         wait [number of days]"""
         try:
-            args = float(args)
+            n_days = float(args)
         except:
             print("%s is not a valid number" % args)
             return
-        if args <= 7:
-            player.day_increase(args)
-            print("You wait around for %s days." % math.floor(args))
+        if n_days <= 7:
+            player.day_increase(n_days)
+            print("You wait around for %s days." % math.floor(n_days))
         else:
             print("You can only wait for one week at a time.")
 

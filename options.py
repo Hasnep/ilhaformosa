@@ -41,15 +41,12 @@ def set_option(key, value):
         print("%s is not a valid option name" % key)
 
 
-
 def reset_option(key):
-    """A function that resets an option back to default"""
+    """A function that resets an option back to default."""
     set_option(key, default_options[key])
 
+
 def reset_all_options():
-    """A function that resets all options back to default"""
+    """A function that resets all options back to default."""
     for key in options:
         reset_option(key)
-
-
-
