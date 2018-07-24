@@ -4,10 +4,17 @@ from randomwords import *
 
 def print_ship_information(ship):
     """A function that prints a ship's stats."""
-    print("Name: %s\nType: %s\nDescription: %s\nHealth: %s/%s\nCannons: %s/%s\nCargo: ?/%s\n" % (ship.nickname, ship.type, ship.description, ship.health, ship.maxHealth, ship.cannons, ship.maxCannons, ship.cargoCapacity))
+    print("Name: " + ship.nickname)
+    print("Type: " + ship.type)
+    print("Description: " + ship.description)
+    print("Health: " + str(ship.health) + "/" + str(ship.maxHealth))
+    print("Cannons: " + str(ship.cannons) + "/" + str(ship.maxCannons))
+    print("Cargo: " + "?/" + str(ship.cargoCapacity))
 
 
 class Ship(object):
+    maxHealth = 0
+
     def __init__(self):
         self.nickname = random_ship_name()
         self.health = self.maxHealth
