@@ -2,7 +2,7 @@ import os
 from pyfiglet import Figlet
 from math import floor
 
-version_number = "v0.1.082"
+version_number = "v0.1.083"
 
 # TODO: Make some sort of system for integrating ascii art with text.
 

@@ -1,5 +1,8 @@
 """Creates the functions that can read or change options."""
 
+# TODO: Add an option for decimal places/sig figs when using money
+# TODO: Add an option for using words billion/million when using money
+
 options_choices = {"currency": ["pound", "dollar"], "distance": ["modern", "ancient"], "date": ["ymd", "dmy"]}
 default_options = {"currency": "pound", "distance": "modern", "date": "ymd"}
 options = default_options

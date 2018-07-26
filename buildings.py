@@ -5,6 +5,7 @@ import math
 
 # TODO: Remove the buildings objects and allow all actions to happen from the port. The ports will have a string list. Maybe read from a matrix to make it easier to ensure the correct number of each building exists.
 
+
 def money(amount):
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
@@ -21,67 +22,69 @@ def percent(decimal):
     return str(100 * decimal) + "%"
 
 
-def building_namer(type, location):
-    """Helper function for generating building names."""
-    name = "%s %s" % (location, type)
-    name.title()
-    return name
+# def building_namer(type, location):
+#     """Helper function for generating building names."""
+#     name = "%s %s" % (location, type)
+#     name.title()
+#     return name
+#
+#
+# class Building(object):
+#     type = "Building"
+#
+#     def __init__(self, location):
+#         self.location = location
+#         self.name = building_namer(self.type.title(), self.location)
+#         self.description = "%s is a %s in %s" % (self.name, self.type, self.location)
+#         self.wares = None
+#
+#     def enter_building(self):
+#         pass
+#
+#
+# class Palace(Building):
+#     def __init__(self, location):
+#         self.type = "palace"
+#         self.description = "A super fancy building."
+#         Building.__init__(self, location)
+#
+#
+# class Bank(Building):
+#     def __init__(self, location):
+#         self.type = "bank"
+#         self.description = "Money is here."
+#         Building.__init__(self, location)
+#
+#     # def enter_building(self):
+#     #     print("Interest rate: " + percent(player.bank_rate))
+#     #     print("Cash: " + money(player.cash))
+#     #     print("Bank balance: " + money(player.balance))
+#     #     print("Debt: " + money(player.debt))
+#     #     print("Total: " + money(player.cash + player.balance - player.debt))
+#
+#
+# class Shipyard(Building):
+#     def __init__(self, location):
+#         self.type = "shipyard"
+#         self.description = "Where you can buy ships."
+#         Building.__init__(self, location)
+#
+#         self.sale_price = None
+#
+#     def reset_wares(self):
+#         ship_type_class = random.choice(all_ship_objects)
+#         self.wares = ship_type_class()
+#         self.sale_price = int(math.floor(self.wares.value * (1 + random.gauss(0, 0.1))))
+#
+#     def print_wares(self):
+#         print("Price: %s" % money(self.sale_price))
+#         print_ship_information(self.wares)
+#
+#     def enter_building(self):
+#         self.reset_wares()
+#         self.print_wares()
+#
+#
+# all_building_types = {"palace": Palace, "bank": Bank, "shipyard": Shipyard}
 
-
-class Building(object):
-    type = "Building"
-
-    def __init__(self, location):
-        self.location = location
-        self.name = building_namer(self.type.title(), self.location)
-        self.description = "%s is a %s in %s" % (self.name, self.type, self.location)
-        self.wares = None
-
-    def enter_building(self):
-        pass
-
-
-class Palace(Building):
-    def __init__(self, location):
-        self.type = "palace"
-        self.description = "A super fancy building."
-        Building.__init__(self, location)
-
-
-class Bank(Building):
-    def __init__(self, location):
-        self.type = "bank"
-        self.description = "Money is here."
-        Building.__init__(self, location)
-
-    # def enter_building(self):
-    #     print("Interest rate: " + percent(player.bank_rate))
-    #     print("Cash: " + money(player.cash))
-    #     print("Bank balance: " + money(player.balance))
-    #     print("Debt: " + money(player.debt))
-    #     print("Total: " + money(player.cash + player.balance - player.debt))
-
-
-class Shipyard(Building):
-    def __init__(self, location):
-        self.type = "shipyard"
-        self.description = "Where you can buy ships."
-        Building.__init__(self, location)
-
-        self.sale_price = None
-
-    def reset_wares(self):
-        ship_type_class = random.choice(all_ship_types)
-        self.wares = ship_type_class()
-        self.sale_price = int(math.floor(self.wares.value * (1 + random.gauss(0, 0.1))))
-
-    def print_wares(self):
-        print("Price: %s" % money(self.sale_price))
-        print_ship_information(self.wares)
-
-    def enter_building(self):
-        self.reset_wares()
-        self.print_wares()
-
-
-all_building_types = {"palace": Palace, "bank": Bank, "shipyard": Shipyard}
+all_building_types = ["palace", "bank", "shipyard"]

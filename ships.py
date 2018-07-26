@@ -24,7 +24,7 @@ class Ship(object):
 
 class Junk(Ship):
     def __init__(self):
-        self.type = "Junk"
+        self.type = "junk"
         self.description = "A standard ship."
         self.maxHealth = 50
         self.maxCannons = 10
@@ -36,7 +36,7 @@ class Junk(Ship):
 
 class Baochuan(Ship):
     def __init__(self):
-        self.type = "Baochuan"
+        self.type = "baochuan"
         self.description = "A cargo ship."
         self.maxHealth = 60
         self.maxCannons = 5
@@ -46,4 +46,5 @@ class Baochuan(Ship):
         Ship.__init__(self)
 
 
-all_ship_types = [Junk, Baochuan]
+all_ship_objects = [Junk, Baochuan]
+all_ship_types = ["junk", "baochuan"]

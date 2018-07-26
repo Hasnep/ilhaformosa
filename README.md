@@ -11,16 +11,14 @@ I'm using this project to teach myself object-oriented programming in Python, so
 ## Current commands
 
 * `help/? [command]`
-* `buy`
 * `calendar/cal [days]`
 * `cash`
-* `enter [building type]`
 * `fleet [ship name]`
 * `look`
 * `map`
 * `options [option/default] [new value/default]`
 * `quit`
-* `rename [old name]>[new name]`
+* `rename [old ship name]>[new ship name]`
 * `sail [destination]`
 * `wait [number of days]`
 

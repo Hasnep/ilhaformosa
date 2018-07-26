@@ -48,7 +48,7 @@ class IlhaFormosa(cmd.Cmd):
             print_all_options()
             return
 
-    def do_calendar(self, args, _player=player):
+    def do_calendar(self, args):
         """Find out what the date is or what the date will be in the future.
         calendar [days]"""
         if args == "":
@@ -76,39 +76,36 @@ class IlhaFormosa(cmd.Cmd):
             print(value.name)
         # TODO: Show an ascii map of the world.
 
-    def do_enter(self, arg):  # TODO: Remove this function and make each building a function of its own. e.g. shipyard buy or market sell tea 1000
-        """Enter a building.
-        enter [building type]"""
-        building_type = format_arg(arg)
-        if building_type in all_building_types:  # check if argument is a building that exists
-            if building_type in player.location.buildings:  # check if argument is in this port
-                building_object = player.location.buildings[building_type]
-                print("You enter %s" % building_object.name)
-                player.building = building_object
-                building_object.enter_building()
-                return
-            else:
-                print("There is no %s in %s." % (building_type, player.location))
-                return
-        else:
-            print("There is no building called %s. Use look to see the buildings in this port." % building_type)
-            return
-
-    # TODO: Add tab completion for the enter command.
+    # def do_enter(self, arg):  # TODO: Remove this function and make each building a function of its own. e.g. shipyard buy or market sell tea 1000
+    #     """Enter a building.
+    #     enter [building type]"""
+    #     building_type = format_arg(arg)
+    #     if building_type in all_building_types:  # check if argument is a building that exists
+    #         if building_type in player.location.buildings:  # check if argument is in this port
+    #             building_object = player.location.buildings[building_type]
+    #             print("You enter %s" % building_object.name)
+    #             player.building = building_object
+    #             building_object.enter_building()
+    #             return
+    #         else:
+    #             print("There is no %s in %s." % (building_type, player.location))
+    #             return
+    #     else:
+    #         print("There is no building called %s. Use look to see the buildings in this port." % building_type)
+    #         return
 
     def do_look(self, line):
         """Look around the port you are currently in."""
-        # TODO: Make this command the enter building command with no arguments.
         print("You are in %s" % player.location.name)
         print("There is a ")
-        for key, value in player.location.buildings.items():
-            print("%s called %s" % (value.type, value.name))
+        for k in player.location.buildings:
+            print("%s" % k)
 
     def do_sail(self, arg):
         """Set sail for a port.
         sail [destination]"""
         if arg == "":  # check if an argument was entered
-            print("Use sail [destination] to sail to a port. You can see a list of ports using the 'map' command.")
+            print("Use sail [destination] to sail to a port. You can see a list of ports using the map command.")
             return
         else:
             destination_id = format_arg(arg)
@@ -131,6 +128,7 @@ class IlhaFormosa(cmd.Cmd):
                     print("You land in %s." % to_name)
                     print("It is %s." % day_to_date(player.day))
                     player.set_location(arg)
+                    player.location.arrive()
                     return
             else:
                 print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
@@ -164,29 +162,85 @@ class IlhaFormosa(cmd.Cmd):
 
     # TODO: Add tab completion for the rename command
 
-    def do_buy(self, arg):  # TODO: Add the ability to buy anything.
-        """Buy something."""
-        if player.building is None:
-            print("Enter a building to buy something.")
+    # def do_buy(self, arg):  # TODO: Add the ability to buy anything.
+    #     """Buy something."""
+    #     if player.building is None:
+    #         print("Enter a building to buy something.")
+    #         return
+    #     else:
+    #         if player.building.wares is None:
+    #             print("You can't buy anything here.")
+    #             return
+    #         else:
+    #             if player.cash >= player.building.sale_price:
+    #                 player.cash_decrease(player.building.sale_price)
+    #                 player.fleet.append(player.building.wares)
+    #                 player.building.reset_wares()
+    #                 return
+    #             else:
+    #                 print("Not enough money.")
+    #                 return
+
+    def do_buy(self, arg):
+        product = format_arg(arg)
+        if product == "":
+            print("Use buy [item] to buy something.")
+            return
+        elif player.cash == 0:
+            print("You have no money on you.")
             return
         else:
-            if player.building.wares is None:
-                print("You can't buy anything here.")
-                return
-            else:
-                if player.cash >= player.building.sale_price:
-                    player.cash_decrease(player.building.sale_price)
-                    player.fleet.append(player.building.wares)
-                    player.building.reset_wares()
+            if product == "food":
+                price = random_price(5.5)
+                if player.cash > price:
+                    food = random.choice(["rice", "noodles", "soup"])
+                    player.cash_decrease(price)
+                    print("You spend %s on %s." % (money(price), food))
                     return
                 else:
-                    print("Not enough money.")
+                    print("You can't find any food you can afford.")
                     return
+            if product == "ship" or product == player.location.for_sale_ship.type:
+                if "shipyard" in player.location.buildings:
+                    if player.location.for_sale_ship is None:
+                        print("There are no ships for sale here.")
+                        return
+                    else:
+                        if player.cash >= player.location.for_sale_ship_price:
+                            print("You buy %s for %s" % (player.location.for_sale_ship.nickname, money(player.location.for_sale_ship_price)))
+                            player.cash_decrease(player.location.for_sale_ship_price)
+                            player.fleet.append(player.location.for_sale_ship)
+                            player.location.remove_for_sale_ship()
+                            return
+                        else:
+                            print("You do not have enough money to buy this ship.")
+                            return
+                else:
+                    print("There is no shipyard in %s." % player.location.name)
+                    return
+
+    # TODO: add a buy argument and make the buy command call this
+    # TODO: add a look argument to look at the ship
+    # TODO: add a repair argument with an all/max subcommand
+
+    def do_shipyard(self, line):
+        """Look at what's for sale in the shipyard"""
+        if "shipyard" in player.location.buildings:
+            if player.location.for_sale_ship is None:
+                print("There are no ships for sale here.")
+                return
+            else:
+                print("Price: " + money(player.location.for_sale_ship_price))
+                print_ship_information(player.location.for_sale_ship)
+                return
+        else:
+            print("There is no shipyard in %s." % player.location.name)
+            return
 
     def do_deposit(self, arg):
         """Deposits money into a bank account.
         deposit [amount/max/all]"""
-        if player.building is not None and player.building.type.lower() == "bank":
+        if "bank" in player.location.buildings:
             if arg == "max" or arg == "all":
                 deposit_amount = player.cash
             else:
@@ -208,13 +262,13 @@ class IlhaFormosa(cmd.Cmd):
             print("You deposit %s into the bank." % money(deposit_amount))
             return
         else:
-            print("Visit a bank to deposit money.")
+            print("%s does not have a bank." % player.location.name)
             return
 
-    def do_withdraw(self, arg):
+    def do_withdraw(self, arg):  # TODO: Combine the withdraw and deposit commands.
         """Withdraws money from a bank account.
         withdraw [amount/max/all]"""
-        if player.building is not None and player.building.type.lower() == "bank":
+        if "bank" in player.location.buildings:
             if arg == "max" or arg == "all":
                 withdraw_amount = player.balance
             else:
@@ -236,7 +290,7 @@ class IlhaFormosa(cmd.Cmd):
             print("You withdraw %s from the bank." % money(withdraw_amount))
             return
         else:
-            print("Visit a bank to withdraw money.")
+            print("%s does not have a bank." % player.location.name)
             return
 
     def do_fleet(self, arg):

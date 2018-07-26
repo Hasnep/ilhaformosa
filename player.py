@@ -71,6 +71,7 @@ class Player(object):
 
 
 player = Player()  # Initialise the player object
+player.location.arrive()
 
 start_date = datetime.date(1700, 1, 1)
 
