@@ -3,6 +3,7 @@ import cmd, textwrap, pyreadline
 from player import *
 # from pdb import * # use set_trace() to debug
 
+# TODO: Use the ctypes library to set the title, width and font of the window.
 
 def split_args(input_string):
     input_string = input_string.lower()
@@ -75,7 +76,7 @@ class IlhaFormosa(cmd.Cmd):
             print(value.name)
         # TODO: Show an ascii map of the world.
 
-    def do_enter(self, arg):
+    def do_enter(self, arg):  # TODO: Remove this function and make each building a function of its own. e.g. shipyard buy or market sell tea 1000
         """Enter a building.
         enter [building type]"""
         building_type = format_arg(arg)
@@ -163,7 +164,8 @@ class IlhaFormosa(cmd.Cmd):
 
     # TODO: Add tab completion for the rename command
 
-    def do_buy(self, arg):  # TODO: Add the ability to buy ships.
+    def do_buy(self, arg):  # TODO: Add the ability to buy anything.
+        """Buy something."""
         if player.building is None:
             print("Enter a building to buy something.")
             return

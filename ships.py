@@ -18,8 +18,8 @@ class Ship(object):
     def __init__(self):
         self.nickname = random_ship_name()
         self.health = self.maxHealth
-        self.cargo = []
-        self.cannons = 0
+        self.cargo = []  # TODO: Add cargo
+        self.cannons = 0  # TODO: Add cannons
 
 
 class Junk(Ship):

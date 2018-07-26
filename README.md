@@ -11,6 +11,7 @@ I'm using this project to teach myself object-oriented programming in Python, so
 ## Current commands
 
 * `help/? [command]`
+* `buy`
 * `calendar/cal [days]`
 * `cash`
 * `enter [building type]`

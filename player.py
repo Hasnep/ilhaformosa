@@ -6,6 +6,7 @@ from ports import *
 def compound_interest(principal_amount, interest_rate, days_passed):
     return principal_amount * (1 + interest_rate)**(days_passed/365)
 
+# TODO: Allow the player to select different starting ports.
 
 class Player(object):
     """Define the player class."""

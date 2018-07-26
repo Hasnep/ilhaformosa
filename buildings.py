@@ -3,6 +3,8 @@ from ships import *
 from options import *
 import math
 
+# TODO: Remove the buildings objects and allow all actions to happen from the port. The ports will have a string list. Maybe read from a matrix to make it easier to ensure the correct number of each building exists.
+
 def money(amount):
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
@@ -71,7 +73,7 @@ class Shipyard(Building):
     def reset_wares(self):
         ship_type_class = random.choice(all_ship_types)
         self.wares = ship_type_class()
-        self.sale_price = self.wares.value * (1 + random.gauss(0, 0.1))
+        self.sale_price = int(math.floor(self.wares.value * (1 + random.gauss(0, 0.1))))
 
     def print_wares(self):
         print("Price: %s" % money(self.sale_price))
