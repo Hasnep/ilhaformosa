@@ -213,7 +213,22 @@ class IlhaFormosa(cmd.Cmd):
             print("There is no shipyard in %s." % player.location.name)
             return
 
-    def do_deposit(self, arg):
+    def do_cash(self, line):
+        """Show your current cash, bank balance and debt."""
+        print("Cash: " + money(player.cash))
+        print("Bank balance: " + money(player.balance))
+        print("Debt: " + money(player.debt))
+        print("Total: " + money(player.cash + player.balance - player.debt))
+
+    def do_bank(self, line):
+        """Check your balance and interest at the bank."""
+        if "bank" in player.location.buildings:
+            print("Interest rate: " + percent(player.bank_rate))
+            self.do_cash(line)
+        else:
+            print("There is no bank in %s." % player.location.name)
+
+    def do_deposit(self, arg):  # TODO: Make this an an alias for bank deposit [amount]
         """Deposits money into a bank account.
         deposit [amount/max/all]"""
         arg = format_arg(arg)
@@ -286,20 +301,14 @@ class IlhaFormosa(cmd.Cmd):
                     return
             print("Use fleet [ship name] to get information about a ship.")
 
-    def do_cash(self, line):
-        """Show your current cash, bank balance and debt."""
-        print("Cash: " + money(player.cash))
-        print("Bank balance: " + money(player.balance))
-        print("Debt: " + money(player.debt))
-        print("Total: " + money(player.cash + player.balance - player.debt))
-
-    def do_wait(self, args):
+    def do_wait(self, arg):
         """Wait for a specified number of days.
         wait [number of days]"""
+        arg = format_arg(arg)
         try:
-            n_days = float(args)
+            n_days = float(arg)
         except:
-            print("%s is not a valid number" % args)
+            print("%s is not a valid number" % arg)
             return
         if n_days <= 7:
             player.day_increase(n_days)
