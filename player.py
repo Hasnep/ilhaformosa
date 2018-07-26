@@ -3,6 +3,11 @@ import datetime
 from ports import *
 
 
+def percent(decimal):
+    """A function to convert a decimal to a percentage string."""
+    return str(100 * decimal) + "%"
+
+
 def compound_interest(principal_amount, interest_rate, days_passed):
     return principal_amount * (1 + interest_rate)**(days_passed/365)
 

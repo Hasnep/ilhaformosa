@@ -11,6 +11,7 @@ I'm using this project to teach myself object-oriented programming in Python, so
 ## Current commands
 
 * `help/? [command]`
+* `buy [item]`
 * `calendar/cal [days]`
 * `cash`
 * `fleet [ship name]`
@@ -28,29 +29,29 @@ Use the `tab` key to autocomplete commands and arguments.
 
 In no particular order:
 * player
-    * name
-    * backstory
-    * attributes
+    * name ☐
+    * backstory ☐
+    * attributes ☐
 * combat
-    * cannons
-	* pirates
-	* powerups
-    * loot
+    * cannons ☐
+	* pirates ☐
+	* powerups ☐
+    * loot ☐
 * ships
-	* health
-	* repairs
-	* special attributes
+	* health ☐
+	* repairs ☐
+	* special attributes ☐
 * shops
-    * buy special items
-    * buy ships
-    * banks
-    * moneylenders
+    * buy special items ☐
+    * buy ships 🗹
+    * banks 🗹
+    * moneylenders ☐
 * missions
-	* dialogue
-	* discovering new ports
+	* dialogue ☐
+	* discovering new ports ☐
 * trade
-	* cargo
-	* economy
+	* cargo ☐
+	* economy ☐
 * visuals
-	* ASCII artwork
-	* animation
+	* ASCII artwork ☐
+	* animation ☐

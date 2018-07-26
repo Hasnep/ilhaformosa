@@ -1,7 +1,10 @@
 """Defining the ports classes"""
-from buildings import *
 from distances import *
+from ships import *
+from options import *
 import math
+
+all_building_types = ["palace", "bank", "shipyard", "market"]
 
 def random_price(base_price, sd=0.1):
     return int(math.floor(base_price * (1 + random.gauss(0, sd))))

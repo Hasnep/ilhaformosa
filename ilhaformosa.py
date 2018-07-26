@@ -5,6 +5,19 @@ from player import *
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
 
+
+
+
+def money(amount):
+    """A function to add the currency symbol to money."""
+    # TODO: Add commas to currency.
+    currency_option = options["currency"]
+    if currency_option == "pound":
+        symbol = "£"
+    elif currency_option == "dollar":
+        symbol = "$"
+    return symbol + str(int(math.floor(amount)))
+
 def split_args(input_string):
     input_string = input_string.lower()
     input_string = input_string.split()
@@ -76,24 +89,6 @@ class IlhaFormosa(cmd.Cmd):
             print(value.name)
         # TODO: Show an ascii map of the world.
 
-    # def do_enter(self, arg):  # TODO: Remove this function and make each building a function of its own. e.g. shipyard buy or market sell tea 1000
-    #     """Enter a building.
-    #     enter [building type]"""
-    #     building_type = format_arg(arg)
-    #     if building_type in all_building_types:  # check if argument is a building that exists
-    #         if building_type in player.location.buildings:  # check if argument is in this port
-    #             building_object = player.location.buildings[building_type]
-    #             print("You enter %s" % building_object.name)
-    #             player.building = building_object
-    #             building_object.enter_building()
-    #             return
-    #         else:
-    #             print("There is no %s in %s." % (building_type, player.location))
-    #             return
-    #     else:
-    #         print("There is no building called %s. Use look to see the buildings in this port." % building_type)
-    #         return
-
     def do_look(self, line):
         """Look around the port you are currently in."""
         print("You are in %s" % player.location.name)
@@ -162,25 +157,6 @@ class IlhaFormosa(cmd.Cmd):
 
     # TODO: Add tab completion for the rename command
 
-    # def do_buy(self, arg):  # TODO: Add the ability to buy anything.
-    #     """Buy something."""
-    #     if player.building is None:
-    #         print("Enter a building to buy something.")
-    #         return
-    #     else:
-    #         if player.building.wares is None:
-    #             print("You can't buy anything here.")
-    #             return
-    #         else:
-    #             if player.cash >= player.building.sale_price:
-    #                 player.cash_decrease(player.building.sale_price)
-    #                 player.fleet.append(player.building.wares)
-    #                 player.building.reset_wares()
-    #                 return
-    #             else:
-    #                 print("Not enough money.")
-    #                 return
-
     def do_buy(self, arg):
         product = format_arg(arg)
         if product == "":
@@ -240,6 +216,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_deposit(self, arg):
         """Deposits money into a bank account.
         deposit [amount/max/all]"""
+        arg = format_arg(arg)
         if "bank" in player.location.buildings:
             if arg == "max" or arg == "all":
                 deposit_amount = player.cash
@@ -262,7 +239,7 @@ class IlhaFormosa(cmd.Cmd):
             print("You deposit %s into the bank." % money(deposit_amount))
             return
         else:
-            print("%s does not have a bank." % player.location.name)
+            print("There is no bank in %s." % player.location.name)
             return
 
     def do_withdraw(self, arg):  # TODO: Combine the withdraw and deposit commands.
