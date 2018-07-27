@@ -1,11 +1,12 @@
 from title import *
 import cmd, textwrap, pyreadline
 from player import *
-# from pdb import * # use set_trace() to debug
+import math
+# from pdb import *  # use set_trace() to debug
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
 
-
+test = ""
 
 
 def money(amount):
@@ -17,6 +18,7 @@ def money(amount):
     elif currency_option == "dollar":
         symbol = "$"
     return symbol + str(int(math.floor(amount)))
+
 
 def split_args(input_string):
     input_string = input_string.lower()
@@ -220,15 +222,7 @@ class IlhaFormosa(cmd.Cmd):
         print("Debt: " + money(player.debt))
         print("Total: " + money(player.cash + player.balance - player.debt))
 
-    def do_bank(self, line):
-        """Check your balance and interest at the bank."""
-        if "bank" in player.location.buildings:
-            print("Interest rate: " + percent(player.bank_rate))
-            self.do_cash(line)
-        else:
-            print("There is no bank in %s." % player.location.name)
-
-    def do_deposit(self, arg):  # TODO: Make this an an alias for bank deposit [amount]
+    def do_deposit(self, arg):
         """Deposits money into a bank account.
         deposit [amount/max/all]"""
         arg = format_arg(arg)
@@ -257,7 +251,7 @@ class IlhaFormosa(cmd.Cmd):
             print("There is no bank in %s." % player.location.name)
             return
 
-    def do_withdraw(self, arg):  # TODO: Combine the withdraw and deposit commands.
+    def do_withdraw(self, arg):
         """Withdraws money from a bank account.
         withdraw [amount/max/all]"""
         if "bank" in player.location.buildings:
@@ -284,6 +278,34 @@ class IlhaFormosa(cmd.Cmd):
         else:
             print("%s does not have a bank." % player.location.name)
             return
+
+    def do_bank(self, args):
+        """Check your balance and deposit or withdraw cash.
+        bank [deposit] [amount]"""
+        if args == "":
+            if "bank" in player.location.buildings:
+                print("Interest rate: " + percent(player.bank_rate))
+                self.do_cash(line=None)
+                return
+            else:
+                print("There is no bank in %s." % player.location.name)
+                return
+        else:
+            args = split_args(args)
+            if len(args) != 2:
+                print("Use bank [deposit/withdraw] [amount] to withdraw or deposit money.")
+                return
+            else:
+                amount = args[1]
+                if args[0] == "deposit":
+                    self.do_deposit(amount)
+                    return
+                elif args[0] == "withdraw":
+                    self.do_withdraw(amount)
+                    return
+                else:
+                    print("Use bank [deposit/withdraw] [amount] to withdraw or deposit money.")
+                    return
 
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.
