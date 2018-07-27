@@ -6,9 +6,6 @@ import math
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
 
-test = ""
-
-
 def money(amount):
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
@@ -197,7 +194,7 @@ class IlhaFormosa(cmd.Cmd):
                     print("There is no shipyard in %s." % player.location.name)
                     return
 
-    # TODO: add a buy argument and make the buy command call this
+    # TODO: add a buy argument to the shipyard and make the buy command call this
     # TODO: add a look argument to look at the ship
     # TODO: add a repair argument with an all/max subcommand
 
@@ -324,12 +321,8 @@ class IlhaFormosa(cmd.Cmd):
             print("Use fleet [ship name] to get information about a ship.")
 
     def complete_fleet(self, text, line, begidx, endidx):  # TODO: Add a more complex regex matching algorithm to return all matches
-        """Tab completion for the sail command."""
+        """Tab completion for the fleet command."""
         return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
-
-    def do_debug(self, line):
-        global test
-        print(test)
 
     def do_wait(self, arg):
         """Wait for a specified number of days.
