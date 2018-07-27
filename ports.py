@@ -2,12 +2,23 @@
 from distances import *
 from ships import *
 from options import *
-import math
+import random
 
 all_building_types = ["palace", "bank", "shipyard", "market"]
 
-def random_price(base_price, sd=0.1):
-    return int(math.floor(base_price * (1 + random.gauss(0, sd))))
+
+def round_to(x, base=1):
+    return int(base * round(float(x) / base))
+
+
+def random_price(base_price, base=1, sd=None):
+    if sd is None:
+        sd = base_price/10
+    price = None
+    while price is None or abs(price - base_price) > 3 * sd or price < base:
+        price = random.gauss(base_price, sd)
+    return int(round_to(price, base=base))
+
 
 class Port(object):
     def __init__(self, port_name):

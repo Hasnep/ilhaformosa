@@ -168,7 +168,7 @@ class IlhaFormosa(cmd.Cmd):
             return
         else:
             if product == "food":
-                price = random_price(5.5)
+                price = random_price(5.5, sd=1)
                 if player.cash > price:
                     food = random.choice(["rice", "noodles", "soup"])
                     player.cash_decrease(price)
