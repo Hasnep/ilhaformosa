@@ -37,7 +37,7 @@ class Port(object):
         if "shipyard" in self.buildings:
             ship_type_class = random.choice(all_ship_objects)
             self.for_sale_ship = ship_type_class()
-            self.for_sale_ship_price = random_price(self.for_sale_ship.value)
+            self.for_sale_ship_price = random_price(self.for_sale_ship.value, base=100)
 
     def remove_for_sale_ship(self):
         self.for_sale_ship = None

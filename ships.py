@@ -30,7 +30,7 @@ class Junk(Ship):
         self.maxCannons = 10
         self.cargoCapacity = 30
         self.topSpeed = 8
-        self.value = 300
+        self.value = 3000
         Ship.__init__(self)
 
 
@@ -42,7 +42,7 @@ class Baochuan(Ship):
         self.maxCannons = 5
         self.cargoCapacity = 100
         self.topSpeed = 7
-        self.value = 400
+        self.value = 4500
         Ship.__init__(self)
 
 

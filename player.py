@@ -17,7 +17,7 @@ class Player(object):
     """Define the player class."""
     def __init__(self):
         # money related variables
-        self.cash = 1000
+        self.cash = 10000
         self.balance = 0
         self.debt = 0
         self.bank_rate = 0.10  # bank interest rate per year
