@@ -316,12 +316,20 @@ class IlhaFormosa(cmd.Cmd):
             for k in player.fleet:
                 print_ship_information(k)
         else:
-            ship_nickname = arg
+            ship_nickname = format_arg(arg)
             for k in player.fleet:
-                if ship_nickname == k.nickname:
+                if ship_nickname == format_arg(k.nickname):
                     print_ship_information(k)
                     return
             print("Use fleet [ship name] to get information about a ship.")
+
+    def complete_fleet(self, text, line, begidx, endidx):  # TODO: Add a more complex regex matching algorithm to return all matches
+        """Tab completion for the sail command."""
+        return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
+
+    def do_debug(self, line):
+        global test
+        print(test)
 
     def do_wait(self, arg):
         """Wait for a specified number of days.
