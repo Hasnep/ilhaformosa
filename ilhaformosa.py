@@ -145,16 +145,18 @@ class IlhaFormosa(cmd.Cmd):
                 return
             else:
                 for k in player.fleet:
-                    if k.nickname == old_nickname:
+                    if format_arg(k.nickname) == format_arg(old_nickname):
+                        print("%s is now named %s" % (k.nickname, new_nickname))
                         k.nickname = new_nickname
-                        print("%s is now named %s" % (old_nickname, new_nickname))
                         return
                 print("No ship with the name %s found." % old_nickname)
         else:
             print("Use rename [old name]>[new name] to rename a ship.")
             return
 
-    # TODO: Add tab completion for the rename command
+    def complete_rename(self, text, line, begidx, endidx):  # TODO: Add a more complex regex matching algorithm to return all matches
+        """Tab completion for the rename command."""
+        return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
 
     def do_buy(self, arg):
         product = format_arg(arg)
