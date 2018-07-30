@@ -1,10 +1,11 @@
 import os
 from pyfiglet import Figlet
-from math import floor
+import math
 
-version_number = "v0.1.091"
+version_number = "v0.1.092"
 
 # TODO: Make some sort of system for integrating ascii art with text.
+
 
 def title_print():
     """A function that prints the title in a fancy way."""
@@ -14,7 +15,7 @@ def title_print():
         title_width = len(title.split("\n", 1)[0])
         try:
             terminal_width = os.get_terminal_size()[0]
-            n_blanks = floor((terminal_width - title_width) / 2)
+            n_blanks = math.floor((terminal_width - title_width) / 2)
             blanks = " " * n_blanks
             title = blanks + title
             title = title.replace("\n", "\n" + blanks)

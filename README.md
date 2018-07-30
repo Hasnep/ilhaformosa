@@ -33,9 +33,10 @@ In no particular order:
     * name ☐
     * backstory ☐
     * attributes ☐
+    * alignments ☐
 * combat
     * cannons ☐
-	* pirates ☐
+	* pirate encounters ☐
 	* powerups ☐
     * loot ☐
 * ships

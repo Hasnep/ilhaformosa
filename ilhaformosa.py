@@ -14,6 +14,8 @@ def money(amount):
         symbol = "£"
     elif currency_option == "dollar":
         symbol = "$"
+    else:
+        symbol = "?"
     return symbol + str(int(math.floor(amount)))
 
 
@@ -69,13 +71,14 @@ class IlhaFormosa(cmd.Cmd):
         else:
             try:
                 args = float(args)
-            except:
+            except ValueError:
                 print("Use calendar [days] to find out what the date will be in the future.")
                 return
-        if args <= 365*10:
-            print("In %s days it will be %s." % (math.floor(args), day_to_date(_player.day + args)))
-        else:
-            print("Your calendar only has pages for the next 10 years.")
+            else:
+                if args <= 365*10:
+                    print("In %s days it will be %s." % (math.floor(args), day_to_date(_player.day + args)))
+                else:
+                    print("Your calendar only has pages for the next 10 years.")
 
     do_cal = do_calendar
 
@@ -225,24 +228,25 @@ class IlhaFormosa(cmd.Cmd):
         """Deposits money into a bank account.
         deposit [amount/max/all]"""
         arg = format_arg(arg)
-        if "bank" in player.location.buildings:
+        if "bank" in player.location.buildings:  # if there is a bank here
             if arg == "max" or arg == "all":
                 deposit_amount = player.cash
-            else:
+            else:  # deposit amount is not "max/all"
                 try:
-                    deposit_amount = float(arg)
-                except:
+                    deposit_amount = int(math.floor(float(arg)))
+                except ValueError:
                     print("Use deposit [amount] to deposit.")
                     return
-                if deposit_amount > player.cash:
-                    print("You cannot deposit more money than you have on you.")
-                    return
-                elif deposit_amount == 0:
-                    print("You cannot deposit nothing.")
-                    return
-                elif deposit_amount < 0:
-                    print("Use withdraw [amount] to withdraw money.")
-                    return
+                else:  # successfully converted deposit amount to float
+                    if deposit_amount > player.cash:
+                        print("You cannot deposit more money than you have on you.")
+                        return
+                    elif deposit_amount == 0:
+                        print("You cannot deposit nothing.")
+                        return
+                    elif deposit_amount < 0:
+                        print("Use withdraw [amount] to withdraw money.")
+                        return
             player.deposit_cash(deposit_amount)
             print("You deposit %s into the bank." % money(deposit_amount))
             return
@@ -256,21 +260,22 @@ class IlhaFormosa(cmd.Cmd):
         if "bank" in player.location.buildings:
             if arg == "max" or arg == "all":
                 withdraw_amount = player.balance
-            else:
+            else:  # withdraw amount is not "max/all"
                 try:
-                    withdraw_amount = float(arg)
-                except:
+                    withdraw_amount = int(math.floor(float(arg)))
+                except ValueError:
                     print("Use withdraw [amount] to withdraw.")
                     return
-                if withdraw_amount > player.balance:
-                    print("You cannot withdraw more money than you have in the bank.")
-                    return
-                elif withdraw_amount == 0:
-                    print("You cannot withdraw nothing.")
-                    return
-                elif withdraw_amount < 0:
-                    print("Use deposit [amount] to deposit money.")
-                    return
+                else:
+                    if withdraw_amount > player.balance:
+                        print("You cannot withdraw more money than you have in the bank.")
+                        return
+                    elif withdraw_amount == 0:
+                        print("You cannot withdraw nothing.")
+                        return
+                    elif withdraw_amount < 0:
+                        print("Use deposit [amount] to deposit money.")
+                        return
             player.withdraw_cash(withdraw_amount)
             print("You withdraw %s from the bank." % money(withdraw_amount))
             return
@@ -332,14 +337,17 @@ class IlhaFormosa(cmd.Cmd):
         arg = format_arg(arg)
         try:
             n_days = float(arg)
-        except:
+        except ValueError:
             print("%s is not a valid number" % arg)
             return
-        if n_days <= 7:
-            player.day_increase(n_days)
-            print("You wait around for %s days." % math.floor(n_days))
         else:
-            print("You can only wait for one week at a time.")
+            if n_days <= 7:
+                player.day_increase(n_days)
+                print("You wait around for %s days." % math.floor(n_days))
+                return
+            else:
+                print("You can only wait for one week at a time.")
+                return
 
     def do_credits(self, line):
         """Print the credits for the game."""

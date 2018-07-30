@@ -28,7 +28,7 @@ class Port(object):
         self.discovered = False
         self.distances = ports_distances[self.name]
         self.buildings = []
-        for k in all_building_types:
+        for k in all_building_types:  # TODO: Make the building selection process semi-random using a matrix
             self.buildings.append(k)
         self.for_sale_ship = None
         self.for_sale_ship_price = 0
