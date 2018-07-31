@@ -1,10 +1,13 @@
 from title import *
-import cmd, textwrap, pyreadline
+import cmd
+# import textwrap
+import pyreadline  # used for tab completion
 from player import *
 import math
 # from pdb import *  # use set_trace() to debug
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
+
 
 def money(amount):
     """A function to add the currency symbol to money."""
@@ -314,7 +317,6 @@ class IlhaFormosa(cmd.Cmd):
     def do_fleet(self, arg):
         """Get information about a single ship or your whole fleet.
         fleet [ship name]"""
-        # TODO: Properly test this command with a large fleet.
         if arg == "":
             print("Your fleet has %s ship(s)" % len(player.fleet))
             for k in player.fleet:
@@ -358,10 +360,15 @@ class IlhaFormosa(cmd.Cmd):
         """Quit the game."""
         return True
 
-    # TODO: Add unknown command support.
-    # def default(self, arg):
-    # print("%s is not a known command. Type ? for a list of commands." % arg.lower())
+    def preloop(self):
+        title_print(" ")
+
+    def postloop(self):
+        print("Thank you for playing Ilha Formosa!")
+
+    def default(self, arg):
+        print("%s is not a known command. Type ? for a list of commands." % arg.lower())
 
 
 IlhaFormosa().cmdloop()
-print("Thank you for playing Ilha Formosa!")
+

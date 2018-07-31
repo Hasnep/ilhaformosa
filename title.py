@@ -1,4 +1,4 @@
-version_number = "v0.1.093"
+version_number = "v0.1.094"
 
 
 def title_print(ruler="~"):
@@ -6,5 +6,3 @@ def title_print(ruler="~"):
     title_width = max(len(line) for line in title.split("\n")) - 1
     title = ruler * title_width + "\n\n" + title + "\n\n" + ruler * (title_width - len(version_number) - 2) + " " + version_number + " " + ruler
     print(title)
-
-title_print(" ")

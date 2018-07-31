@@ -13,6 +13,7 @@ def compound_interest(principal_amount, interest_rate, days_passed):
 
 # TODO: Allow the player to select different starting ports.
 
+
 class Player(object):
     """Define the player class."""
     def __init__(self):
