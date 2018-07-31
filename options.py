@@ -2,14 +2,15 @@
 
 # TODO: Add an option for decimal places/sig figs when using money
 # TODO: Add an option for using words billion/million when using money
+# TODO: Change options into a class
 
-options_choices = {"currency": ["pound", "dollar"], "distance": ["modern", "ancient"], "date": ["ymd", "dmy"]}
-default_options = {"currency": "pound", "distance": "modern", "date": "ymd"}
+options_choices = {"currency": ["pound", "dollar"], "distance": ["modern", "ancient"], "weight": ["kg"], "date": ["ymd", "dmy"]}
+default_options = {"currency": "pound", "distance": "modern", "weight": "kg", "date": "ymd"}
 options = default_options
 
 
 def print_options_choices(option_name):
-    """A function that prints the list of all avavilable choices for one option."""
+    """A function that prints the list of all available choices for one option."""
     output = "choices: [ "
     for k in options_choices[option_name]:
         output = output + k + " "

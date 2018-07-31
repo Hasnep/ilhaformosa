@@ -7,18 +7,17 @@ def print_ship_information(ship):
     print("Name: " + ship.nickname)
     print("Type: " + ship.type)
     print("Description: " + ship.description)
-    print("Health: " + str(ship.health) + "/" + str(ship.maxHealth))
-    print("Cannons: " + str(ship.cannons) + "/" + str(ship.maxCannons))
-    print("Cargo: " + "?/" + str(ship.cargoCapacity))
+    print("Health: " + str(ship.health) + "/" + str(ship.max_health))
+    print("Cannons: " + str(ship.cannons) + "/" + str(ship.max_cannons))
+    print("Max cargo: " + str(ship.cargo_capacity))
 
 
 class Ship(object):
-    maxHealth = 0
+    max_health = 0
 
     def __init__(self):
         self.nickname = random_ship_name()
-        self.health = self.maxHealth
-        self.cargo = []  # TODO: Add cargo
+        self.health = self.max_health
         self.cannons = 0  # TODO: Add cannons
 
 
@@ -26,10 +25,10 @@ class Junk(Ship):
     def __init__(self):
         self.type = "junk"
         self.description = "A standard ship."
-        self.maxHealth = 50
-        self.maxCannons = 10
-        self.cargoCapacity = 30
-        self.topSpeed = 8
+        self.max_health = 50
+        self.max_cannons = 10
+        self.cargo_capacity = 30
+        self.top_speed = 8
         self.value = 3000
         Ship.__init__(self)
 
@@ -38,10 +37,10 @@ class Baochuan(Ship):
     def __init__(self):
         self.type = "baochuan"
         self.description = "A cargo ship."
-        self.maxHealth = 60
-        self.maxCannons = 5
-        self.cargoCapacity = 100
-        self.topSpeed = 7
+        self.max_health = 60
+        self.max_cannons = 5
+        self.cargo_capacity = 100
+        self.top_speed = 7
         self.value = 4500
         Ship.__init__(self)
 

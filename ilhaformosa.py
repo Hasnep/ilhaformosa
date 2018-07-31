@@ -116,23 +116,32 @@ class IlhaFormosa(cmd.Cmd):
                     print("You are already in %s." % destination_port.name)
                     return
                 else:
-                    player.leave_building()
-                    from_name = player.location.name
-                    to_name = world[arg].name
-                    journey_distance = ports_distances[from_name][to_name]
-                    journey_speed = 8  # TODO: Change this to top speed.
-                    journey_time = (journey_distance / 8)/24
-                    player.day_increase(journey_time)
-                    # TODO: Add a sailing animation.
-                    print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
-                    print("You land in %s." % to_name)
-                    print("It is %s." % day_to_date(player.day))
-                    player.set_location(arg)
-                    player.location.arrive()
-                    return
+                    if player.get_cargo_weight() > player.get_combined_cargo_capacity():
+                        print("Your ships are too full to sail. You have %s but your ships' capacity is %s. Sell some cargo or buy a ship to continue." % (weight(player.get_cargo_weight()), weight(player.get_combined_cargo_capacity())))
+                    else:
+                        player.leave_building()
+                        from_name = player.location.name
+                        to_name = world[arg].name
+                        journey_distance = ports_distances[from_name][to_name]
+                        journey_speed = 8  # TODO: Change this to top speed.
+                        journey_time = (journey_distance / 8)/24
+                        player.day_increase(journey_time)
+                        # TODO: Add a sailing animation.
+                        print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
+                        print("You land in %s." % to_name)
+                        print("It is %s." % day_to_date(player.day))
+                        player.set_location(arg)
+                        player.location.arrive()
+                        return
             else:
                 print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
                 return
+
+    def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo managment?
+        """Show the fleet's current cargo."""
+        for cargo_type, quantity in player.cargo.items():
+            print(cargo_type + ": " + weight(quantity))
+        print("total: " + weight(player.get_cargo_weight()) + "/" + weight(player.get_combined_cargo_capacity()))
 
     def complete_sail(self, text, line, begidx, endidx):
         """Tab completion for the sail command."""
@@ -165,6 +174,8 @@ class IlhaFormosa(cmd.Cmd):
         return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
 
     def do_buy(self, arg):
+        """Buy something from a shop.
+        buy [item]"""
         product = format_arg(arg)
         if product == "":
             print("Use buy [item] to buy something.")

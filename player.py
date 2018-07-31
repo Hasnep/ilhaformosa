@@ -3,6 +3,10 @@ import datetime
 from ports import *
 
 
+def weight(weight_integer):
+    return str(weight_integer) + options["weight"]
+
+
 def percent(decimal):
     """A function to convert a decimal to a percentage string."""
     return str(100 * decimal) + "%"
@@ -33,6 +37,20 @@ class Player(object):
 
         # fleet related variables
         self.fleet = [Junk()]
+        self.cargo = {"cocoa": 10}
+
+    def get_cargo_weight(self):
+        cargo_weight = 0
+        for key, value in self.cargo.items():
+            cargo_weight += value
+        return cargo_weight
+
+    def set_cargo_quantity(self, cargo_type, quantity):
+        if self.get_cargo_weight() + quantity > self.get_combined_cargo_capacity():
+            print("You can't increase this much.")
+        else:
+            self.cargo[cargo_type] = quantity
+        return
 
     def set_location(self, location_string):
         """Sets the location of the player to the string."""
@@ -74,6 +92,12 @@ class Player(object):
         self.balance_decrease(withdraw_amount)
 
     # TODO: add function to rename ship?
+
+    def get_combined_cargo_capacity(self):
+        combined_cargo_capacity = 0
+        for ship in self.fleet:
+            combined_cargo_capacity += ship.cargo_capacity
+        return combined_cargo_capacity
 
 
 player = Player()  # Initialise the player object
