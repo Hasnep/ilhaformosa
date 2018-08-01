@@ -12,7 +12,7 @@ import math
 def money(amount):
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
-    currency_option = options["currency"]
+    currency_option = options.get_option("currency")
     if currency_option == "pound":
         symbol = "£"
     elif currency_option == "dollar":

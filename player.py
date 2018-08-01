@@ -4,7 +4,7 @@ from ports import *
 
 
 def weight(weight_integer):
-    return str(weight_integer) + options["weight"]
+    return str(weight_integer) + options.get_option("weight")
 
 
 def percent(decimal):
@@ -109,8 +109,8 @@ start_date = datetime.date(1700, 1, 1)
 def day_to_date(x):
     """Convert the number of days to a readable string."""
     x = start_date + datetime.timedelta(days=x)
-    if options["date"] == "ymd":
+    if options.get_option("date") == "ymd":
         x = x.strftime("%Y-%m-%d")
-    elif options["date"] == "dmy":
+    elif options.get_option("date") == "dmy":
         x = x.strftime("%d/%m/%Y")
     return x
