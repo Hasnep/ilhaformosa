@@ -24,8 +24,10 @@ def money(amount):
 
 def split_args(input_string):
     input_string = input_string.lower()
-    input_string = input_string.split()
-    return input_string
+    output_list = input_string.split()
+    if input_string[-1] == " ":
+        output_list.append("")
+    return output_list
 
 
 def format_arg(input_string):
@@ -65,7 +67,17 @@ class IlhaFormosa(cmd.Cmd):
             options.print_all_options()
             return
 
-    # TODO: Add tab completion for options command.
+    def complete_options(self, text, line, begidx, endidx):
+        args = split_args(line)
+        if len(args) == 1:
+            return [option_name for option_name in options.choices]
+        elif len(args) == 2:
+            return [option_name for option_name in options.choices if option_name.startswith(text)]
+        elif len(args) == 3 and args[1] in options.choices:
+            option_name = args[1]
+            return [option_choice for option_choice in options.choices[option_name] if option_choice.startswith(text)]
+        else:
+            return ""
 
     def do_calendar(self, args):
         """Find out what the date is or what the date will be in the future.
