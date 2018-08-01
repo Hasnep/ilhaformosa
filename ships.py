@@ -1,4 +1,4 @@
-"""Defining the ships classes"""
+"""Define the ships classes."""
 from randomwords import *
 
 
@@ -46,4 +46,4 @@ class Baochuan(Ship):
 
 
 all_ship_objects = [Junk, Baochuan]
-all_ship_types = ["junk", "baochuan"]
+all_ship_types = ["junk", "baochuan"]  # TODO: Figure out how to get default values for a class in a loop

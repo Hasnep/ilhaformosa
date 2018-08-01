@@ -68,6 +68,7 @@ class IlhaFormosa(cmd.Cmd):
             return
 
     def complete_options(self, text, line, begidx, endidx):
+        """Tab completion for the options command."""
         args = split_args(line)
         if len(args) == 1:
             return [option_name for option_name in options.choices]
@@ -142,8 +143,7 @@ class IlhaFormosa(cmd.Cmd):
                         player.day_increase(journey_time)
                         # TODO: Add a sailing animation.
                         print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
-                        print("You land in %s." % to_name)
-                        print("It is %s." % day_to_date(player.day))
+                        print("You land in %s on %s." % (to_name, day_to_date(player.day)))
                         player.set_location(arg)
                         player.location.arrive()
                         return
@@ -151,7 +151,7 @@ class IlhaFormosa(cmd.Cmd):
                 print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
                 return
 
-    def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo managment?
+    def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo management?
         """Show the fleet's current cargo."""
         for cargo_type, quantity in player.cargo.items():
             print(cargo_type + ": " + weight(quantity))
@@ -159,8 +159,7 @@ class IlhaFormosa(cmd.Cmd):
 
     def complete_sail(self, text, line, begidx, endidx):
         """Tab completion for the sail command."""
-        # TODO: Remove the current port from the tab completion list.
-        return [key for key, value in world.items() if key.startswith(text)]
+        return [port for port in world if (port.startswith(text) and port != player.location.id)]
 
     def do_rename(self, args):
         """Rename a ship.
