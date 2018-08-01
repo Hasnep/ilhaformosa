@@ -372,7 +372,7 @@ class IlhaFormosa(cmd.Cmd):
         return True
 
     def preloop(self):
-        title_print(" ")
+        title_print("=")
 
     def postloop(self):
         print("Thank you for playing Ilha Formosa!")
