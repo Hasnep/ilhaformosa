@@ -48,22 +48,24 @@ class IlhaFormosa(cmd.Cmd):
             option_name = args[0]
             option_value = args[1]
             if option_value == "default":  # if the value specified was "default"
-                reset_option(option_name)
+                options.reset_option(option_name)
                 return
             else:
-                set_option(option_name, option_value)  # set the option to the specified value
+                options.set_option(option_name, option_value)  # set the option to the specified value
                 return
         elif len(args) == 1:  # if only an option was specified
             option_name = args[0]
             if option_name == "default":  # if resetting all options to default
-                reset_all_options()
+                options.reset_all_options()
                 return
             else:  # if only an option name was specified
-                print_option(option_name)
+                options.print_option(option_name)
                 return
         elif len(args) == 0:  # if no option name was specified
-            print_all_options()
+            options.print_all_options()
             return
+
+    # TODO: Add tab completion for options command.
 
     def do_calendar(self, args):
         """Find out what the date is or what the date will be in the future.
