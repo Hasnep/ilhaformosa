@@ -1,5 +1,3 @@
-"""Creates the functions that can read or change options."""
-
 # TODO: Add an option for decimal places/sig figs when using money
 # TODO: Add an option for using words billion/million when using money
 

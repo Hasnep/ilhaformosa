@@ -125,11 +125,11 @@ class IlhaFormosa(cmd.Cmd):
                         journey_distance = ports_distances[from_name][to_name]
                         journey_speed = 8  # TODO: Change this to top speed.
                         journey_time = (journey_distance / 8)/24
-                        player.day_increase(journey_time)
+                        player.day += journey_time
                         # TODO: Add a sailing animation.
                         print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
                         print("You land in %s on %s." % (to_name, day_to_date(player.day)))
-                        player.set_location(arg)
+                        player.location = arg
                         player.location.arrive()
                         return
             else:
@@ -186,7 +186,7 @@ class IlhaFormosa(cmd.Cmd):
                 price = random_price(5.5, sd=1)
                 if player.cash > price:
                     food = random.choice(["rice", "noodles", "soup"])
-                    player.cash_decrease(price)
+                    player.cash -= price
                     print("You spend %s on %s." % (money(price), food))
                     return
                 else:
@@ -234,7 +234,7 @@ class IlhaFormosa(cmd.Cmd):
         print("Cash: " + money(player.cash))
         print("Bank balance: " + money(player.balance))
         print("Debt: " + money(player.debt))
-        print("Total: " + money(player.cash + player.balance - player.debt))
+        print("Total: " + money(player.total_money))
 
     def do_deposit(self, arg):
         """Deposits money into a bank account.
