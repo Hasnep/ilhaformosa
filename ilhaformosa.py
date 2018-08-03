@@ -8,20 +8,6 @@ import math
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
 
-
-def money(amount):
-    """A function to add the currency symbol to money."""
-    # TODO: Add commas to currency.
-    currency_option = options.get_option("currency")
-    if currency_option == "pound":
-        symbol = "£"
-    elif currency_option == "dollar":
-        symbol = "$"
-    else:
-        symbol = "?"
-    return symbol + str(int(math.floor(amount)))
-
-
 def split_args(input_string):
     input_string = input_string.lower()
     output_list = input_string.split()
@@ -134,7 +120,6 @@ class IlhaFormosa(cmd.Cmd):
                     if player.get_cargo_weight() > player.get_combined_cargo_capacity():
                         print("Your ships are too full to sail. You have %s but your ships' capacity is %s. Sell some cargo or buy a ship to continue." % (weight(player.get_cargo_weight()), weight(player.get_combined_cargo_capacity())))
                     else:
-                        player.leave_building()
                         from_name = player.location.name
                         to_name = world[arg].name
                         journey_distance = ports_distances[from_name][to_name]
@@ -264,18 +249,7 @@ class IlhaFormosa(cmd.Cmd):
                 except ValueError:
                     print("Use deposit [amount] to deposit money.")
                     return
-                else:  # successfully converted deposit amount to float
-                    if deposit_amount > player.cash:
-                        print("You cannot deposit more money than you have on you.")
-                        return
-                    elif deposit_amount == 0:
-                        print("You cannot deposit nothing.")
-                        return
-                    elif deposit_amount < 0:
-                        print("Use withdraw [amount] to withdraw money.")
-                        return
-            player.deposit_cash(deposit_amount)
-            print("You deposit %s into the bank." % money(deposit_amount))
+            player.move_cash(deposit_amount, "deposit")
             return
         else:
             print("There is no bank in %s." % player.location.name)
@@ -284,30 +258,20 @@ class IlhaFormosa(cmd.Cmd):
     def do_withdraw(self, arg):
         """Withdraws money from a bank account.
         withdraw [amount/max/all]"""
-        if "bank" in player.location.buildings:
+        arg = format_arg(arg)
+        if "bank" in player.location.buildings:  # if there is a bank here
             if arg == "max" or arg == "all":
                 withdraw_amount = player.balance
             else:  # withdraw amount is not "max/all"
                 try:
                     withdraw_amount = int(math.floor(float(arg)))
                 except ValueError:
-                    print("Use withdraw [amount] to withdraw money.")
+                    print("Use withdraw [amount] to deposit money.")
                     return
-                else:
-                    if withdraw_amount > player.balance:
-                        print("You cannot withdraw more money than you have in the bank.")
-                        return
-                    elif withdraw_amount == 0:
-                        print("You cannot withdraw nothing.")
-                        return
-                    elif withdraw_amount < 0:
-                        print("Use deposit [amount] to deposit money.")
-                        return
-            player.withdraw_cash(withdraw_amount)
-            print("You withdraw %s from the bank." % money(withdraw_amount))
+            player.move_cash(withdraw_amount, "withdraw")
             return
         else:
-            print("%s does not have a bank." % player.location.name)
+            print("There is no bank in %s." % player.location.name)
             return
 
     def do_bank(self, args):
@@ -344,25 +308,14 @@ class IlhaFormosa(cmd.Cmd):
         arg = format_arg(arg)
         if "moneylender" in player.location.buildings:  # if there is a moneylender here
             if arg == "max" or arg == "all":
-                borrow_amount = player.get_borrow_limit() - player.debt
+                borrow_amount = player.max_debt - player.debt
             else:  # borrow amount is not "max/all"
                 try:
                     borrow_amount = int(math.floor(float(arg)))
                 except ValueError:
                     print("Use borrow [amount] to borrow money.")
                     return
-                else:  # successfully converted borrow amount to int
-                    if borrow_amount > player.get_borrow_limit():
-                        print("You cannot borrow more than %s." % money(player.get_borrow_limit()))
-                        return
-                    elif borrow_amount == 0:
-                        print("You cannot borrow nothing.")
-                        return
-                    elif borrow_amount < 0:
-                        print("Use borrow [amount] to borrow money.")
-                        return
-            player.borrow_cash(borrow_amount)
-            print("You borrow %s from the moneylender." % money(borrow_amount))
+            player.move_cash(borrow_amount, "borrow")
             return
         else:
             print("There is no moneylender in %s." % player.location.name)
@@ -371,30 +324,20 @@ class IlhaFormosa(cmd.Cmd):
     def do_repay(self, arg):
         """Repays money to the moneylender.
         repay [amount/max/all]"""
-        if "moneylender" in player.location.buildings:
+        arg = format_arg(arg)
+        if "moneylender" in player.location.buildings:  # if there is a moneylender here
             if arg == "max" or arg == "all":
                 repay_amount = player.debt
             else:  # repay amount is not "max/all"
                 try:
                     repay_amount = int(math.floor(float(arg)))
                 except ValueError:
-                    print("Use repay [amount] to repay a debt.")
+                    print("Use repay [amount] to borrow money.")
                     return
-                else:
-                    if repay_amount > player.debt:
-                        print("You cannot repay more money than you have borrowed.")
-                        return
-                    elif repay_amount == 0:
-                        print("You cannot repay nothing.")
-                        return
-                    elif repay_amount < 0:
-                        print("Use repay [amount] to repay a debt.")
-                        return
-            player.repay_cash(repay_amount)
-            print("You repay %s to the moneylender." % money(repay_amount))
+            player.move_cash(repay_amount, "repay")
             return
         else:
-            print("%s does not have a moneylender." % player.location.name)
+            print("There is no moneylender in %s." % player.location.name)
             return
 
     def do_moneylender(self, args):
@@ -449,13 +392,13 @@ class IlhaFormosa(cmd.Cmd):
         wait [number of days]"""
         arg = format_arg(arg)
         try:
-            n_days = float(arg)
+            n_days = int(math.floor(float(arg)))
         except ValueError:
             print("%s is not a valid number" % arg)
             return
         else:
             if n_days <= 7:
-                player.day_increase(n_days)
+                player.day += n_days
                 print("You wait around for %s days." % math.floor(n_days))
                 return
             else:
