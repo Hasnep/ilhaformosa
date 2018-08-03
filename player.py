@@ -1,5 +1,6 @@
 """Initialises information about the player and creates helper functions about time."""
 import datetime
+import math
 from ports import *
 
 
@@ -24,9 +25,10 @@ class Player(object):
         # money related variables
         self.cash = 10000
         self.balance = 0
-        self.debt = 0
         self.bank_rate = 0.10  # bank interest rate per year
+        self.debt = 0
         self.lend_rate = 0.20  # moneylender interest rate per year
+        self.borrow_limit_multiplier = 1.5
 
         # time related variables
         self.day = 0
@@ -56,10 +58,13 @@ class Player(object):
         """Sets the location of the player to the string."""
         self.location = world[location_string]
 
-    def day_increase(self, increase_by):
-        """Increase the time by a certain number of days"""
-        self.balance = compound_interest(self.balance, self.bank_rate, increase_by)
-        self.day = self.day + increase_by
+    def day_increase(self, increase_day_by):
+        """Increase the time by a certain number of days."""
+        if self.balance > 0:
+            self.balance = compound_interest(self.balance, self.bank_rate, increase_day_by)
+        if self.debt > 0:
+            self.debt = compound_interest(self.debt, self.lend_rate, increase_day_by)
+        self.day = self.day + increase_day_by
 
     def leave_building(self):
         """Make the player leave whatever building they are in."""
@@ -81,6 +86,14 @@ class Player(object):
         """Decrease the player's bank balance. Calls balance_increase()."""
         self.balance_increase(-decrease_by)
 
+    def debt_increase(self, increase_by):
+        """Increase the player's debt."""
+        self.debt = self.debt + increase_by
+
+    def debt_decrease(self, decrease_by):
+        """Decrease the player's debt. Calls debt_increase()."""
+        self.debt_increase(-decrease_by)
+
     def deposit_cash(self, deposit_amount):
         """Deposit money into the bank."""
         self.cash_decrease(deposit_amount)
@@ -90,6 +103,24 @@ class Player(object):
         """Withdraw money from the bank."""
         self.cash_increase(withdraw_amount)
         self.balance_decrease(withdraw_amount)
+
+    def borrow_cash(self, borrow_amount):
+        """Borrow money from the moneylender."""
+        self.cash_increase(borrow_amount)
+        self.debt_increase(borrow_amount)
+
+    def repay_cash(self, repay_amount):
+        """Repay money to the moneylender."""
+        self.cash_decrease(repay_amount)
+        self.debt_decrease(repay_amount)
+
+    def get_net_worth(self):
+        """Returns the player's cash and bank balance minus their debts."""
+        return self.cash + self.balance - self.debt
+
+    def get_borrow_limit(self):
+        """Returns the maximum amount of money the player can borrow."""
+        return int(math.floor(self.get_net_worth() * self.borrow_limit_multiplier))
 
     # TODO: add function to rename ship?
 

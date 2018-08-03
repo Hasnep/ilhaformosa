@@ -262,7 +262,7 @@ class IlhaFormosa(cmd.Cmd):
                 try:
                     deposit_amount = int(math.floor(float(arg)))
                 except ValueError:
-                    print("Use deposit [amount] to deposit.")
+                    print("Use deposit [amount] to deposit money.")
                     return
                 else:  # successfully converted deposit amount to float
                     if deposit_amount > player.cash:
@@ -291,7 +291,7 @@ class IlhaFormosa(cmd.Cmd):
                 try:
                     withdraw_amount = int(math.floor(float(arg)))
                 except ValueError:
-                    print("Use withdraw [amount] to withdraw.")
+                    print("Use withdraw [amount] to withdraw money.")
                     return
                 else:
                     if withdraw_amount > player.balance:
@@ -312,7 +312,7 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_bank(self, args):
         """Check your balance and deposit or withdraw cash.
-        bank [deposit] [amount]"""
+        bank [deposit/withdraw] [amount]"""
         if args == "":
             if "bank" in player.location.buildings:
                 print("Interest rate: " + percent(player.bank_rate))
@@ -336,6 +336,93 @@ class IlhaFormosa(cmd.Cmd):
                     return
                 else:
                     print("Use bank [deposit/withdraw] [amount] to withdraw or deposit money.")
+                    return
+
+    def do_borrow(self, arg):
+        """Borrows money from the moneylender.
+        borrow [amount/max/all]"""
+        arg = format_arg(arg)
+        if "moneylender" in player.location.buildings:  # if there is a moneylender here
+            if arg == "max" or arg == "all":
+                borrow_amount = player.get_borrow_limit() - player.debt
+            else:  # borrow amount is not "max/all"
+                try:
+                    borrow_amount = int(math.floor(float(arg)))
+                except ValueError:
+                    print("Use borrow [amount] to borrow money.")
+                    return
+                else:  # successfully converted borrow amount to int
+                    if borrow_amount > player.get_borrow_limit():
+                        print("You cannot borrow more than %s." % money(player.get_borrow_limit()))
+                        return
+                    elif borrow_amount == 0:
+                        print("You cannot borrow nothing.")
+                        return
+                    elif borrow_amount < 0:
+                        print("Use borrow [amount] to borrow money.")
+                        return
+            player.borrow_cash(borrow_amount)
+            print("You borrow %s from the moneylender." % money(borrow_amount))
+            return
+        else:
+            print("There is no moneylender in %s." % player.location.name)
+            return
+
+    def do_repay(self, arg):
+        """Repays money to the moneylender.
+        repay [amount/max/all]"""
+        if "moneylender" in player.location.buildings:
+            if arg == "max" or arg == "all":
+                repay_amount = player.debt
+            else:  # repay amount is not "max/all"
+                try:
+                    repay_amount = int(math.floor(float(arg)))
+                except ValueError:
+                    print("Use repay [amount] to repay a debt.")
+                    return
+                else:
+                    if repay_amount > player.debt:
+                        print("You cannot repay more money than you have borrowed.")
+                        return
+                    elif repay_amount == 0:
+                        print("You cannot repay nothing.")
+                        return
+                    elif repay_amount < 0:
+                        print("Use repay [amount] to repay a debt.")
+                        return
+            player.repay_cash(repay_amount)
+            print("You repay %s to the moneylender." % money(repay_amount))
+            return
+        else:
+            print("%s does not have a moneylender." % player.location.name)
+            return
+
+    def do_moneylender(self, args):
+        """Borrow money or repay a debt.
+        moneylender [borrow/repay] [amount]"""
+        if args == "":
+            if "moneylender" in player.location.buildings:
+                print("Interest rate: " + percent(player.lend_rate))
+                self.do_cash(line=None)
+                return
+            else:
+                print("There is no moneylender in %s." % player.location.name)
+                return
+        else:
+            args = split_args(args)
+            if len(args) != 2:
+                print("Use moneylender [borrow/repay] [amount] to borrow money or repay a debt.")
+                return
+            else:
+                amount = args[1]
+                if args[0] == "borrow":
+                    self.do_borrow(amount)
+                    return
+                elif args[0] == "repay":
+                    self.do_repay(amount)
+                    return
+                else:
+                    print("Use moneylender [borrow/repay] [amount] to borrow money or repay a debt.")
                     return
 
     def do_fleet(self, arg):

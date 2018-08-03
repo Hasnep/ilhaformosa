@@ -4,7 +4,7 @@ from ships import *
 from options import *
 import random
 
-all_building_types = ["palace", "bank", "shipyard", "market"]
+all_building_types = ["palace", "bank", "shipyard", "market", "moneylender"]
 
 
 def round_to(x, base=1):
