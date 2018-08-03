@@ -1,17 +1,16 @@
 """Defining the ports classes"""
 from distances import *
 from ships import *
-from options import *
 import random
 
 all_building_types = ["palace", "bank", "shipyard", "market", "moneylender"]
 
 
-def round_to(x, base=1):
+def round_to(x: float, base: int=1) -> int:
     return int(base * round(float(x) / base))
 
 
-def random_price(base_price, base=1, sd=None):
+def random_price(base_price: float, base: int=1, sd=None) -> int:
     if sd is None:
         sd = base_price/10
     price = None
@@ -49,13 +48,13 @@ all_ports = [*ports_distances]
 world = {port_name.lower().replace(" ", ""): Port(port_name) for port_name in all_ports}  # create port objects for all ports
 
 
-def id_to_port(port_id, _world=world):
+def id_to_port(port_id: str, _world=world) -> Port:
     return _world[port_id]
 
 
-def port_name_to_id(port_name):
+def port_name_to_id(port_name: str) -> str:
     return port_name.lower().replace(" ", "")
 
 
-def name_to_port(port_name):
+def name_to_port(port_name: str) -> Port:
     return id_to_port(port_name_to_id(port_name))

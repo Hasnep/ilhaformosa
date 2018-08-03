@@ -1,7 +1,7 @@
 from title import *
 import cmd
 # import textwrap
-import pyreadline  # used for tab completion
+from pyreadline import * # used for tab completion
 from player import *
 import math
 # from pdb import *  # use set_trace() to debug
@@ -70,7 +70,7 @@ class IlhaFormosa(cmd.Cmd):
         """Find out what the date is or what the date will be in the future.
         calendar [days]"""
         if args == "":
-            print("It is %s." % day_to_date(_player.day))
+            print("It is %s." % day_to_date(player.day))
             return
         else:
             try:
@@ -80,7 +80,7 @@ class IlhaFormosa(cmd.Cmd):
                 return
             else:
                 if args <= 365*10:
-                    print("In %s days it will be %s." % (math.floor(args), day_to_date(_player.day + args)))
+                    print("In %s days it will be %s." % (math.floor(args), day_to_date(player.day + args)))
                 else:
                     print("Your calendar only has pages for the next 10 years.")
 
@@ -117,8 +117,8 @@ class IlhaFormosa(cmd.Cmd):
                     print("You are already in %s." % destination_port.name)
                     return
                 else:
-                    if player.get_cargo_weight() > player.get_combined_cargo_capacity():
-                        print("Your ships are too full to sail. You have %s but your ships' capacity is %s. Sell some cargo or buy a ship to continue." % (weight(player.get_cargo_weight()), weight(player.get_combined_cargo_capacity())))
+                    if player.get_cargo_weight() > player.get_cargo_capacity():
+                        print("Your ships are too full to sail. You have %s but your ships' capacity is %s. Sell some cargo or buy a ship to continue." % (weight(player.get_cargo_weight()), weight(player.get_cargo_capacity())))
                     else:
                         from_name = player.location.name
                         to_name = world[arg].name
@@ -140,7 +140,7 @@ class IlhaFormosa(cmd.Cmd):
         """Show the fleet's current cargo."""
         for cargo_type, quantity in player.cargo.items():
             print(cargo_type + ": " + weight(quantity))
-        print("total: " + weight(player.get_cargo_weight()) + "/" + weight(player.get_combined_cargo_capacity()))
+        print("total: " + weight(player.get_cargo_weight()) + "/" + weight(player.get_cargo_capacity()))
 
     def complete_sail(self, text, line, begidx, endidx):
         """Tab completion for the sail command."""
@@ -397,12 +397,18 @@ class IlhaFormosa(cmd.Cmd):
             print("%s is not a valid number" % arg)
             return
         else:
-            if n_days <= 7:
-                player.day += n_days
-                print("You wait around for %s days." % math.floor(n_days))
+            if n_days > 7:
+                print("You can only wait for one week at a time.")
+                return
+            elif n_days < 0:
+                print("You cannot go back in time.")
+                return
+            elif n_days == 0:
+                print("You cannot wait for no days.")
                 return
             else:
-                print("You can only wait for one week at a time.")
+                player.day += n_days
+                print("You wait around for %s days." % math.floor(n_days))
                 return
 
     def do_credits(self, line):

@@ -13,11 +13,11 @@ class Options(object):
         self.default_options = {key: value[0] for key, value in self.choices.items()}
         self.options = self.default_options
 
-    def get_option(self, option_name):
+    def get_option(self, option_name: str):
         """A function to get the current value of an option."""
         return self.options[option_name]
 
-    def set_option(self, option_name, value):
+    def set_option(self, option_name: str, value: str):
         """A function to set the value of an option."""
         if option_name in self.choices:  # if the key is the name of an option
             if value in self.choices[option_name]:  # if the value is one of the available values
@@ -31,7 +31,7 @@ class Options(object):
             print("%s is not a valid option name" % option_name)
             return
 
-    def reset_option(self, option_name):
+    def reset_option(self, option_name: str):
         """A function that resets an option back to default."""
         self.set_option(option_name, self.choices[option_name][0])
 
@@ -41,7 +41,7 @@ class Options(object):
             self.reset_option(option_name)
         return
 
-    def print_option(self, option_name):
+    def print_option(self, option_name: str):
         """A function that prints all the choices available for a certain option, highlighting the current value and the default value."""
         if option_name in self.options:
             choices_string = ""

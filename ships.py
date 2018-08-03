@@ -2,22 +2,10 @@
 from randomwords import *
 
 
-def print_ship_information(ship):
-    """A function that prints a ship's stats."""
-    print("Name: " + ship.nickname)
-    print("Type: " + ship.type)
-    print("Description: " + ship.description)
-    print("Health: " + str(ship.health) + "/" + str(ship.max_health))
-    print("Cannons: " + str(ship.cannons) + "/" + str(ship.max_cannons))
-    print("Max cargo: " + str(ship.cargo_capacity))
-
-
 class Ship(object):
-    max_health = 0
-
-    def __init__(self):
+    def __init__(self, max_health):
         self.nickname = random_ship_name()
-        self.health = self.max_health
+        self.health = max_health
         self.cannons = 0  # TODO: Add cannons
 
 
@@ -30,7 +18,7 @@ class Junk(Ship):
         self.cargo_capacity = 30
         self.top_speed = 8
         self.value = 3000
-        Ship.__init__(self)
+        Ship.__init__(self, max_health=self.max_health)
 
 
 class Baochuan(Ship):
@@ -42,8 +30,21 @@ class Baochuan(Ship):
         self.cargo_capacity = 100
         self.top_speed = 7
         self.value = 4500
-        Ship.__init__(self)
+        Ship.__init__(self, max_health=self.max_health)
 
 
 all_ship_objects = [Junk, Baochuan]
 all_ship_types = ["junk", "baochuan"]  # TODO: Figure out how to get default values for a class in a loop
+
+
+def print_ship_information(ship: all_ship_objects):
+    """A function that prints a ship's stats."""
+    print("Name: " + ship.nickname)
+    print("Type: " + ship.type)
+    print("Description: " + ship.description)
+    print("Health: " + str(ship.health) + "/" + str(ship.max_health))
+    print("Cannons: " + str(ship.cannons) + "/" + str(ship.max_cannons))
+    print("Max cargo: " + str(ship.cargo_capacity))
+
+
+

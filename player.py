@@ -2,9 +2,9 @@
 import datetime
 import math
 from ports import *
+from options import *
 
-
-def money(amount):
+def money(amount: int) -> str:
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
     currency_option = options.get_option("currency")
@@ -17,16 +17,16 @@ def money(amount):
     return symbol + str(int(math.floor(amount)))
 
 
-def weight(weight_integer):
-    return str(weight_integer) + options.get_option("weight")
+def weight(weight_amount: int) -> str:
+    return str(weight_amount) + options.get_option("weight")
 
 
-def percent(decimal):
+def percent(decimal: float) -> str:
     """A function to convert a decimal to a percentage string."""
     return str(100 * decimal) + "%"
 
 
-def compound_interest(principal_amount, interest_rate, days_passed):
+def compound_interest(principal_amount: int, interest_rate: float, days_passed: int) -> int:
     return int(math.floor(principal_amount * (1 + interest_rate)**(days_passed/365)))
 
 # TODO: Allow the player to select different starting ports.
@@ -46,32 +46,33 @@ class Player(object):
         # time related variables
         self._day = 0
 
-        # location related variables
-        self._location = world["taipei"]
-
         # fleet related variables
         self.fleet = [Junk()]
         self.cargo = {"silk": 10}
 
+        # location related variables
+        self._location = world["taipei"]
+        self.location.arrive()
+
     # location property
     @property
-    def location(self):
+    def location(self) -> Port:
         return self._location
 
     @location.setter
-    def location(self, port_name):
+    def location(self, port_name: str):
         """Sets the location of the player to the port with the name provided."""
         self._location = world[port_name]
 
     # day property
     @property
-    def day(self):
+    def day(self) -> int:
         return self._day
 
-    @day.setter  # TODO: Make days an integer
-    def day(self, change_day_to):
+    @day.setter
+    def day(self, change_day_to: int):
         try:
-            change_day_to = float(change_day_to)
+            change_day_to = int(math.ceil(float(change_day_to)))
         except TypeError:
             print("Cannot set day to %s." % change_day_to)
         else:
@@ -82,57 +83,66 @@ class Player(object):
                 if self.debt > 0:
                     self.debt = compound_interest(self.debt, self.lend_rate, change_day_by)
                 self._day = change_day_to
+                return
             elif change_day_by < 0:
                 print("Cannot go back in time.")
+                return
             else:
                 print("Date not changed.")
+                return
 
     # money properties
     @property
-    def cash(self):
+    def cash(self) -> int:
         return self._cash
 
     @cash.setter
-    def cash(self, set_cash_to):
+    def cash(self, set_cash_to: int):
         if set_cash_to < 0:
             print("Cannot set cash to less than 0.")
+            return
         else:
             self._cash = set_cash_to
+            return
 
     @property
-    def balance(self):
+    def balance(self) -> int:
         return self._balance
 
     @balance.setter
-    def balance(self, set_balance_to):
+    def balance(self, set_balance_to: int):
         if set_balance_to < 0:
             print("Cannot set bank balance to less than 0.")
+            return
         else:
             self._balance = set_balance_to
+            return
 
     @property
-    def debt(self):
+    def debt(self) -> int:
         return self._debt
 
     @debt.setter
-    def debt(self, set_debt_to):
+    def debt(self, set_debt_to: int):
         if set_debt_to < 0:
             print("Cannot set debt to less than 0.")
+            return
         else:
             self._debt = set_debt_to
+            return
 
     @property
-    def total_money(self):
+    def total_money(self) -> int:
         """Returns the player's cash and bank balance minus their debts."""
         return self.cash + self.balance - self.debt
 
     @property
-    def max_debt(self):
+    def max_debt(self) -> int:
         """Returns the maximum amount of money the player can borrow."""
         return int(math.floor(self.total_money * self.borrow_limit_multiplier))
 
     # money related functions
-    def move_cash(self, action_amount, action):
+    def move_cash(self, action_amount: int, action: str):
         """General function to move money into or out of the bank."""
         if action_amount < 0:
             print("You cannot %s a negative amount." % action)
@@ -183,23 +193,22 @@ class Player(object):
                 print("None of deposit, withdraw, borrow or repay specified.")
                 return
 
-
-
     # cargo related functions
-    def get_cargo_weight(self):
+    def get_cargo_weight(self, cargo_type=None) -> int:
         cargo_weight = 0
         for key, value in self.cargo.items():
-            cargo_weight += value
+            if cargo_type is None or key == cargo_type:
+                cargo_weight += value
         return cargo_weight
 
-    def set_cargo_quantity(self, cargo_type, quantity):
-        if self.get_cargo_weight() + quantity > self.get_combined_cargo_capacity():
-            print("You can't increase this much.")
+    def set_cargo_quantity(self, cargo_type: str, quantity: int):
+        if self.get_cargo_weight() + quantity > self.get_cargo_capacity():
+            print("Your fleet can only hold %s." % weight(self.get_cargo_capacity()))
         else:
             self.cargo[cargo_type] = quantity
         return
 
-    def get_combined_cargo_capacity(self):
+    def get_cargo_capacity(self) -> int:
         combined_cargo_capacity = 0
         for ship in self.fleet:
             combined_cargo_capacity += ship.cargo_capacity
@@ -207,12 +216,11 @@ class Player(object):
 
 
 player = Player()  # Initialise the player object
-player.location.arrive()
 
 start_date = datetime.date(1700, 1, 1)
 
 
-def day_to_date(x):
+def day_to_date(x: int) -> str:
     """Convert the number of days to a readable string."""
     x = start_date + datetime.timedelta(days=x)
     if options.get_option("date") == "ymd":
