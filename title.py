@@ -1,4 +1,4 @@
-version_number = "v0.1.104"
+version_number = "v0.1.105"
 
 
 def title_print(ruler: str="~"):

@@ -1,6 +1,6 @@
 # Ilha Formosa
 
-'Ilha Formosa' was the name given to the island of Taiwan by the Portugese meaning 'Beautiful Island'.
+'Ilha Formosa' was the name given to the island of Taiwan by the Portuguese meaning 'Beautiful Island'.
 This is a text game based loosely on the [Tradewinds](https://store.steampowered.com/app/36100/Tradewinds_Classics/) series by Sandlot Games.
 I'm using this project to teach myself object-oriented programming in Python, so don't expect much from it.
 

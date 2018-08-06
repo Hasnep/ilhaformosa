@@ -4,6 +4,7 @@ import math
 from ports import *
 from options import *
 
+
 def money(amount: int) -> str:
     """A function to add the currency symbol to money."""
     # TODO: Add commas to currency.
@@ -23,7 +24,7 @@ def weight(weight_amount: int) -> str:
 
 def percent(decimal: float) -> str:
     """A function to convert a decimal to a percentage string."""
-    return str(100 * decimal) + "%"
+    return str(int(math.floor(100 * decimal))) + "%"
 
 
 def compound_interest(principal_amount: int, interest_rate: float, days_passed: int) -> int:
