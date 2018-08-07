@@ -1,13 +1,11 @@
 """Defining the ports classes"""
 from distances import *
 from ships import *
+from cargo import *
 import random
 
+
 all_building_types = ["palace", "bank", "shipyard", "market", "moneylender"]
-
-
-def round_to(x: float, base: int=1) -> int:
-    return int(base * round(float(x) / base))
 
 
 def random_price(base_price: float, base: int=1, sd=None) -> int:
@@ -29,14 +27,25 @@ class Port(object):
         self.buildings = []
         for k in all_building_types:  # TODO: Make the building selection process semi-random using a matrix
             self.buildings.append(k)
+
+        # shipyard
         self.for_sale_ship = None
         self.for_sale_ship_price = 0
 
-    def arrive(self):
+        # market
+        self.cargo_local_value = {cargo: 0 for cargo in cargo_names}
+        self.cargo_price = {cargo: 0 for cargo in cargo_names}
+
+    def arrive(self, n_days: int=100):
+        # shipyard
         if "shipyard" in self.buildings:
             ship_type_class = random.choice(all_ship_objects)
             self.for_sale_ship = ship_type_class()
             self.for_sale_ship_price = random_price(self.for_sale_ship.value, base=100)
+
+        # market
+        self.cargo_local_value = cargo_randomise_values(self.cargo_local_value, n_days)
+        self.cargo_price = cargo_calculate_prices(cargo_global_value, self.cargo_local_value)
 
     def remove_for_sale_ship(self):
         self.for_sale_ship = None

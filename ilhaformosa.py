@@ -8,6 +8,7 @@ import math
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
 
+
 def split_args(input_string):
     input_string = input_string.lower()
     output_list = input_string.split()
@@ -124,17 +125,23 @@ class IlhaFormosa(cmd.Cmd):
                         to_name = world[arg].name
                         journey_distance = ports_distances[from_name][to_name]
                         journey_speed = 8  # TODO: Change this to top speed.
-                        journey_time = (journey_distance / 8)/24
+                        journey_time = int(math.ceil(journey_distance / 8)/24)
                         player.day += journey_time
                         # TODO: Add a sailing animation.
                         print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
                         print("You land in %s on %s." % (to_name, day_to_date(player.day)))
                         player.location = arg
-                        player.location.arrive()
+                        player.location.arrive(journey_time)
                         return
             else:
                 print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
                 return
+
+    def do_market(self, line):
+        """Show the market's prices.
+        market [buy/sell] [item] [quantity/max/all]"""
+        table_cargo_prices(player.location.cargo_price, player.cargo, player.cargo)
+
 
     def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo management?
         """Show the fleet's current cargo."""
