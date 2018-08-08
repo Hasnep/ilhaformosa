@@ -89,13 +89,15 @@ class IlhaFormosa(cmd.Cmd):
     def do_sail(self, arg):
         """Set sail for a port.
         sail [destination]"""
-        global cargo_global_value
         if arg == "":  # check if an argument was entered
             print("Use sail [destination] to sail to a port. You can see a list of ports using the map command.")
             return
         else:
             destination_id = format_arg(arg)
-            if destination_id in world:  # check if port object exists as a key
+            if destination_id not in world:  # TODO: Check if discovered port
+                print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
+                return
+            else:
                 destination_port = world[destination_id]
                 # TODO: Find out if it is more efficient to compare names or dicts.
                 if player.location == destination_port:  # check if the player is already at their destination
@@ -105,38 +107,50 @@ class IlhaFormosa(cmd.Cmd):
                     if player.get_cargo_weight() > player.get_cargo_capacity():
                         print("Your ships are too full to sail. You have %s but your ships' capacity is %s. Sell some cargo or buy a ship to continue." % (weight(player.get_cargo_weight()), weight(player.get_cargo_capacity())))
                     else:
-                        from_name = player.location.name
-                        to_name = world[arg].name
-                        journey_distance = ports_distances[from_name][to_name]
+                        departing_port = player.location
+                        arriving_port = world[arg]
+                        # before leaving
+                        departing_port.visited = player.day
+                        # while travelling
+                        journey_distance = ports_distances[departing_port.name][arriving_port.name]
                         journey_speed = 8  # TODO: Change this to top speed.
                         journey_time = int(math.ceil(journey_distance / 8)/24)
+                        cargo.global_values = cargo.randomise_values(cargo.global_values, journey_time)
                         player.day += journey_time
-                        cargo_global_value = cargo.randomise_values(cargo.global_values, journey_time)
-                        # TODO: Add a sailing animation.
                         print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
-                        print("You land in %s on %s." % (to_name, day_to_date(player.day)))
-                        player.location = arg
-                        player.location.arrive(journey_time)
+                        # TODO: Add a sailing animation.
+                        # upon arriving
+                        if arriving_port.last_visited is None:
+                            since_last_visit = 100
+                        else:
+                            since_last_visit = player.day - arriving_port.last_visited
+                        # shipyard
+                        if "shipyard" in arriving_port.buildings:
+                            ship_type_class = random.choice(all_ship_objects)
+                            arriving_port.for_sale_ship = ship_type_class()
+                            arriving_port.for_sale_ship_price = random_price(arriving_port.for_sale_ship.value, base=100)
+                        # market
+                        arriving_port.local_values = cargo.randomise_values(arriving_port.local_values, since_last_visit)
+                        arriving_port.local_prices = cargo.calculate_prices(arriving_port.local_values)
+                        player.location = arriving_port
+                        print("You land in %s on %s." % (arriving_port.name, day_to_date(player.day)))
                         return
-            else:
-                print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
-                return
+
+
+    def complete_sail(self, text, line, begidx, endidx):
+        """Tab completion for the sail command."""
+        return [port for port in world if (port.startswith(text) and port != player.location.id)]
 
     def do_market(self, line):
         """Show the market's prices.
         market [buy/sell] [item] [quantity/max/all]"""
-        cargo.table_cargo_prices(player.location.cargo_price, player.cargo, player.cargo)
-
+        cargo.table_cargo_prices(player.location.local_prices, player.cargo, player.cargo)
 
     def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo management?
         """Show the fleet's current cargo."""
         for cargo_type, quantity in player.cargo.items():
             print(cargo_type + ": " + weight(quantity))
         print("total: " + weight(player.get_cargo_weight()) + "/" + weight(player.get_cargo_capacity()))
-
-    def complete_sail(self, text, line, begidx, endidx):
-        """Tab completion for the sail command."""
-        return [port for port in world if (port.startswith(text) and port != player.location.id)]
 
     def do_rename(self, args):
         """Rename a ship.
@@ -272,7 +286,7 @@ class IlhaFormosa(cmd.Cmd):
         if args == "":
             if "bank" in player.location.buildings:
                 print("Interest rate: " + percent(player.bank_rate))
-                self.do_cash(line=None)
+                self.onecmd("cash")
                 return
             else:
                 print("There is no bank in %s." % player.location.name)
@@ -338,7 +352,7 @@ class IlhaFormosa(cmd.Cmd):
         if args == "":
             if "moneylender" in player.location.buildings:
                 print("Interest rate: " + percent(player.lend_rate))
-                self.do_cash(line=None)
+                self.onecmd("cash")
                 return
             else:
                 print("There is no moneylender in %s." % player.location.name)
@@ -409,7 +423,7 @@ class IlhaFormosa(cmd.Cmd):
         print(" ID: " + player.location.id)
         print("Market")
         print(" Global values: " + str(cargo.global_values))
-        print(" Local values: " + str(player.location.cargo_local_value))
+        print(" Local values: " + str(player.location.local_values))
 
     def do_credits(self, line):
         """Print the credits for the game."""

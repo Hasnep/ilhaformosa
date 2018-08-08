@@ -1,6 +1,5 @@
-from distances import *
-from ships import *
 from cargo import *
+from distances import *
 
 all_building_types = ["palace", "bank", "shipyard", "market", "moneylender"]
 
@@ -9,9 +8,8 @@ class Port(object):
     def __init__(self, port_name):
         self.id = port_name.lower().replace(" ", "")
         self.name = port_name
-        self.visited = False
+        self.last_visited = None
         self.discovered = False
-        self.distances = ports_distances[self.name]
         self.buildings = []
         for k in all_building_types:  # TODO: Make the building selection process semi-random using a matrix
             self.buildings.append(k)
@@ -21,19 +19,8 @@ class Port(object):
         self.for_sale_ship_price = 0
 
         # market
-        self.cargo_local_value = {cargo_type: 0 for cargo_type in cargo.types}
-        self.cargo_price = {cargo_type: 0 for cargo_type in cargo.types}
-
-    def arrive(self, n_days: int=100):
-        # shipyard
-        if "shipyard" in self.buildings:
-            ship_type_class = random.choice(all_ship_objects)
-            self.for_sale_ship = ship_type_class()
-            self.for_sale_ship_price = random_price(self.for_sale_ship.value, base=100)
-
-        # market
-        self.cargo_local_value = cargo.randomise_values(self.cargo_local_value, n_days)
-        self.cargo_price = cargo.calculate_prices(self.cargo_local_value)
+        self.local_values = {cargo_type: 0 for cargo_type in cargo.types}
+        self.local_prices = cargo.calculate_prices(self.local_values)
 
     def remove_for_sale_ship(self):
         self.for_sale_ship = None
@@ -45,6 +32,7 @@ all_ports = [*ports_distances]
 world = {port_name.lower().replace(" ", ""): Port(port_name) for port_name in all_ports}  # create port objects for all ports
 
 
+# helper functions
 def id_to_port(port_id: str, _world=world) -> Port:
     return _world[port_id]
 

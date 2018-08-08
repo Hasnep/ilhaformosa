@@ -1,4 +1,5 @@
 from ports import *
+from ships import *
 
 
 class Player(object):
@@ -20,18 +21,7 @@ class Player(object):
         self.cargo = {cargo_type: 0 for cargo_type in cargo.types}
 
         # location related variables
-        self._location = world["taipei"]
-        self.location.arrive()
-
-    # location property
-    @property
-    def location(self) -> Port:
-        return self._location
-
-    @location.setter
-    def location(self, port_name: str):
-        """Sets the location of the player to the port with the name provided."""
-        self._location = world[port_name]
+        self.location = world["taipei"]
 
     # day property
     @property
