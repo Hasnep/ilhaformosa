@@ -1,22 +1,4 @@
-"""Initialises information about the player and creates helper functions about time."""
-import datetime
-import math
 from ports import *
-from options import *
-
-
-
-
-
-def percent(decimal: float) -> str:
-    """A function to convert a decimal to a percentage string."""
-    return str(int(math.floor(100 * decimal))) + "%"
-
-
-def compound_interest(principal_amount: int, interest_rate: float, days_passed: int) -> int:
-    return int(math.floor(principal_amount * (1 + interest_rate)**(days_passed/365)))
-
-# TODO: Allow the player to select different starting ports.
 
 
 class Player(object):
@@ -202,16 +184,8 @@ class Player(object):
         return combined_cargo_capacity
 
 
+# TODO: Allow the player to select different starting ports.
 player = Player()  # Initialise the player object
 
-start_date = datetime.date(1700, 1, 1)
 
 
-def day_to_date(x: int) -> str:
-    """Convert the number of days to a readable string."""
-    x = start_date + datetime.timedelta(days=x)
-    if options.get_option("date") == "ymd":
-        x = x.strftime("%Y-%m-%d")
-    elif options.get_option("date") == "dmy":
-        x = x.strftime("%d/%m/%Y")
-    return x

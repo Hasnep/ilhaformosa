@@ -1,26 +1,9 @@
-from title import *
 import cmd
-# import textwrap
-from pyreadline import * # used for tab completion
-from player import *
-import math
+import pyreadline  # used for tab completion
+
 # from pdb import *  # use set_trace() to debug
-
-# TODO: Use the ctypes library to set the title, width and font of the window.
-
-
-def split_args(input_string):
-    input_string = input_string.lower()
-    output_list = input_string.split()
-    if input_string[-1] == " ":
-        output_list.append("")
-    return output_list
-
-
-def format_arg(input_string):
-    input_string = input_string.lower()
-    input_string = input_string.replace(" ", "")
-    return input_string
+from title import *
+from player import *
 
 
 class IlhaFormosa(cmd.Cmd):

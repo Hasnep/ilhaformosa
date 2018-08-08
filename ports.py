@@ -1,20 +1,8 @@
-"""Defining the ports classes"""
 from distances import *
 from ships import *
 from cargo import *
-import random
-
 
 all_building_types = ["palace", "bank", "shipyard", "market", "moneylender"]
-
-
-def random_price(base_price: float, base: int=1, sd=None) -> int:
-    if sd is None:
-        sd = base_price/10
-    price = None
-    while price is None or abs(price - base_price) > 3 * sd or price < base:
-        price = random.gauss(base_price, sd)
-    return int(round_to(price, base=base))
 
 
 class Port(object):

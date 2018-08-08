@@ -1,6 +1,6 @@
-version_number = "v0.1.107"
+version_number = "v0.1.108"
 
-
+# TODO: Use the ctypes library to set the title, width and font of the window.
 def title_print(ruler: str="~"):
     title = " '||' '||  '||                '||''''| \n  ||   ||   || ..    ....      ||  .     ...   ... ..  .. .. ..     ...    ....   .... \n  ||   ||   ||' ||  '' .||     ||''|   .|  '|.  ||' ''  || || ||  .|  '|. ||. '  '' .|| \n  ||   ||   ||  ||  .|' ||     ||      ||   ||  ||      || || ||  ||   || . '|.. .|' || \n .||. .||. .||. ||. '|..'|'   .||.      '|..|' .||.    .|| || ||.  '|..|' |'..|' '|..'|' "
     title_width = max(len(line) for line in title.split("\n"))

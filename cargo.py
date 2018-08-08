@@ -1,23 +1,4 @@
-import random
-import math
-from options import *
-
-
-def money(amount: int) -> str:
-    """A function to add the currency symbol to money."""
-    # TODO: Add commas to currency.
-    currency_option = options.get_option("currency")
-    if currency_option == "pound":
-        symbol = "£"
-    elif currency_option == "dollar":
-        symbol = "$"
-    else:
-        symbol = "?"
-    return symbol + str(int(math.floor(amount)))
-
-
-def weight(weight_amount: int) -> str:
-    return str(weight_amount) + options.get_option("weight")
+from helpers import *
 
 
 class Cargo(object):
