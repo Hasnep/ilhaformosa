@@ -403,6 +403,14 @@ class IlhaFormosa(cmd.Cmd):
                 print("You wait around for %s days." % math.floor(n_days))
                 return
 
+    def do_debug(self, line):
+        print("Location")
+        print(" Name: " + player.location.name)
+        print(" ID: " + player.location.id)
+        print("Market")
+        print(" Global values: " + str(cargo.global_values))
+        print(" Local values: " + str(player.location.cargo_local_value))
+
     def do_credits(self, line):
         """Print the credits for the game."""
         print("Game by Hannes Smit (hasnep.github.io)")
