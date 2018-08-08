@@ -33,8 +33,8 @@ class Port(object):
         self.for_sale_ship_price = 0
 
         # market
-        self.cargo_local_value = {cargo: 0 for cargo in cargo_names}
-        self.cargo_price = {cargo: 0 for cargo in cargo_names}
+        self.cargo_local_value = {cargo_type: 0 for cargo_type in cargo.types}
+        self.cargo_price = {cargo_type: 0 for cargo_type in cargo.types}
 
     def arrive(self, n_days: int=100):
         # shipyard
@@ -44,8 +44,8 @@ class Port(object):
             self.for_sale_ship_price = random_price(self.for_sale_ship.value, base=100)
 
         # market
-        self.cargo_local_value = cargo_randomise_values(self.cargo_local_value, n_days)
-        self.cargo_price = cargo_calculate_prices(cargo_global_value, self.cargo_local_value)
+        self.cargo_local_value = cargo.randomise_values(self.cargo_local_value, n_days)
+        self.cargo_price = cargo.calculate_prices(self.cargo_local_value)
 
     def remove_for_sale_ship(self):
         self.for_sale_ship = None

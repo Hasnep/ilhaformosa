@@ -35,7 +35,7 @@ class Player(object):
 
         # fleet related variables
         self.fleet = [Junk()]
-        self.cargo = {cargo_type: 0 for cargo_type in cargo_names}
+        self.cargo = {cargo_type: 0 for cargo_type in cargo.types}
 
         # location related variables
         self._location = world["taipei"]
