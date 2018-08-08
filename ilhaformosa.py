@@ -443,5 +443,7 @@ class IlhaFormosa(cmd.Cmd):
         print("%s is not a known command. Type ? for a list of commands." % arg.lower())
 
 
-IlhaFormosa().cmdloop()
+if __name__ == "__main__":
+    IlhaFormosa().cmdloop()
+
 
