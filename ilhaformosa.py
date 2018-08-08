@@ -142,8 +142,7 @@ class IlhaFormosa(cmd.Cmd):
         return [port for port in world if (port.startswith(text) and port != player.location.id)]
 
     def do_market(self, line):
-        """Show the market's prices.
-        market [buy/sell] [item] [quantity/max/all]"""
+        """Show the market's prices."""  # TODO: add [buy/sell] [item] [quantity/max/all]
         cargo.table_cargo_prices(player.location.local_prices, player.cargo, player.cargo)
 
     def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo management?
@@ -206,7 +205,7 @@ class IlhaFormosa(cmd.Cmd):
                     else:
                         if player.cash >= player.location.for_sale_ship_price:
                             print("You buy %s for %s" % (player.location.for_sale_ship.nickname, money(player.location.for_sale_ship_price)))
-                            player.cash_decrease(player.location.for_sale_ship_price)
+                            player.cash -= player.location.for_sale_ship_price
                             player.fleet.append(player.location.for_sale_ship)
                             player.location.remove_for_sale_ship()
                             return
@@ -218,11 +217,10 @@ class IlhaFormosa(cmd.Cmd):
                     return
 
     # TODO: add a buy argument to the shipyard and make the buy command call this
-    # TODO: add a look argument to look at the ship
     # TODO: add a repair argument with an all/max subcommand
 
     def do_shipyard(self, line):
-        """Look at what's for sale in the shipyard"""
+        """Look at what's for sale in the shipyard."""
         if "shipyard" in player.location.buildings:
             if player.location.for_sale_ship is None:
                 print("There are no ships for sale here.")
@@ -418,6 +416,7 @@ class IlhaFormosa(cmd.Cmd):
                 return
 
     def do_debug(self, line):
+        """Show internal information."""
         print("Location")
         print(" Name: " + player.location.name)
         print(" ID: " + player.location.id)

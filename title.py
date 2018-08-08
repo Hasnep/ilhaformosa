@@ -1,4 +1,4 @@
-version_number = "v0.1.110"
+version_number = "v0.1.111"
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
 def title_print(ruler: str="~"):

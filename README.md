@@ -11,18 +11,27 @@ I'm using this project to teach myself object-oriented programming in Python, so
 ## Current commands
 
 * `help/? [command]`
-* `bank [withdraw/deposit] [amount]`
+* `bank [withdraw/deposit] [amount/max/all]`
+* `borrow [amount/max/all]`
 * `buy [food/ship name]`
 * `calendar/cal [days]`
+* `cargo`
 * `cash`
+* `credits`
+* `deposit [amount/max/all]`
 * `fleet [ship name]`
 * `look`
 * `map`
+* `market`
+* `moneylender [borrow/repay] [amount/max/all]`
 * `options [option/default] [new value/default]`
 * `quit`
 * `rename [old ship name]>[new ship name]`
+* `repay [amount/max/all]`
 * `sail [destination]`
+* `shipyard`
 * `wait [number of days]`
+* `withdraw [amount/max/all]`
 
 Use the `tab` key to autocomplete commands and arguments.
 
@@ -47,13 +56,14 @@ In no particular order:
     * buy special items ☐
     * buy ships 🗹
     * banks 🗹
-    * moneylenders ☐
+    * moneylenders 🗹
 * missions
 	* dialogue ☐
 	* discovering new ports ☐
 * trade
-	* cargo ☐
-	* economy ☐
+	* cargo 🗹
+	* economy 🗹
+	* buying and selling ☐
 * visuals
 	* ASCII artwork ☐
 	* animation ☐
