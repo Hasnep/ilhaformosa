@@ -6,9 +6,19 @@ from options import *
 
 
 # Functions to add units
-def money(amount: int) -> str:
+def commas(amount_int: int) -> str:
+    amount_str = str(amount_int)
+    amount_list = []
+    while len(amount_str) > 0:
+        amount_list.insert(0, amount_str[-3:])
+        amount_str = amount_str[:-3]
+    amount_str = ",".join(amount_list)
+    return amount_str
+
+
+def money(amount_int: int) -> str:
     """Add the currency symbol to a number."""
-    # TODO: Add commas to currency.
+    amount_str = commas(amount_int)
     currency_option = options.get_option("currency")
     if currency_option == "pound":
         symbol = "£"
@@ -16,11 +26,11 @@ def money(amount: int) -> str:
         symbol = "$"
     else:
         symbol = "?"
-    return symbol + str(int(math.floor(amount)))
+    return symbol + amount_str
 
 
 def weight(weight_amount: int) -> str:
-    return str(weight_amount) + options.get_option("weight")
+    return commas(weight_amount) + options.get_option("weight")
 
 
 def price_per_weight(price_amount: int) -> str:

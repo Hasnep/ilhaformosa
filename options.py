@@ -1,5 +1,5 @@
-# TODO: Add an option for decimal places/sig figs when using money
-# TODO: Add an option for using words billion/million when using money
+# TODO: Add an option for sig figs when using units
+# TODO: Add an option for using words billion/million when using units
 
 
 class Options(object):
