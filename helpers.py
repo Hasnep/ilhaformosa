@@ -129,3 +129,61 @@ def format_arg(input_string):
     input_string = input_string.lower()
     input_string = input_string.replace(" ", "")
     return input_string
+
+
+# Aligning text
+def blanks(n_spaces: int) -> str:
+    return " " * n_spaces
+
+
+def align_text(text: str, max_width: int, align: str="l") -> str:
+    padding_n = max_width - len(text)
+    if align == "l":
+        return text + blanks(padding_n)
+    elif align == "r":
+        return blanks(padding_n) + text
+    elif align == "c":
+        if padding_n % 2 == 1:
+            extra_space = 1
+        else:
+            extra_space = 0
+        padding_n = math.floor(padding_n/2)
+        return blanks(padding_n) + text + blanks(padding_n + extra_space)
+
+
+def table_aligned_print(column_names: list, column_aligns: list, row_keys: list, column_dicts: list, show_row_keys: bool=True) -> None:
+    max_column_widths = []
+    for column_index, column_dict in enumerate(column_dicts):
+
+        if not (len(column_dict) == len(row_keys)):
+            raise ValueError("Column %i's dict is the wrong length." % column_index)
+
+        for key in column_dict:
+            if key not in row_keys:
+                raise ValueError("Key '%s' not in list of keys." % key)
+
+        max_variable_width = max([len(value) for key, value in column_dict.items()])
+        max_column_widths.append(max(max_variable_width, len(column_names[column_index])))
+
+    if show_row_keys:
+        keys_column_width = max([len(key) for key in row_keys])
+        text = blanks(keys_column_width + 1)
+    else:
+        keys_column_width = 0
+        text = ""
+
+    # print the header row
+    for column_index, column_name in enumerate(column_names):
+        text += align_text(column_name, max_column_widths[column_index], "l") + blanks(1)
+    print("".join(text))
+
+    for key_index, key in enumerate(row_keys):
+        if show_row_keys:
+            text = align_text(key, keys_column_width, align="l") + blanks(1)
+        else:
+            text = ""
+        for column_index, column_dict in enumerate(column_dicts):
+            text += align_text(column_dict[key], max_column_widths[column_index], column_aligns[column_index]) + blanks(1)
+        print("".join(text))
+
+    return

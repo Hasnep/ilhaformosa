@@ -32,16 +32,8 @@ class Cargo(object):
             values[cargo_type] = this_cargos_value
         return values
 
-    def table_cargo_prices(self, cargo_prices: dict, cargo_owned: dict, cargo_bought_for: dict):  # TODO: Make a generic function for aligned tables
-        for cargo_type in self.types:
-            print(
-                cargo_type
-                + " " * (1 + len(max(self.types, key=len)) - len(cargo_type))
-                + " " * (len(max([str(value) for key, value in cargo_prices.items()], key=len)) - len(str(cargo_prices[cargo_type])))
-                + price_per_weight(cargo_prices[cargo_type])
-                + " " * (1 + len(max([str(value) for key, value in cargo_owned.items()], key=len)) - len(str(cargo_owned[cargo_type])))
-                + weight(cargo_owned[cargo_type])
-            )
-
+    def table_cargo_prices(self, cargo_prices: dict, cargo_owned: dict) -> None:  # TODO: Add 'cargo_bought_for: dict'
+        table_aligned_print(column_names=["Price", "Owned"], column_aligns=["r", "r"], row_keys=self.types, column_dicts=[price_per_weight(cargo_prices), weight(cargo_owned)], show_row_keys=True)
+        return
 
 cargo = Cargo()
