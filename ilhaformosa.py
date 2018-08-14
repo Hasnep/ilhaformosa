@@ -143,12 +143,13 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_market(self, line):
         """Show the market's prices."""  # TODO: add [buy/sell] [item] [quantity/max/all]
-        cargo.table_cargo_prices(player.location.local_prices, player.cargo, player.cargo)
+        cargo.table_cargo_prices(player.location.local_prices, player.cargo)
 
-    def do_cargo(self, line):  #TODO: Add cargo tetris? Add more detailed cargo management?
+    def do_cargo(self, line):  # TODO: Add cargo tetris? Add more detailed cargo management?
         """Show the fleet's current cargo."""
-        for cargo_type, quantity in player.cargo.items():
-            print(cargo_type + ": " + weight(quantity))
+        cargo_strings = weight(player.cargo)
+        for cargo_type, quantity in cargo_strings.items():
+            print(cargo_type + ": " + quantity)
         print("total: " + weight(player.get_cargo_weight()) + "/" + weight(player.get_cargo_capacity()))
 
     def do_rename(self, args):

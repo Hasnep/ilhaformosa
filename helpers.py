@@ -6,40 +6,81 @@ from options import *
 
 
 # Functions to add units
-def commas(amount_int: int) -> str:
-    amount_str = str(amount_int)
-    amount_list = []
-    while len(amount_str) > 0:
-        amount_list.insert(0, amount_str[-3:])
-        amount_str = amount_str[:-3]
-    amount_str = ",".join(amount_list)
-    return amount_str
+def apply_units(input_object: [int, float, str, list, dict], function_one) -> [str, list, dict]:
+    """Apply a unit adding function to a single object or a list of objects."""
+    if type(input_object) is int or type(input_object) is float:
+        return function_one(input_object)
+    elif type(input_object) is str:
+        return function_one(int(input_object))
+    elif type(input_object) is list:
+        return [function_one(x) for x in input_object]
+    elif type(input_object) is dict:
+        return {key: function_one(value) for key, value in input_object.items()}
+    else:
+        raise ValueError("Invalid input type.")
 
 
-def money(amount_int: int) -> str:
-    """Add the currency symbol to a number."""
-    amount_str = commas(amount_int)
+def _commas_one(input_number: int) -> str:
+    """Add commas to a single integer."""
+    input_as_string = str(input_number)
+    digits_list = []
+    while len(input_as_string) > 0:
+        digits_list.insert(0, input_as_string[-3:])
+        input_as_string = input_as_string[:-3]
+    output_string = ",".join(digits_list)
+    return output_string
+
+
+def commas(input_object: [int, list, dict]) -> [str, list, dict]:
+    """Add commas to a single number or list of numbers"""
+    return apply_units(input_object, _commas_one)
+
+
+def _money_one(input_number: int) -> str:
+    """Add the currency symbol to a single number."""
     currency_option = options.get_option("currency")
     if currency_option == "pound":
-        symbol = "£"
+        currency_symbol = "£"
     elif currency_option == "dollar":
-        symbol = "$"
+        currency_symbol = "$"
     else:
-        symbol = "?"
-    return symbol + amount_str
+        currency_symbol = "?"
+    return currency_symbol + _commas_one(input_number)
 
 
-def weight(weight_amount: int) -> str:
-    return commas(weight_amount) + options.get_option("weight")
+def money(input_object: [int, list, dict]) -> [str, list, dict]:
+    """Add the currency symbol to a single number or list of numbers."""
+    return apply_units(input_object, _money_one)
 
 
-def price_per_weight(price_amount: int) -> str:
-    return money(price_amount) + "/" + options.get_option("weight")
+def _weight_one(input_number: int) -> str:
+    """Add the weight symbol to a single number."""
+    return _commas_one(input_number) + options.get_option("weight")
 
 
-def percent(decimal: float) -> str:
+def weight(input_object: [int, list, dict]) -> [str, list, dict]:
+    """Add the weight symbol to a single number or list of numbers."""
+    return apply_units(input_object, _weight_one)
+
+
+def _price_per_weight_one(input_number: int) -> str:
+    """Add the currency and weight symbols to a single number."""
+    return _money_one(input_number) + "/" + options.get_option("weight")
+
+
+def price_per_weight(input_object: [int, list, dict]) -> [str, list, dict]:
+    """Add the currency and weight symbols to a single number or list of numbers."""
+    return apply_units(input_object, _price_per_weight_one)
+
+
+def _percent_one(input_number: [float, int]) -> str:
     """A function to convert a decimal to a percentage string."""
-    return str(int(math.floor(100 * decimal))) + "%"
+    return str(int(math.floor(100 * input_number))) + "%"
+
+
+def percent(input_object: [float, int, list, dict]) -> [str, list, dict]:
+    """A function to convert a decimal or list of decimals to a percentage string."""
+    return apply_units(input_object, _percent_one)
 
 
 # Money
