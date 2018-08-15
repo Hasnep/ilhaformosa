@@ -6,11 +6,10 @@ I'm using this project to teach myself object-oriented programming in Python, so
 
 ## Downloads
 
-[Download](https://github.com/Hasnep/ilhaformosa/releases) the most recent executable.
+[Download](https://github.com/Hasnep/ilhaformosa/releases) the most recent release.
 
 ## Current commands
-
-* `help/? [command]`
+Use `help` or `?` to get a list of commands or `help/? [command]` to get information about a specific command.
 * `bank [withdraw/deposit] [amount/max/all]`
 * `borrow [amount/max/all]`
 * `buy [food/ship name]`
@@ -67,3 +66,6 @@ In no particular order:
 * visuals
 	* ASCII artwork ☐
 	* animation ☐
+
+## Code
+Code is on [Github](https://github.com/Hasnep/ilhaformosa).
