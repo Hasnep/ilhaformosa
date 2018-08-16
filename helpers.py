@@ -151,7 +151,7 @@ def align_text(text: str, max_width: int, align: str="l") -> str:
         return blanks(padding_n) + text + blanks(padding_n + extra_space)
 
 
-def table_aligned_print(column_names: list, column_aligns: list, row_keys: list, column_dicts: list, show_row_keys: bool=True) -> None:  # TODO: add option to not print header
+def table_aligned_print(column_names: list, column_aligns: list, row_keys: list, column_dicts: list, show_header: bool = True, show_row_keys: bool=True) -> None:
     max_column_widths = []
     for column_index, column_dict in enumerate(column_dicts):
 
@@ -163,8 +163,11 @@ def table_aligned_print(column_names: list, column_aligns: list, row_keys: list,
                 raise ValueError("Key '{}' not in list of keys.".format(key))
 
         max_variable_width = max([len(value) for key, value in column_dict.items()])
-        max_column_widths.append(max(max_variable_width, len(column_names[column_index])))
-
+        if show_header:
+            max_column_widths.append(max(max_variable_width, len(column_names[column_index])))
+        else:
+            max_column_widths.append(max_variable_width
+                                     )
     if show_row_keys:
         keys_column_width = max([len(key) for key in row_keys])
         text = blanks(keys_column_width + 1)
@@ -173,9 +176,10 @@ def table_aligned_print(column_names: list, column_aligns: list, row_keys: list,
         text = ""
 
     # print the header row
-    for column_index, column_name in enumerate(column_names):
-        text += align_text(column_name, max_column_widths[column_index], "l") + blanks(1)
-    print("".join(text))
+    if show_header:
+        for column_index, column_name in enumerate(column_names):
+            text += align_text(column_name, max_column_widths[column_index], "l") + blanks(1)
+        print("".join(text))
 
     for key_index, key in enumerate(row_keys):
         if show_row_keys:
