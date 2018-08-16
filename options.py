@@ -1,11 +1,12 @@
 # TODO: Add an option for sig figs when using units
 # TODO: Add an option for using words billion/million when using units
+# TODO: Add import/export of options
 
 
 class Options(object):
     def __init__(self):
         self.choices = {
-            "currency": ["pound", "dollar"],  # TODO: add gold
+            "currency": ["pound", "dollar", "gold", "doubloon"],
             "distance": ["modern", "ancient"],  # TODO: implement distance units
             "weight": ["kg"],  # TODO: implement weight units
             "date": ["ymd", "dmy"]

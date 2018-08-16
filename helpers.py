@@ -40,12 +40,15 @@ def _money_one(input_number: int) -> str:
     """Add the currency symbol to a single number."""
     currency_option = options.get_option("currency")
     if currency_option == "pound":
-        currency_symbol = "£"
+        return "£" + _commas_one(input_number)
     elif currency_option == "dollar":
-        currency_symbol = "$"
+        return "$" + _commas_one(input_number)
+    elif currency_option == "gold":
+        return _commas_one(input_number) + " gold"
+    elif currency_option == "doubloon":
+        return _commas_one(input_number) + " doubloon" + "s" * (input_number != 1)
     else:
-        currency_symbol = "?"
-    return currency_symbol + _commas_one(input_number)
+        raise ValueError("Invalid currency option.")
 
 
 def money(input_object: [int, list, dict]) -> [str, list, dict]:
