@@ -5,9 +5,9 @@
 class Options(object):
     def __init__(self):
         self.choices = {
-            "currency": ["pound", "dollar"],
-            "distance": ["modern", "ancient"],
-            "weight": ["kg"],
+            "currency": ["pound", "dollar"],  # TODO: add gold
+            "distance": ["modern", "ancient"],  # TODO: implement distance units
+            "weight": ["kg"],  # TODO: implement weight units
             "date": ["ymd", "dmy"]
         }
         self.default_options = {key: value[0] for key, value in self.choices.items()}
@@ -22,13 +22,13 @@ class Options(object):
         if option_name in self.choices:  # if the key is the name of an option
             if value in self.choices[option_name]:  # if the value is one of the available values
                 self.options[option_name] = value  # set the value
-                print("%s has been set to %s" % (option_name, value))
+                print("'{}' has been set to '{}'.".format(option_name, value))
                 return
             else:
-                print("%s is not a valid value for the option %s" % (value, option_name))
+                print("'{}' is not a valid value for the option '{}'.".format(value, option_name))
                 return
         else:
-            print("%s is not a valid option name" % option_name)
+            print("'{}' is not a valid option name.".format(option_name))
             return
 
     def reset_option(self, option_name: str):
@@ -41,7 +41,7 @@ class Options(object):
             self.reset_option(option_name)
         return
 
-    def print_option(self, option_name: str):
+    def print_option(self, option_name: str):  # TODO: turn this into a flexitable
         """A function that prints all the choices available for a certain option, highlighting the current value and the default value."""
         if option_name in self.options:
             choices_string = ""
@@ -53,7 +53,7 @@ class Options(object):
             choices_string = choices_string[0:-1]
             print(option_name + ": " + choices_string)
         else:
-            print("%s is not a valid option name" % option_name)
+            print("{} is not a valid option name".format(option_name))
             return
 
     def print_all_options(self):

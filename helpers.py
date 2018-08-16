@@ -151,16 +151,16 @@ def align_text(text: str, max_width: int, align: str="l") -> str:
         return blanks(padding_n) + text + blanks(padding_n + extra_space)
 
 
-def table_aligned_print(column_names: list, column_aligns: list, row_keys: list, column_dicts: list, show_row_keys: bool=True) -> None:
+def table_aligned_print(column_names: list, column_aligns: list, row_keys: list, column_dicts: list, show_row_keys: bool=True) -> None:  # TODO: add option to not print header
     max_column_widths = []
     for column_index, column_dict in enumerate(column_dicts):
 
         if not (len(column_dict) == len(row_keys)):
-            raise ValueError("Column %i's dict is the wrong length." % column_index)
+            raise ValueError("Column {}'s dict is the wrong length.".format(column_index))
 
         for key in column_dict:
             if key not in row_keys:
-                raise ValueError("Key '%s' not in list of keys." % key)
+                raise ValueError("Key '{}' not in list of keys.".format(key))
 
         max_variable_width = max([len(value) for key, value in column_dict.items()])
         max_column_widths.append(max(max_variable_width, len(column_names[column_index])))

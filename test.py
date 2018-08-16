@@ -20,11 +20,16 @@ map
 market
 moneylender
 options
+options currency
+options currency dollar
+options currency default
+options default
 repay all
 sail naha
 shipyard
 wait 1
 withdraw max
+spooble
 """
 
 for command in test_commands.split("\n")[1:-1]:

@@ -54,7 +54,7 @@ class IlhaFormosa(cmd.Cmd):
         """Find out what the date is or what the date will be in the future.
         calendar [days]"""
         if args == "":
-            print("It is %s." % day_to_date(player.day))
+            print("It is {}.".format(day_to_date(player.day)))
             return
         else:
             try:
@@ -64,7 +64,7 @@ class IlhaFormosa(cmd.Cmd):
                 return
             else:
                 if args <= 365*10:
-                    print("In %s days it will be %s." % (math.floor(args), day_to_date(player.day + args)))
+                    print("In {} days it will be {}.".format(math.floor(args), day_to_date(player.day + args)))
                 else:
                     print("Your calendar only has pages for the next 10 years.")
 
@@ -73,7 +73,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_map(self, line):
         """List the locations on the map."""
         # TODO: Add an argument to look at the buildings of a certain port.
-        print("You are in %s" % player.location.name)
+        print("You are in {}.".format(player.location.name))
         print("The map has these ports on it:")
         for key, value in world.items():
             print(value.name)
@@ -81,10 +81,10 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_look(self, line):
         """Look around the port you are currently in."""
-        print("You are in %s" % player.location.name)
+        print("You are in {}.".format(player.location.name))
         print("There is a ")
         for k in player.location.buildings:
-            print("%s" % k)
+            print("{}".format(k))
 
     def do_sail(self, arg):
         """Set sail for a port.
@@ -95,17 +95,17 @@ class IlhaFormosa(cmd.Cmd):
         else:
             destination_id = format_arg(arg)
             if destination_id not in world:  # TODO: Check if discovered port
-                print("%s is not a port on your map. You can see a list of ports using the 'map' command." % arg)
+                print("{} is not a port on your map. You can see a list of ports using the 'map' command.".format(arg))
                 return
             else:
                 destination_port = world[destination_id]
                 # TODO: Find out if it is more efficient to compare names or dicts.
                 if player.location == destination_port:  # check if the player is already at their destination
-                    print("You are already in %s." % destination_port.name)
+                    print("You are already in {}.".format(destination_port.name))
                     return
                 else:
                     if player.get_cargo_weight() > player.get_cargo_capacity():
-                        print("Your ships are too full to sail. You have %s but your ships' capacity is %s. Sell some cargo or buy a ship to continue." % (weight(player.get_cargo_weight()), weight(player.get_cargo_capacity())))
+                        print("Your ships are too full to sail. You have {} but your ships' capacity is {}. Sell some cargo or buy a ship to continue.".format(weight(player.get_cargo_weight()), weight(player.get_cargo_capacity())))
                     else:
                         departing_port = player.location
                         arriving_port = world[arg]
@@ -117,7 +117,7 @@ class IlhaFormosa(cmd.Cmd):
                         journey_time = int(math.ceil(journey_distance / 8)/24)
                         cargo.global_values = cargo.randomise_values(cargo.global_values, journey_time)
                         player.day += journey_time
-                        print("You sail %s nautical miles at %s knots for %s days." % (journey_distance, journey_speed, math.floor(journey_time)))
+                        print("You sail {} nautical miles at {} knots for {} days.".format(journey_distance, journey_speed, math.floor(journey_time)))
                         # TODO: Add a sailing animation.
                         # upon arriving
                         if arriving_port.last_visited is None:
@@ -133,7 +133,7 @@ class IlhaFormosa(cmd.Cmd):
                         arriving_port.local_values = cargo.randomise_values(arriving_port.local_values, since_last_visit)
                         arriving_port.local_prices = cargo.calculate_prices(arriving_port.local_values)
                         player.location = arriving_port
-                        print("You land in %s on %s." % (arriving_port.name, day_to_date(player.day)))
+                        print("You land in {} on {}.".format(arriving_port.name, day_to_date(player.day)))
                         return
 
 
@@ -165,10 +165,10 @@ class IlhaFormosa(cmd.Cmd):
             else:
                 for k in player.fleet:
                     if format_arg(k.nickname) == format_arg(old_nickname):
-                        print("%s is now named %s" % (k.nickname, new_nickname))
+                        print("{} is now named {}.".format(k.nickname, new_nickname))
                         k.nickname = new_nickname
                         return
-                print("No ship with the name %s found." % old_nickname)
+                print("No ship with the name {} found.".format(old_nickname))
         else:
             print("Use rename [old name]>[new name] to rename a ship.")
             return
@@ -193,7 +193,7 @@ class IlhaFormosa(cmd.Cmd):
                 if player.cash > price:
                     food = random.choice(["rice", "noodles", "soup"])
                     player.cash -= price
-                    print("You spend %s on %s." % (money(price), food))
+                    print("You spend {} on {}.".format(money(price), food))
                     return
                 else:
                     print("You can't find any food you can afford.")
@@ -205,7 +205,7 @@ class IlhaFormosa(cmd.Cmd):
                         return
                     else:
                         if player.cash >= player.location.for_sale_ship_price:
-                            print("You buy %s for %s" % (player.location.for_sale_ship.nickname, money(player.location.for_sale_ship_price)))
+                            print("You buy {} for {}.".format(player.location.for_sale_ship.nickname, money(player.location.for_sale_ship_price)))
                             player.cash -= player.location.for_sale_ship_price
                             player.fleet.append(player.location.for_sale_ship)
                             player.location.remove_for_sale_ship()
@@ -214,7 +214,7 @@ class IlhaFormosa(cmd.Cmd):
                             print("You do not have enough money to buy this ship.")
                             return
                 else:
-                    print("There is no shipyard in %s." % player.location.name)
+                    print("There is no shipyard in {}.".format(player.location.name))
                     return
 
     # TODO: add a buy argument to the shipyard and make the buy command call this
@@ -231,7 +231,7 @@ class IlhaFormosa(cmd.Cmd):
                 print_ship_information(player.location.for_sale_ship)
                 return
         else:
-            print("There is no shipyard in %s." % player.location.name)
+            print("There is no shipyard in {}.".format(player.location.name))
             return
 
     def do_cash(self, line):
@@ -257,7 +257,7 @@ class IlhaFormosa(cmd.Cmd):
             player.move_cash(deposit_amount, "deposit")
             return
         else:
-            print("There is no bank in %s." % player.location.name)
+            print("There is no bank in {}.".format(player.location.name))
             return
 
     def do_withdraw(self, arg):
@@ -276,7 +276,7 @@ class IlhaFormosa(cmd.Cmd):
             player.move_cash(withdraw_amount, "withdraw")
             return
         else:
-            print("There is no bank in %s." % player.location.name)
+            print("There is no bank in {}.".format(player.location.name))
             return
 
     def do_bank(self, args):
@@ -288,7 +288,7 @@ class IlhaFormosa(cmd.Cmd):
                 self.onecmd("cash")
                 return
             else:
-                print("There is no bank in %s." % player.location.name)
+                print("There is no bank in {}.".format(player.location.name))
                 return
         else:
             args = split_args(args)
@@ -323,7 +323,7 @@ class IlhaFormosa(cmd.Cmd):
             player.move_cash(borrow_amount, "borrow")
             return
         else:
-            print("There is no moneylender in %s." % player.location.name)
+            print("There is no moneylender in {}.".format(player.location.name))
             return
 
     def do_repay(self, arg):
@@ -342,7 +342,7 @@ class IlhaFormosa(cmd.Cmd):
             player.move_cash(repay_amount, "repay")
             return
         else:
-            print("There is no moneylender in %s." % player.location.name)
+            print("There is no moneylender in {}.".format(player.location.name))
             return
 
     def do_moneylender(self, args):
@@ -354,7 +354,7 @@ class IlhaFormosa(cmd.Cmd):
                 self.onecmd("cash")
                 return
             else:
-                print("There is no moneylender in %s." % player.location.name)
+                print("There is no moneylender in {}.".format(player.location.name))
                 return
         else:
             args = split_args(args)
@@ -373,13 +373,16 @@ class IlhaFormosa(cmd.Cmd):
                     print("Use moneylender [borrow/repay] [amount] to borrow money or repay a debt.")
                     return
 
-    def do_fleet(self, arg):
+    def do_fleet(self, arg): # TODO: Turn this into a flexitable
         """Get information about a single ship or your whole fleet.
         fleet [ship name]"""
         if arg == "":
-            print("Your fleet has %s ship(s)" % len(player.fleet))
+            is_plural = len(player.fleet) != 1
+            print("Your fleet has {} ship{}.".format(len(player.fleet), "s" * is_plural))
+            print("")
             for k in player.fleet:
                 print_ship_information(k)
+                print("")
         else:
             ship_nickname = format_arg(arg)
             for k in player.fleet:
@@ -399,7 +402,7 @@ class IlhaFormosa(cmd.Cmd):
         try:
             n_days = int(math.floor(float(arg)))
         except ValueError:
-            print("%s is not a valid number" % arg)
+            print("{} is not a valid number".format(arg))
             return
         else:
             if n_days > 7:
@@ -413,7 +416,7 @@ class IlhaFormosa(cmd.Cmd):
                 return
             else:
                 player.day += n_days
-                print("You wait around for %s days." % math.floor(n_days))
+                print("You wait around for {} days.".format(math.floor(n_days)))
                 return
 
     def do_debug(self, line):
@@ -441,7 +444,7 @@ class IlhaFormosa(cmd.Cmd):
         print("Thank you for playing Ilha Formosa!")
 
     def default(self, arg):
-        print("%s is not a known command. Type ? for a list of commands." % arg.lower())
+        print("'{}' is not a known command. Type ? for a list of commands.".format(arg.lower()))
 
 
 if __name__ == "__main__":
