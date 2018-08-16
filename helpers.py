@@ -22,13 +22,16 @@ def apply_units(input_object: [int, float, str, list, dict], function_one) -> [s
 
 def _commas_one(input_number: int) -> str:
     """Add commas to a single integer."""
-    input_as_string = str(input_number)
-    digits_list = []
-    while len(input_as_string) > 0:
-        digits_list.insert(0, input_as_string[-3:])
-        input_as_string = input_as_string[:-3]
-    output_string = ",".join(digits_list)
-    return output_string
+    if options.get_option("commas") == "on":
+        input_as_string = str(input_number)
+        digits_list = []
+        while len(input_as_string) > 0:
+            digits_list.insert(0, input_as_string[-3:])
+            input_as_string = input_as_string[:-3]
+        output_string = ",".join(digits_list)
+        return output_string
+    else:
+        return str(input_number)
 
 
 def commas(input_object: [int, list, dict]) -> [str, list, dict]:

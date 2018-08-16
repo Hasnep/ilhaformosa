@@ -9,6 +9,7 @@ class Options(object):
             "currency": ["pound", "dollar", "gold", "doubloon"],
             "distance": ["modern", "ancient"],  # TODO: implement distance units
             "weight": ["kg"],  # TODO: implement weight units
+            "commas": ["on", "off"],
             "date": ["ymd", "dmy"]
         }
         self.default_options = {key: value[0] for key, value in self.choices.items()}
