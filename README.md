@@ -9,7 +9,10 @@ I'm using this project to teach myself object-oriented programming in Python, so
 [Download](https://github.com/Hasnep/ilhaformosa/releases) the most recent release.
 
 ## Current commands
+
 Use `help` or `?` to get a list of commands or `help/? [command]` to get information about a specific command.
+Use the `tab` key to autocomplete commands and arguments.
+
 * `bank [withdraw/deposit] [amount/max/all]`
 * `borrow [amount/max/all]`
 * `buy [food/ship name]`
@@ -32,11 +35,10 @@ Use `help` or `?` to get a list of commands or `help/? [command]` to get informa
 * `wait [number of days]`
 * `withdraw [amount/max/all]`
 
-Use the `tab` key to autocomplete commands and arguments.
-
 ## Planned features
 
 In no particular order:
+
 * player
     * name ☐
     * backstory ☐
@@ -68,4 +70,5 @@ In no particular order:
 	* animation ☐
 
 ## Code
+
 Code is on [Github](https://github.com/Hasnep/ilhaformosa).
