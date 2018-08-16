@@ -148,9 +148,10 @@ class IlhaFormosa(cmd.Cmd):
     def do_cargo(self, line):  # TODO: Add cargo tetris? Add more detailed cargo management?
         """Show the fleet's current cargo."""
         cargo_strings = weight(player.cargo)
-        for cargo_type, quantity in cargo_strings.items():
-            print(cargo_type + ": " + quantity)
-        print("total: " + weight(player.get_cargo_weight()) + "/" + weight(player.get_cargo_capacity()))
+        cargo_strings["total"] = weight(player.get_cargo_weight()) + "/" + weight(player.get_cargo_capacity())
+        cargo_types_and_total = cargo.types
+        cargo_types_and_total.append("total")
+        table_aligned_print(column_names=["owned"], column_aligns=["r"], row_keys=cargo_types_and_total, column_dicts=[cargo_strings], show_header=True, show_row_keys=True)
 
     def do_rename(self, args):
         """Rename a ship.
