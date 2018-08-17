@@ -176,6 +176,3 @@ class Player(object):
 
 # TODO: Allow the player to select different starting ports.
 player = Player()  # Initialise the player object
-
-
-

@@ -36,4 +36,5 @@ class Cargo(object):
         table_aligned_print(column_names=["Price", "Owned"], column_aligns=["r", "r"], row_keys=self.types, column_dicts=[price_per_weight(cargo_prices), weight(cargo_owned)], show_row_keys=True)
         return
 
+
 cargo = Cargo()

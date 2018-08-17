@@ -1,7 +1,6 @@
 import cmd
 import pyreadline  # used for tab completion
 
-# from pdb import *  # use set_trace() to debug
 from title import *
 from player import *
 
@@ -447,5 +446,3 @@ class IlhaFormosa(cmd.Cmd):
 
 if __name__ == "__main__":
     IlhaFormosa().cmdloop()
-
-
