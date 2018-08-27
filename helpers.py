@@ -197,3 +197,13 @@ def table_aligned_print(column_names: list, column_aligns: list, row_keys: list,
         print("".join(text))
 
     return
+
+
+def bar(value: int, out_of: int, units = str, label: str="", total_length: int=25) -> None:
+    if value < 0:
+        value = 0
+    elif value > out_of:
+        value = out_of
+    bar_length = round_to(total_length * (value/out_of))
+    blank_length = total_length - bar_length
+    print(label + " |" + "=" * bar_length + blanks(blank_length) + "| " + str(value) + "/" + units(out_of))
