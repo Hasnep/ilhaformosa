@@ -11,7 +11,6 @@ I'm using this project to teach myself object-oriented programming in Python, so
 ## Current commands
 
 Use `help` or `?` to get a list of commands or `help/? [command]` to get information about a specific command.
-Use the `tab` key to autocomplete commands and arguments.
 
 * `bank [withdraw/deposit] [amount/max/all]`
 * `borrow [amount/max/all]`
@@ -34,6 +33,8 @@ Use the `tab` key to autocomplete commands and arguments.
 * `shipyard`
 * `wait [number of days]`
 * `withdraw [amount/max/all]`
+
+Use the `tab` key to autocomplete commands and arguments.
 
 ## Planned features
 
@@ -68,7 +69,3 @@ In no particular order:
 * visuals
 	* ASCII artwork ☐
 	* animation ☐
-
-## Code
-
-Code is on [Github](https://github.com/Hasnep/ilhaformosa).
