@@ -214,6 +214,8 @@ class IlhaFormosa(cmd.Cmd):
                 else:
                     print("There is no shipyard in {}.".format(player.location.name))
                     return
+            else:
+                print("You can't buy '{}'.".format(product))
 
     # TODO: add a buy argument to the shipyard and make the buy command call this
     # TODO: add a repair argument with an all/max subcommand
