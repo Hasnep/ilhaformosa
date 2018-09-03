@@ -465,8 +465,10 @@ class IlhaFormosa(cmd.Cmd):
     def postloop(self):
         print("Thank you for playing Ilha Formosa!")
 
-    def default(self, arg):
-        print("'{}' is not a known command. Type ? for a list of commands.".format(arg.lower()))
+    def default(self, args):
+        args = split_args(args)
+        command_name = args[0]
+        print("'{}' is not a known command. Type ? for a list of commands.".format(command_name))
 
 
 if __name__ == "__main__":

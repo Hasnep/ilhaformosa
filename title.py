@@ -1,4 +1,4 @@
-version_number = "v0.1.130"
+version_number = "v0.1.132"
 
 
 # TODO: Use the ctypes library to set the title, width and font of the window.
