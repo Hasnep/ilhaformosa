@@ -8,6 +8,8 @@ bank
 borrow 10
 buy food
 buy ship
+buy tea 2
+buy jade all
 calendar
 cal 10
 cargo

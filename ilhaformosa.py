@@ -175,47 +175,69 @@ class IlhaFormosa(cmd.Cmd):
         """Tab completion for the rename command."""
         return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
 
-    def do_buy(self, arg):
+    def do_buy(self, args):
         """Buy something from a shop.
-        buy [item]"""
-        product = format_arg(arg)
-        if product == "":
-            print("Use buy [item] to buy something.")
+        buy [item] [quantity/max/all]"""
+        args = split_args(args)
+        if len(args) == 0:
+            print("Use buy [item] [quantity/max/all] to buy something.")
             return
-        elif player.cash == 0:
-            print("You have no money on you.")
-            return
+        elif len(args) >= 2:
+            quantity = args[1]
+            if quantity not in ["max", "all"]:
+                try:
+                    quantity = int(float(quantity))
+                except ValueError:
+                    print("'{}' is not a valid quantity. Use buy [item] [quantity/max/all] to buy something.".format(quantity))
+                    return
         else:
-            if product == "food":
-                price = random_price(5.5, sd=1)
-                if player.cash > price:
-                    food = random.choice(["rice", "noodles", "soup"])
-                    player.cash -= price
-                    print("You spend {} on {}.".format(money(price), food))
+            quantity = 1
+        product = args[0]
+        if product == "food":
+            if quantity in ["max", "all"]:
+                quantity = 10
+            price = quantity * random_price(5.5, sd=1)  # TODO: change random_price to accept a quantity variable.
+            if player.cash > price:
+                food = random.choice(["rice", "noodles", "soup"])
+                player.cash -= price
+                print("You spend {} on {}.".format(money(price), food))
+                return
+            else:
+                print("You can't find any food you can afford.")
+                return
+        if product == "ship" or (player.location.for_sale_ship is not None and product == player.location.for_sale_ship.type):
+            if "shipyard" in player.location.buildings:
+                if player.location.for_sale_ship is None:
+                    print("There are no ships for sale here.")
                     return
                 else:
-                    print("You can't find any food you can afford.")
-                    return
-            if product == "ship" or product == player.location.for_sale_ship.type:
-                if "shipyard" in player.location.buildings:
-                    if player.location.for_sale_ship is None:
-                        print("There are no ships for sale here.")
+                    price = player.location.for_sale_ship_price
+                    if player.cash >= price:
+                        print("You buy {} for {}.".format(player.location.for_sale_ship.nickname, money(price)))
+                        player.cash -= price
+                        player.fleet.append(player.location.for_sale_ship)
+                        player.location.remove_for_sale_ship()
                         return
                     else:
-                        if player.cash >= player.location.for_sale_ship_price:
-                            print("You buy {} for {}.".format(player.location.for_sale_ship.nickname, money(player.location.for_sale_ship_price)))
-                            player.cash -= player.location.for_sale_ship_price
-                            player.fleet.append(player.location.for_sale_ship)
-                            player.location.remove_for_sale_ship()
-                            return
-                        else:
-                            print("You do not have enough money to buy this ship.")
-                            return
-                else:
-                    print("There is no shipyard in {}.".format(player.location.name))
-                    return
+                        print("You do not have enough money to buy this ship.")
+                        return
             else:
-                print("You can't buy '{}'.".format(product))
+                print("There is no shipyard in {}.".format(player.location.name))
+                return
+        elif product in cargo.types:
+            if quantity in ["max", "all"]:
+                quantity = math.floor(player.cash/player.location.local_prices[product])
+            price = quantity * player.location.local_prices[product]
+            if player.cash >= price:
+                print("You buy {} of {} for {}.".format(weight(quantity), product, money(price)))
+                player.cash -= price
+                player.set_cargo_quantity(product,player.get_cargo_weight(product) + quantity)
+                return
+            else:
+                print("You do not have enough money to buy {} of {}.".format(weight(quantity), product))
+                return
+        else:
+            print("You can't buy '{}'.".format(product))
 
     # TODO: add a buy argument to the shipyard and make the buy command call this
     # TODO: add a repair argument with an all/max subcommand
