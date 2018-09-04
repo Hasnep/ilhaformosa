@@ -4,6 +4,7 @@ import pyreadline  # used for tab completion
 from title import *
 from player import *
 
+# TODO: add a general syntax checking function, like checker("cargo tea 10", {one: ["food", "ship", {"cargo": [cargo.types]}], two: quantity})
 
 class IlhaFormosa(cmd.Cmd):
     prompt = '\n > '  # set the prompt
@@ -225,19 +226,29 @@ class IlhaFormosa(cmd.Cmd):
                 print("There is no shipyard in {}.".format(player.location.name))
                 return
         elif product in cargo.types:
-            if quantity in ["max", "all"]:
-                quantity = math.floor(player.cash/player.location.local_prices[product])
-            price = quantity * player.location.local_prices[product]
-            if player.cash >= price:
-                print("You buy {} of {} for {}.".format(weight(quantity), product, money(price)))
-                player.cash -= price
-                player.set_cargo_quantity(product,player.get_cargo_weight(product) + quantity)
+            empty_space = player.get_cargo_capacity() - player.get_cargo_weight()
+            if empty_space == 0:
+                print("You have no room on your fleet for more cargo.")
                 return
+            if quantity in ["max", "all"]:
+                max_quantity_cash = math.floor(player.cash/player.location.local_prices[product])
+                quantity = min(max_quantity_cash, empty_space)
+            price = quantity * player.location.local_prices[product]
+            if quantity <= empty_space:
+                if price <= player.cash:
+                    print("You buy {} of {} for {}.".format(weight(quantity), product, money(price)))
+                    player.cash -= price
+                    player.set_cargo_quantity(product, player.get_cargo_weight(product) + quantity)
+                    return
+                else:
+                    print("You do not have enough money to buy {} of {}.".format(weight(quantity), product))
+                    return
             else:
-                print("You do not have enough money to buy {} of {}.".format(weight(quantity), product))
+                print("You do not have enough empty space on your fleet to buy {} of {}. You have room for {} of cargo.".format(weight(quantity), product, weight(empty_space)))
                 return
         else:
             print("You can't buy '{}'.".format(product))
+            return
 
     # TODO: add a buy argument to the shipyard and make the buy command call this
     # TODO: add a repair argument with an all/max subcommand
