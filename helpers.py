@@ -295,29 +295,29 @@ def argument_parser(command_string, command_syntax):
 
 # TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
 
-# Example for syntax list:
-syntax_buy = [
-    {
-        "name": "product",  # required
-        "type": "string",  # required
-        "required": True,  # required
-        "valid_values": ["food", "ship"]
-    },
-    {
-        "name": "quantity",  # required
-        "type": "integer",  # required
-        "required": False,  # required
-        "valid_values": (1, math.inf),
-        "default": 1
-    }
-]
-
-print(argument_parser("food 5", syntax_buy))
-print(argument_parser("ship", syntax_buy))
-print(argument_parser("foo 5", syntax_buy))
-print(argument_parser("food", syntax_buy))
-print(argument_parser("5 7", syntax_buy))
-print(argument_parser("food 5.5", syntax_buy))
-print(argument_parser("food 0", syntax_buy))
-print(argument_parser("food -1", syntax_buy))
-print(argument_parser("", syntax_buy))
+# # Example for syntax list:
+# syntax_buy = [
+#     {
+#         "name": "product",  # required
+#         "type": "string",  # required
+#         "required": True,  # required
+#         "valid_values": ["food", "ship"]
+#     },
+#     {
+#         "name": "quantity",  # required
+#         "type": "integer",  # required
+#         "required": False,  # required
+#         "valid_values": (1, math.inf),
+#         "default": 1
+#     }
+# ]
+#
+# print(argument_parser("food 5", syntax_buy))
+# print(argument_parser("ship", syntax_buy))
+# print(argument_parser("foo 5", syntax_buy))
+# print(argument_parser("food", syntax_buy))
+# print(argument_parser("5 7", syntax_buy))
+# print(argument_parser("food 5.5", syntax_buy))
+# print(argument_parser("food 0", syntax_buy))
+# print(argument_parser("food -1", syntax_buy))
+# print(argument_parser("", syntax_buy))
