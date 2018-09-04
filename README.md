@@ -14,7 +14,7 @@ Use `help` or `?` to get a list of commands or `help/? [command]` to get informa
 
 * `bank [withdraw/deposit] [amount/max/all]`
 * `borrow [amount/max/all]`
-* `buy [food/ship name]`
+* `buy [food/ship name/cargo name] [quantity]`
 * `calendar/cal [days]`
 * `cargo`
 * `cash`
