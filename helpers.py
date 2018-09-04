@@ -207,3 +207,117 @@ def bar(value: int, out_of: int, units = str, label: str="", total_length: int=2
     bar_length = round_to(total_length * (value/out_of))
     blank_length = total_length - bar_length
     print(label + " |" + "=" * bar_length + blanks(blank_length) + "| " + str(value) + "/" + units(out_of))
+
+
+# Input validation
+def syntax_checker(command_syntax) -> None:
+    """Check that the supplied syntax list is valid and can be used for checking."""
+    which_elements_required = []
+    for syntax_element in command_syntax:
+        # check each element has a name, type and required attribute
+        for required_attribute in ["name", "type", "required"]:
+            if required_attribute not in syntax_element:
+                raise ValueError("Missing the '{}' atribute.".format(required_attribute))
+        # check the 'valid_values' attribute is of the correct type
+        if "valid_values" in syntax_element:
+            if syntax_element["type"] == "string":
+                if isinstance(syntax_element["valid_values"], list) and syntax_element["valid_values"] != []:
+                    if all(isinstance(valid_value, str) for valid_value in syntax_element["valid_values"]):
+                        pass
+                    else:
+                        raise TypeError("Elements of the attribute 'valid_values' of the argument '{}' must be strings.".format(syntax_element["name"]))
+                else:
+                    raise TypeError("Attribute 'valid_values' of the argument '{}' must be a nonempty list.".format(syntax_element["name"]))
+            elif syntax_element["type"] in ["integer", "float"]:
+                if isinstance(syntax_element["valid_values"], tuple) and len(syntax_element["valid_values"]) == 2 and syntax_element["valid_values"][0] <= syntax_element["valid_values"][1]:
+                    pass
+                else:
+                    raise TypeError("Attribute 'valid_values' of the argument '{}' must be a tuple of the form (min, max).".format(syntax_element["name"]))
+            else:
+                raise ValueError("'{}' is not a valid value for the attribute 'type' for the argument ''.".format(syntax_element["type"], syntax_element["name"]))
+        which_elements_required.append(syntax_element["required"])
+    # check that the required arguments are all first
+    n_elements_required = sum(which_elements_required)
+    first_arguments = which_elements_required[:n_elements_required]
+    last_arguments = which_elements_required[n_elements_required:len(command_syntax)]
+    if not all(first_arguments) or any(last_arguments):
+        raise ValueError("Required arguments occur after optional arguments." + which_elements_required)
+
+
+def argument_parser(command_string, command_syntax):
+    """Parse and check arguments according to a syntax list."""
+    syntax_checker(command_syntax)
+    command_arguments = split_args(command_string)
+    output_arguments = []
+    for element_index, syntax_element in enumerate(command_syntax):
+        try:
+            argument_text = command_arguments[element_index]
+        except IndexError:
+            if syntax_element["required"]:
+                print("The argument '{}' is not specified.".format(syntax_element["name"]))
+                return
+            else:
+                try:
+                    argument_text = syntax_element["default"]
+                except KeyError:
+                    break
+        if syntax_element["type"] == "string":
+            if syntax_element["valid_values"] is not None:
+                if argument_text in syntax_element["valid_values"]:
+                    pass
+                else:
+                    valid_values_string = ", ".join(syntax_element["valid_values"])
+                    print("'{}' is not a valid value for '{}' must be one of: {}.".format(argument_text, syntax_element["name"], valid_values_string))
+                    return
+        elif syntax_element["type"] in ["integer", "float"]:
+            try:
+                argument_text = float(argument_text)
+            except ValueError:
+                print("The argument '{}' must be a number.".format(syntax_element["name"]))
+                return
+            if syntax_element["type"] == "integer":
+                argument_text = int(math.floor(argument_text))
+            # check if between valid values
+            if syntax_element["valid_values"] is not None:
+                if syntax_element["valid_values"][0] <= argument_text:
+                    if argument_text <= syntax_element["valid_values"][1]:
+                        pass
+                    else:
+                        print("'{}' is bigger than {}.".format(syntax_element["name"], syntax_element["valid_values"][1]))
+                        return
+                else:
+                    print("'{}' is smaller than {}.".format(syntax_element["name"], syntax_element["valid_values"][0]))
+                    return
+        else:
+            raise ValueError("Invalid syntax element type: {}".format(syntax_element["type"]))
+        output_arguments.append(argument_text)
+    return output_arguments
+
+# TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
+
+# Example for syntax list:
+syntax_buy = [
+    {
+        "name": "product",  # required
+        "type": "string",  # required
+        "required": True,  # required
+        "valid_values": ["food", "ship"]
+    },
+    {
+        "name": "quantity",  # required
+        "type": "integer",  # required
+        "required": False,  # required
+        "valid_values": (1, math.inf),
+        "default": 1
+    }
+]
+
+print(argument_parser("food 5", syntax_buy))
+print(argument_parser("ship", syntax_buy))
+print(argument_parser("foo 5", syntax_buy))
+print(argument_parser("food", syntax_buy))
+print(argument_parser("5 7", syntax_buy))
+print(argument_parser("food 5.5", syntax_buy))
+print(argument_parser("food 0", syntax_buy))
+print(argument_parser("food -1", syntax_buy))
+print(argument_parser("", syntax_buy))
