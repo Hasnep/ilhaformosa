@@ -250,6 +250,14 @@ class IlhaFormosa(cmd.Cmd):
             print("You can't buy '{}'.".format(product))
             return
 
+    def complete_buy(self, text, line, begidx, endidx):
+        """Tab completion for the buy command."""
+        args = split_args(line)
+        if len(args) == 2:
+            return [k for k in ["food", "ship"] + cargo.types if k.startswith(format_arg(text))]
+        else:
+            return []
+
     # TODO: add a buy argument to the shipyard and make the buy command call this
     # TODO: add a repair argument with an all/max subcommand
 
