@@ -161,7 +161,7 @@ class Player(object):
         return cargo_weight
 
     def set_cargo_quantity(self, cargo_type: str, quantity: int):
-        if self.get_cargo_weight() + quantity > self.get_cargo_capacity():
+        if quantity > self.get_cargo_capacity():
             print("Your fleet can only hold {}.".format(weight(self.get_cargo_capacity())))
         else:
             self.cargo[cargo_type] = quantity
