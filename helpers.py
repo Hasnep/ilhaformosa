@@ -311,13 +311,3 @@ def argument_parser(command_string, command_syntax):
 #         "default": 1
 #     }
 # ]
-#
-# print(argument_parser("food 5", syntax_buy))
-# print(argument_parser("ship", syntax_buy))
-# print(argument_parser("foo 5", syntax_buy))
-# print(argument_parser("food", syntax_buy))
-# print(argument_parser("5 7", syntax_buy))
-# print(argument_parser("food 5.5", syntax_buy))
-# print(argument_parser("food 0", syntax_buy))
-# print(argument_parser("food -1", syntax_buy))
-# print(argument_parser("", syntax_buy))
