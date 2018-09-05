@@ -250,11 +250,8 @@ def syntax_checker(command_syntax) -> None:
                 raise ValueError("'{}' is not a valid value for the attribute 'type' for the argument ''.".format(syntax_element["type"], syntax_element["name"]))
         which_elements_required.append(syntax_element["required"])
     # check that the required arguments are all first
-    n_elements_required = sum(which_elements_required)
-    first_arguments = which_elements_required[:n_elements_required]
-    last_arguments = which_elements_required[n_elements_required:len(command_syntax)]
-    if not all(first_arguments) or any(last_arguments):
-        raise ValueError("Required arguments occur after optional arguments." + which_elements_required)
+    if any(which_elements_required[sum(which_elements_required):]):
+        raise ValueError("Required arguments occur after optional arguments. {}".format(which_elements_required))
 
 
 def argument_parser(command_string, command_syntax):
