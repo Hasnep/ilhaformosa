@@ -222,17 +222,30 @@ def syntax_checker(command_syntax) -> None:
         if "valid_values" in syntax_element:
             if syntax_element["type"] == "string":
                 if isinstance(syntax_element["valid_values"], list) and syntax_element["valid_values"] != []:
-                    if all(isinstance(valid_value, str) for valid_value in syntax_element["valid_values"]):
+                    if all(type(valid_value) is str for valid_value in syntax_element["valid_values"]):
                         pass
                     else:
                         raise TypeError("Elements of the attribute 'valid_values' of the argument '{}' must be strings.".format(syntax_element["name"]))
                 else:
                     raise TypeError("Attribute 'valid_values' of the argument '{}' must be a nonempty list.".format(syntax_element["name"]))
             elif syntax_element["type"] in ["integer", "float"]:
-                if isinstance(syntax_element["valid_values"], tuple) and len(syntax_element["valid_values"]) == 2 and syntax_element["valid_values"][0] <= syntax_element["valid_values"][1]:
-                    pass
+                if type(syntax_element["valid_values"]) is tuple:
+                    if 2 <= len(syntax_element["valid_values"]) <= 3:
+                        if (type(syntax_element["valid_values"][0]) is int or type(syntax_element["valid_values"][0]) is float) and (type(syntax_element["valid_values"][1]) is int or type(syntax_element["valid_values"][1]) is float):
+                            if syntax_element["valid_values"][0] <= syntax_element["valid_values"][1]:
+                                if len(syntax_element["valid_values"]) == 3:
+                                    if type(syntax_element["valid_values"][2]) is list:
+                                        pass
+                                    else:
+                                        TypeError("Attribute 'valid_values' of the argument '{}' must be of the form (min, max, [extra_values]) where extra_values is a list.".format(syntax_element["name"]))
+                            else:
+                                raise ValueError("Attribute 'valid_values' of the argument '{}' must have min value smaller than max value.".format(syntax_element["name"]))
+                        else:
+                            raise TypeError("Attribute 'valid_values' of the argument '{}' must be of the form (min, max, [extra_values]) where min and max are of the type int or float.".format(syntax_element["name"]))
+                    else:
+                        raise ValueError("Attribute 'valid_values' of the argument '{}' must be either two or three long and of the form (min, max, [extra_values]).".format(syntax_element["name"]))
                 else:
-                    raise TypeError("Attribute 'valid_values' of the argument '{}' must be a tuple of the form (min, max).".format(syntax_element["name"]))
+                    raise TypeError("Attribute 'valid_values' of the argument '{}' must be a tuple of the form (min, max, [extra_values]).".format(syntax_element["name"]))
             else:
                 raise ValueError("'{}' is not a valid value for the attribute 'type' for the argument ''.".format(syntax_element["type"], syntax_element["name"]))
         which_elements_required.append(syntax_element["required"])
@@ -270,24 +283,27 @@ def argument_parser(command_string, command_syntax):
                     print("'{}' is not a valid value for '{}' must be one of: {}.".format(argument_text, syntax_element["name"], valid_values_string))
                     return
         elif syntax_element["type"] in ["integer", "float"]:
-            try:
-                argument_text = float(argument_text)
-            except ValueError:
-                print("The argument '{}' must be a number.".format(syntax_element["name"]))
-                return
-            if syntax_element["type"] == "integer":
-                argument_text = int(math.floor(argument_text))
-            # check if between valid values
-            if syntax_element["valid_values"] is not None:
-                if syntax_element["valid_values"][0] <= argument_text:
-                    if argument_text <= syntax_element["valid_values"][1]:
-                        pass
-                    else:
-                        print("'{}' is bigger than {}.".format(syntax_element["name"], syntax_element["valid_values"][1]))
-                        return
-                else:
-                    print("'{}' is smaller than {}.".format(syntax_element["name"], syntax_element["valid_values"][0]))
+            if len(syntax_element["valid_values"]) == 3 and argument_text in syntax_element["valid_values"][2]:
+                pass
+            else:
+                try:
+                    argument_text = float(argument_text)
+                except ValueError:
+                    print("The argument '{}' must be a number.".format(syntax_element["name"]))
                     return
+                if syntax_element["type"] == "integer":
+                    argument_text = int(math.floor(argument_text))
+                # check if between valid values
+                if syntax_element["valid_values"] is not None:
+                    if syntax_element["valid_values"][0] <= argument_text:
+                        if argument_text <= syntax_element["valid_values"][1]:
+                            pass
+                        else:
+                            print("'{}' is bigger than {}.".format(syntax_element["name"], syntax_element["valid_values"][1]))
+                            return
+                    else:
+                        print("'{}' is smaller than {}.".format(syntax_element["name"], syntax_element["valid_values"][0]))
+                        return
         else:
             raise ValueError("Invalid syntax element type: {}".format(syntax_element["type"]))
         output_arguments.append(argument_text)
@@ -295,19 +311,6 @@ def argument_parser(command_string, command_syntax):
 
 # TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
 
-# # Example for syntax list:
-# syntax_buy = [
-#     {
-#         "name": "product",  # required
-#         "type": "string",  # required
-#         "required": True,  # required
-#         "valid_values": ["food", "ship"]
-#     },
-#     {
-#         "name": "quantity",  # required
-#         "type": "integer",  # required
-#         "required": False,  # required
-#         "valid_values": (1, math.inf),
-#         "default": 1
-#     }
-# ]
+
+
+
