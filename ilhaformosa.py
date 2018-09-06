@@ -137,9 +137,25 @@ class IlhaFormosa(cmd.Cmd):
         """Tab completion for the sail command."""
         return [port for port in world if (port.startswith(text) and port != player.location.id)]
 
-    def do_market(self, line):
-        """Show the market's prices."""  # TODO: add [buy/sell] [item] [quantity/max/all]
-        cargo.table_cargo_prices(player.location.local_prices, player.cargo)
+    def do_market(self, args):
+        """Show the market's prices.
+        market [buy/sell] [item] [quantity/max/all]"""
+        args = split_args(args)
+        print(args)
+        if len(args) == 0:
+            cargo.table_cargo_prices(player.location.local_prices, player.cargo)
+            return
+        else:
+            if args[0] in ["buy", "sell"] and len(args) >= 2:
+                if args[1] in cargo.types:
+                    self.onecmd(" ".join(args))
+                    return
+                else:
+                    print("Buy a cargo: {}".format(", ".join(cargo.types)))
+                    return
+            else:
+                print("Use market [buy/sell] [item] [quantity/max/all] to buy or sell cargo.")
+                return
 
     def do_cargo(self, line):  # TODO: Add cargo tetris? Add more detailed cargo management?
         """Show the fleet's current cargo."""
