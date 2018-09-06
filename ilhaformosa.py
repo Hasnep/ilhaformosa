@@ -80,9 +80,7 @@ class IlhaFormosa(cmd.Cmd):
     def do_look(self, line):
         """Look around the port you are currently in."""
         print("You are in {}.".format(player.location.name))
-        print("There is a ")
-        for k in player.location.buildings:
-            print("{}".format(k))
+        print("There is a {}".format(", ".join(player.location.buildings)))
 
     def do_sail(self, arg):
         """Set sail for a port.
