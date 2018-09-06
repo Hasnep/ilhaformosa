@@ -3,6 +3,7 @@ import pyreadline  # used for tab completion
 
 from title import *
 from player import *
+from commandsyntax import *
 
 # TODO: add a general syntax checking function, like checker("cargo tea 10", {one: ["food", "ship", {"cargo": [cargo.types]}], two: quantity})
 
@@ -10,32 +11,34 @@ class IlhaFormosa(cmd.Cmd):
     prompt = '\n > '  # set the prompt
 
     def do_options(self, args):
-        """View or modify an option or reset all options to default.
-        options [option name] [new value/default] or options default to reset to defaults"""
-        args = split_args(args)
-        if len(args) > 2:  # if too many options have been entered
-            print("Use options [option name] [new value] to set an option.")
+        """View or modify an option or reset all options to default."""
+        args = argument_parser(command_string=args, command_syntax=command_syntax["options"])
+        if args is None:
             return
-        elif len(args) == 2:  # if an option and a value were specified
-            option_name = args[0]
-            option_value = args[1]
-            if option_value == "default":  # if the value specified was "default"
-                options.reset_option(option_name)
+        else:
+            if len(args) > 2:  # if too many options have been entered
+                print("Use options [option name] [new value] to set an option.")
                 return
-            else:
-                options.set_option(option_name, option_value)  # set the option to the specified value
+            elif len(args) == 2:  # if an option and a value were specified
+                option_name = args[0]
+                option_value = args[1]
+                if option_value == "default":  # if the value specified was "default"
+                    options.reset_option(option_name)
+                    return
+                else:
+                    options.set_option(option_name, option_value)  # set the option to the specified value
+                    return
+            elif len(args) == 1:  # if only an option was specified
+                option_name = args[0]
+                if option_name == "default":  # if resetting all options to default
+                    options.reset_all_options()
+                    return
+                else:  # if only an option name was specified
+                    options.print_option(option_name)
+                    return
+            elif len(args) == 0:  # if no option name was specified
+                options.print_all_options()
                 return
-        elif len(args) == 1:  # if only an option was specified
-            option_name = args[0]
-            if option_name == "default":  # if resetting all options to default
-                options.reset_all_options()
-                return
-            else:  # if only an option name was specified
-                options.print_option(option_name)
-                return
-        elif len(args) == 0:  # if no option name was specified
-            options.print_all_options()
-            return
 
     def complete_options(self, text, line, begidx, endidx):
         """Tab completion for the options command."""
@@ -53,22 +56,16 @@ class IlhaFormosa(cmd.Cmd):
     def do_calendar(self, args):
         """Find out what the date is or what the date will be in the future.
         calendar [days]"""
-        if args == "":
-            print("It is {}.".format(day_to_date(player.day)))
+        args = argument_parser(command_string=args, command_syntax=command_syntax["calendar"])
+        if args is None:
             return
         else:
-            try:
-                args = float(args)
-            except ValueError:
-                print("Use calendar [days] to find out what the date will be in the future.")
+            if len(args) == 0:
+                print("It is {}.".format(day_to_date(player.day)))
                 return
             else:
-                if args <= 365*10:
-                    print("In {} days it will be {}.".format(math.floor(args), day_to_date(player.day + args)))
-                else:
-                    print("Your calendar only has pages for the next 10 years.")
-
-    do_cal = do_calendar
+                print("In {} days it will be {}.".format(args, day_to_date(player.day + args)))
+                return
 
     def do_map(self, line):
         """List the locations on the map."""
@@ -131,7 +128,6 @@ class IlhaFormosa(cmd.Cmd):
                         player.location = arriving_port
                         print("You land in {} on {}.".format(arriving_port.name, day_to_date(player.day)))
                         return
-
 
     def complete_sail(self, text, line, begidx, endidx):
         """Tab completion for the sail command."""
