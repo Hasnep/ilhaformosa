@@ -74,9 +74,7 @@ class IlhaFormosa(cmd.Cmd):
         """List the locations on the map."""
         # TODO: Add an argument to look at the buildings of a certain port.
         print("You are in {}.".format(player.location.name))
-        print("The map has these ports on it:")
-        for key, value in world.items():
-            print(value.name)
+        print("Your map has these ports on it: {}".format(", ".join(all_ports)))
         # TODO: Show an ascii map of the world.
 
     def do_look(self, line):
