@@ -172,8 +172,7 @@ def table_aligned_print(column_names: list, column_aligns: list, row_keys: list,
         if show_header:
             max_column_widths.append(max(max_variable_width, len(column_names[column_index])))
         else:
-            max_column_widths.append(max_variable_width
-                                     )
+            max_column_widths.append(max_variable_width)
     if show_row_keys:
         keys_column_width = max([len(key) for key in row_keys])
         text = blanks(keys_column_width + 1)
@@ -219,7 +218,7 @@ def syntax_checker(command_syntax) -> None:
             if required_attribute not in syntax_element:
                 raise ValueError("Missing the '{}' atribute.".format(required_attribute))
         # check the 'valid_values' attribute is of the correct type
-        if "valid_values" in syntax_element:
+        if "valid_values" in syntax_element and syntax_element["valid_values"] is not None:
             if syntax_element["type"] == "string":
                 if isinstance(syntax_element["valid_values"], list) and syntax_element["valid_values"] != []:
                     if all(type(valid_value) is str for valid_value in syntax_element["valid_values"]):
@@ -272,7 +271,7 @@ def argument_parser(command_string, command_syntax):
                 except KeyError:
                     break
         if syntax_element["type"] == "string":
-            if syntax_element["valid_values"] is not None:
+            if "valid_values" in syntax_element and syntax_element["valid_values"] is not None:
                 if argument_text in syntax_element["valid_values"]:
                     pass
                 else:
