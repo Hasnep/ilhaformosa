@@ -217,35 +217,38 @@ class IlhaFormosa(cmd.Cmd):
     def do_help(self, args):
         """List all the available commands or show help for a specific command."""
         args = argument_parser(args, command_syntax["help"])
-        if len(args) == 0:
-            widest_command = max([len(command_name) for command_name in all_commands])
-            print("All commands:")
-            n_commands_per_line = math.floor(90/(widest_command+1))
-            for line_of_commands in [all_commands[i:i + n_commands_per_line] for i in range(0, len(all_commands), n_commands_per_line)]:
-                print(" ".join([align_text(command_name, widest_command, "l") for command_name in line_of_commands]))
-            print("Use help [command] to get more information about a command.")
+        if args is None:
             return
         else:
-            command_name = args[0]
-            if command_name == "all":
-                for command_name in all_commands:
-                    print(command_name + ": " + getattr(self, "do_" + command_name).__doc__)
+            if len(args) == 0:
+                widest_command = max([len(command_name) for command_name in all_commands])
+                print("All commands:")
+                n_commands_per_line = math.floor(90/(widest_command+1))
+                for line_of_commands in [all_commands[i:i + n_commands_per_line] for i in range(0, len(all_commands), n_commands_per_line)]:
+                    print(" ".join([align_text(command_name, widest_command, "l") for command_name in line_of_commands]))
+                print("Use help [command] to get more information about a command.")
                 return
             else:
-                print(getattr(self, "do_" + command_name).__doc__)
-                if command_name in command_syntax and len(command_syntax[command_name]) > 0:
-                    selected_command_syntax = command_syntax[command_name]
+                def show_command_help(command_name,_self=self):
                     command_syntax_string = command_name
-                    for argument in selected_command_syntax:
-                        if argument["required"]:
-                            brackets = "<>"
-                        else:
-                            brackets = "[]"
-                        command_syntax_string += " " + brackets[0] + argument["name"] + brackets[1]
-                    print(command_syntax_string)
+                    if command_name in command_syntax and len(command_syntax[command_name]) > 0:
+                        selected_command_syntax = command_syntax[command_name]
+                        for argument in selected_command_syntax:
+                            if argument["required"]:
+                                brackets = "<>"
+                            else:
+                                brackets = "[]"
+                            command_syntax_string += " " + brackets[0] + argument["name"] + brackets[1]
+                    print(command_syntax_string + " - " + getattr(_self, "do_" + command_name).__doc__)
+                    return
+
+                command_name = args[0]
+                if command_name == "all":
+                    for command_name in all_commands:
+                        show_command_help(command_name)
                     return
                 else:
-                    return
+                    show_command_help(command_name)
 
     def do_look(self, line):
         """Look around the port you are currently in."""
