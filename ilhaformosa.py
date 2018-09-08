@@ -5,10 +5,42 @@ from title import *
 from player import *
 from commandsyntax import *
 
-# TODO: add a general syntax checking function, like checker("cargo tea 10", {one: ["food", "ship", {"cargo": [cargo.types]}], two: quantity})
 
 class IlhaFormosa(cmd.Cmd):
     prompt = '\n > '  # set the prompt
+
+    def do_help(self, args):
+        """List all the available commands or show help for a specific command."""
+        args = argument_parser(args, command_syntax["help"])
+        if len(args) == 0:
+            widest_command = max([len(command_name) for command_name in all_commands])
+            print("All commands:")
+            n_commands_per_line = math.floor(90/(widest_command+1))
+            for line_of_commands in [all_commands[i:i + n_commands_per_line] for i in range(0, len(all_commands), n_commands_per_line)]:
+                print(" ".join([align_text(command_name, widest_command, "l") for command_name in line_of_commands]))
+            print("Use help [command] to get more information about a command.")
+            return
+        else:
+            command_name = args[0]
+            if command_name == "all":
+                for command_name in all_commands:
+                    print(command_name + ": " + getattr(self, "do_" + command_name).__doc__)
+                return
+            else:
+                print(getattr(self, "do_" + command_name).__doc__)
+                if command_name in command_syntax and len(command_syntax[command_name]) > 0:
+                    selected_command_syntax = command_syntax[command_name]
+                    command_syntax_string = command_name
+                    for argument in selected_command_syntax:
+                        if argument["required"]:
+                            brackets = "<>"
+                        else:
+                            brackets = "[]"
+                        command_syntax_string += " " + brackets[0] + argument["name"] + brackets[1]
+                    print(command_syntax_string)
+                    return
+                else:
+                    return
 
     def do_options(self, args):
         """View or modify an option or reset all options to default."""
@@ -54,8 +86,7 @@ class IlhaFormosa(cmd.Cmd):
             return ""
 
     def do_calendar(self, args):
-        """Find out what the date is or what the date will be in the future.
-        calendar [days]"""
+        """Find out what the date is or what the date will be in the future."""
         args = argument_parser(command_string=args, command_syntax=command_syntax["calendar"])
         if args is None:
             return
@@ -80,8 +111,7 @@ class IlhaFormosa(cmd.Cmd):
         print("There is a {}".format(", ".join(player.location.buildings)))
 
     def do_sail(self, arg):
-        """Set sail for a port.
-        sail [destination]"""
+        """Set sail for a port."""
         if arg == "":  # check if an argument was entered
             print("Use sail [destination] to sail to a port. You can see a list of ports using the map command.")
             return
@@ -134,10 +164,8 @@ class IlhaFormosa(cmd.Cmd):
         return [port for port in world if (port.startswith(text) and port != player.location.id)]
 
     def do_market(self, args):
-        """Show the market's prices.
-        market [buy/sell] [item] [quantity/max/all]"""
+        """Get the market's prices or buy and sell cargo."""
         args = split_args(args)
-        print(args)
         if len(args) == 0:
             cargo.table_cargo_prices(player.location.local_prices, player.cargo)
             return
@@ -160,8 +188,7 @@ class IlhaFormosa(cmd.Cmd):
         bar(player.get_cargo_weight(), player.get_cargo_capacity(), units=weight)
 
     def do_rename(self, args):
-        """Rename a ship.
-        rename [old name]>[new name]"""
+        """Rename a ship."""
         args = args.split(">")
         if len(args) == 2:
             old_nickname = args[0]
@@ -185,8 +212,7 @@ class IlhaFormosa(cmd.Cmd):
         return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
 
     def do_buy(self, args):
-        """Buy something from a shop.
-        buy [item] [quantity/max/all]"""
+        """Buy something from a shop."""
         args = split_args(args)
         if len(args) == 0:
             print("Use buy [item] [quantity/max/all] to buy something.")
@@ -291,8 +317,7 @@ class IlhaFormosa(cmd.Cmd):
         print("Total: " + money(player.total_money))
 
     def do_deposit(self, arg):
-        """Deposits money into a bank account.
-        deposit [amount/max/all]"""
+        """Deposits money into a bank account."""
         arg = format_arg(arg)
         if "bank" in player.location.buildings:  # if there is a bank here
             if arg == "max" or arg == "all":
@@ -310,8 +335,7 @@ class IlhaFormosa(cmd.Cmd):
             return
 
     def do_withdraw(self, arg):
-        """Withdraws money from a bank account.
-        withdraw [amount/max/all]"""
+        """Withdraws money from a bank account."""
         arg = format_arg(arg)
         if "bank" in player.location.buildings:  # if there is a bank here
             if arg == "max" or arg == "all":
@@ -329,8 +353,7 @@ class IlhaFormosa(cmd.Cmd):
             return
 
     def do_bank(self, args):
-        """Check your balance and deposit or withdraw cash.
-        bank [deposit/withdraw] [amount]"""
+        """Check your balance and deposit or withdraw cash."""
         if args == "":
             if "bank" in player.location.buildings:
                 print("Interest rate: " + percent(player.bank_rate))
@@ -357,8 +380,7 @@ class IlhaFormosa(cmd.Cmd):
                     return
 
     def do_borrow(self, arg):
-        """Borrows money from the moneylender.
-        borrow [amount/max/all]"""
+        """Borrows money from the moneylender."""
         arg = format_arg(arg)
         if "moneylender" in player.location.buildings:  # if there is a moneylender here
             if arg == "max" or arg == "all":
@@ -376,8 +398,7 @@ class IlhaFormosa(cmd.Cmd):
             return
 
     def do_repay(self, arg):
-        """Repays money to the moneylender.
-        repay [amount/max/all]"""
+        """Repays money to the moneylender."""
         arg = format_arg(arg)
         if "moneylender" in player.location.buildings:  # if there is a moneylender here
             if arg == "max" or arg == "all":
@@ -395,8 +416,7 @@ class IlhaFormosa(cmd.Cmd):
             return
 
     def do_moneylender(self, args):
-        """Borrow money or repay a debt.
-        moneylender [borrow/repay] [amount]"""
+        """Borrow money or repay a debt."""
         if args == "":
             if "moneylender" in player.location.buildings:
                 print("Interest rate: " + percent(player.lend_rate))
@@ -423,8 +443,7 @@ class IlhaFormosa(cmd.Cmd):
                     return
 
     def do_fleet(self, arg): # TODO: Turn this into a flexitable
-        """Get information about a single ship or your whole fleet.
-        fleet [ship name]"""
+        """Get information about a single ship or your whole fleet."""
         if arg == "":
             is_plural = len(player.fleet) != 1
             print("Your fleet has {} ship{}.".format(len(player.fleet), "s" * is_plural))
@@ -445,8 +464,7 @@ class IlhaFormosa(cmd.Cmd):
         return [format_arg(k.nickname) for k in player.fleet if format_arg(k.nickname).startswith(format_arg(text))]
 
     def do_wait(self, arg):
-        """Wait for a specified number of days.
-        wait [number of days]"""
+        """Wait for a specified number of days."""
         arg = format_arg(arg)
         try:
             n_days = int(math.floor(float(arg)))
@@ -476,11 +494,13 @@ class IlhaFormosa(cmd.Cmd):
         print("Market")
         print(" Global values: " + str(cargo.global_values))
         print(" Local values: " + str(player.location.local_values))
+        return
 
     def do_credits(self, line):
         """Print the credits for the game."""
         print("Game by Hannes Smit (hasnep.github.io)")
         # print("Map modified from Wikimedia Commons (Asia Countries Gray)")
+        return
 
     def do_quit(self, line):
         """Quit the game."""
