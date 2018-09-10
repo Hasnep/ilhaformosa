@@ -257,7 +257,7 @@ def argument_parser(command_string, command_syntax):
     """Parse and check arguments according to a syntax list."""
     syntax_checker(command_syntax)
     command_arguments = split_args(command_string)
-    output_arguments = []
+    output_arguments = {}
     for element_index, syntax_element in enumerate(command_syntax):
         try:
             argument_text = command_arguments[element_index]
@@ -302,8 +302,9 @@ def argument_parser(command_string, command_syntax):
                         return
         else:
             raise ValueError("Invalid syntax element type: {}".format(syntax_element["type"]))
-        output_arguments.append(argument_text)
+        output_arguments[syntax_element["name"]] = argument_text
     return output_arguments
+
 
 # TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
 # TODO: Required should accept a string/list of strings that will only require if those arguments are included

@@ -24,7 +24,7 @@ class IlhaFormosa(cmd.Cmd):
                         print("Use bank [deposit/withdraw] [amount] to withdraw or deposit money.")
                         return
                     else:
-                        self.onecmd(args[0] + " " + str(args[1]))
+                        self.onecmd(args["deposit/withdraw"] + " " + str(args["amount"]))
                         return
             else:
                 print("There is no bank in {}.".format(player.location.name))
@@ -37,10 +37,10 @@ class IlhaFormosa(cmd.Cmd):
             return
         else:
             if "moneylender" in player.location.buildings:
-                if args[0] == "max" or args[0] == "all":
+                if args["amount"] == "max" or args["amount"] == "all":
                     borrow_amount = player.max_debt - player.debt
                 else:
-                    borrow_amount = args[0]
+                    borrow_amount = args["amount"]
                 player.move_cash(borrow_amount, "borrow")
                 return
             else:
@@ -53,8 +53,8 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            product = args[0]
-            quantity = args[1]
+            product = args["product"]
+            quantity = args["quantity"]
             if product == "food":
                 if quantity in ["max", "all"]:
                     quantity = 10
@@ -129,7 +129,7 @@ class IlhaFormosa(cmd.Cmd):
                 print("It is {}.".format(day_to_date(player.day)))
                 return
             else:
-                print("In {} days it will be {}.".format(args[0], day_to_date(player.day + args[0])))
+                print("In {} days it will be {}.".format(args["days"], day_to_date(player.day + args["days"])))
                 return
 
     def do_cargo(self, input_arguments):  # TODO: Add cargo tetris? Add more detailed cargo management?
@@ -181,10 +181,10 @@ class IlhaFormosa(cmd.Cmd):
             return
         else:
             if "bank" in player.location.buildings:
-                if args[0] == "max" or args[0] == "all":
+                if args["amount"] == "max" or args["amount"] == "all":
                     deposit_amount = player.cash
                 else:
-                    deposit_amount = args[0]
+                    deposit_amount = args["amount"]
                 player.move_cash(deposit_amount, "deposit")
                 return
             else:
@@ -205,7 +205,7 @@ class IlhaFormosa(cmd.Cmd):
                     print_ship_information(k)
                     print("")
             else:
-                ship_nickname = format_arg(args[0])
+                ship_nickname = format_arg(args["ship name"])
                 for k in player.fleet:
                     if ship_nickname == format_arg(k.nickname):
                         print_ship_information(k)
@@ -244,7 +244,7 @@ class IlhaFormosa(cmd.Cmd):
                     print(command_syntax_string + " - " + getattr(_self, "do_" + command_name).__doc__)
                     return
 
-                command_name = args[0]
+                command_name = args["command"]
                 if command_name == "all":
                     for command_name in all_commands:
                         show_command_help(command_name)
@@ -277,7 +277,7 @@ class IlhaFormosa(cmd.Cmd):
                 cargo.table_cargo_prices(player.location.local_prices, player.cargo)
                 return
             else:
-                if args[1] in cargo.types:
+                if args["product"] in cargo.types:
                     self.onecmd(" ".join(args))
                     return
                 else:
@@ -301,7 +301,7 @@ class IlhaFormosa(cmd.Cmd):
                         print("Use moneylender [borrow/repay] [amount] to borrow money or repay a debt.")
                         return
                     else:
-                        self.onecmd(args[0] + " " + str(args[1]))
+                        self.onecmd(args["borrow/repay"] + " " + str(args["amount"]))
                         return
             else:
                 print("There is no moneylender in {}.".format(player.location.name))
@@ -313,42 +313,39 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            if len(args) > 2:  # if too many options have been entered
-                print("Use options [option name] [new value] to set an option.")
-                return
-            elif len(args) == 2:  # if an option and a value were specified
-                option_name = args[0]
-                option_value = args[1]
-                if option_value == "default":  # if the value specified was "default"
-                    options.reset_option(option_name)
-                    return
-                else:
-                    options.set_option(option_name, option_value)  # set the option to the specified value
-                    return
-            elif len(args) == 1:  # if only an option was specified
-                option_name = args[0]
-                if option_name == "default":  # if resetting all options to default
-                    options.reset_all_options()
-                    return
-                else:  # if only an option name was specified
-                    options.print_option(option_name)
-                    return
-            elif len(args) == 0:  # if no option name was specified
+            if len(args) == 0:
                 options.print_all_options()
                 return
+            else:
+                option_name = args["option"]
+                if len(args) == 1:
+                    if option_name == "default":
+                        options.reset_all_options()
+                        return
+                    else:
+                        options.print_option(option_name)
+                        return
+                else:
+                    option_value = args["value"]
+                    if option_value == "default":
+                        options.reset_option(option_name)
+                        return
+                    else:
+                        options.set_option(option_name, option_value)
+                        return
 
     def complete_options(self, text, line, begidx, endidx):
         """Tab completion for the options command."""
         args = split_args(line)
         if len(args) == 1:
-            return [option_name for option_name in options.choices]
+            return [option_name for option_name in {**options.choices, **{"default":[]}}]
         elif len(args) == 2:
-            return [option_name for option_name in options.choices if option_name.startswith(text)]
+            return [option_name for option_name in {**options.choices, **{"default":[]}} if option_name.startswith(text)]
         elif len(args) == 3 and args[1] in options.choices:
             option_name = args[1]
-            return [option_choice for option_choice in options.choices[option_name] if option_choice.startswith(text)]
+            return [option_choice for option_choice in options.choices[option_name] + ["default"] if option_choice.startswith(text)]
         else:
-            return ""
+            return []
 
     def do_quit(self, input_arguments):
         """Quit the game."""
@@ -389,10 +386,10 @@ class IlhaFormosa(cmd.Cmd):
             return
         else:
             if "moneylender" in player.location.buildings:
-                if args[0] == "max" or args[0] == "all":
+                if args["amount"] == "max" or args["amount"] == "all":
                     repay_amount = player.debt
                 else:
-                    repay_amount = args[0]
+                    repay_amount = args["amount"]
                 player.move_cash(repay_amount, "repay")
                 return
             else:
@@ -405,7 +402,7 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            destination_id = args[0]
+            destination_id = args["destination"]
             destination_port = world[destination_id]
             # TODO: Find out if it is more efficient to compare names or dicts.
             if player.location == destination_port:  # check if the player is already at their destination
@@ -475,7 +472,7 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            n_days = args[0]
+            n_days = args["days"]
             player.day += n_days
             print("You wait around for {} days.".format(n_days))
             return
@@ -487,10 +484,10 @@ class IlhaFormosa(cmd.Cmd):
             return
         else:
             if "bank" in player.location.buildings:
-                if args[0] == "max" or args[0] == "all":
+                if args["amount"] == "max" or args["amount"] == "all":
                     withdraw_amount = player.balance
                 else:
-                    withdraw_amount = args[0]
+                    withdraw_amount = args["amount"]
                 player.move_cash(withdraw_amount, "withdraw")
                 return
             else:
@@ -502,8 +499,7 @@ class IlhaFormosa(cmd.Cmd):
 
     def default(self, input_arguments):
         """Unrecognised command."""
-        args = split_args(input_arguments)
-        command_name = args[0]
+        command_name = split_args(input_arguments)[0]
         print("'{}' is not a known command. Type ? for a list of commands.".format(command_name))
 
     def preloop(self):
