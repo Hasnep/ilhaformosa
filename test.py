@@ -11,7 +11,7 @@ buy ship
 buy tea 2
 buy jade all
 calendar
-cal 10
+calendar 10
 cargo
 cash
 credits

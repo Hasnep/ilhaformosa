@@ -67,7 +67,9 @@ command_syntax = {
             "name": "destination",
             "type": "string",
             "required": True,
-            "valid_values": [port_name_to_id(port_name) for port_name in all_ports]
+            "valid_values": [port_name_to_id(port_name) for port_name in all_ports],
+            "missing_value":"Use sail [destination] to sail to a port. You can see a list of ports using the map command.",
+"invalid_value":"{} is not a port on your map. You can see a list of ports using the 'map' command."
         }
     ],
     "market": [
@@ -76,6 +78,12 @@ command_syntax = {
             "type": "string",
             "required": False,
             "valid_values": ["buy", "sell"]
+        },
+        {
+            "name": "product",
+            "type": "string",
+            "required": False,
+            "valid_values": ["food", "ship"] + cargo.types
         },
         {
             "name": "quantity/all/max",
@@ -129,12 +137,12 @@ command_syntax = {
             "name": "deposit/withdraw",
             "type": "string",
             "required": False,
-            "valid_values": ["depsoit", "withdraw"]
+            "valid_values": ["deposit", "withdraw"]
         },
         {
             "name": "amount/max/all",
             "type": "integer",
-            "required": True,
+            "required": False,
             "valid_values": (1, math.inf, ["max", "all"])
         }
     ],
@@ -164,7 +172,7 @@ command_syntax = {
         {
             "name": "amount/max/all",
             "type": "integer",
-            "required": True,
+            "required": False,
             "valid_values": (1, math.inf, ["max", "all"])
         }
     ],
@@ -181,7 +189,10 @@ command_syntax = {
             "name": "days",
             "type": "integer",
             "required": False,
-            "default": 1
+            "valid_values": (1, 7),
+            "default": 1,
+            "too_big":"You can only wait for one week at a time.",
+            "too_small":"You cannot go back in time."
         }
     ],
     "credits": [
@@ -192,4 +203,4 @@ command_syntax = {
 
 commands_no_syntax = [command_name for command_name in all_commands if command_name not in command_syntax]
 if commands_no_syntax:
-    print("Commands in list but without syntax: {}".format(", ".join(commands_no_syntax)))
+    raise ValueError("Commands in list but without syntax: {}".format(", ".join(commands_no_syntax)))

@@ -306,3 +306,6 @@ def argument_parser(command_string, command_syntax):
     return output_arguments
 
 # TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
+# TODO: Required should accept a string/list of strings that will only require if those arguments are included
+# TODO: Output as dict of argument names and values
+# TODO: Option for final string argument to accept the tail of the input string (e.g. for the sail command)
