@@ -27,19 +27,26 @@ class Port(object):
         self.for_sale_ship_price = 0
 
 
-all_ports = [*ports_distances]
-
-world = {port_name.lower().replace(" ", ""): Port(port_name) for port_name in all_ports}  # create port objects for all ports
-
-
-# helper functions
-def id_to_port(port_id: str, _world=world) -> Port:
-    return _world[port_id]
-
-
 def port_name_to_id(port_name: str) -> str:
     return port_name.lower().replace(" ", "")
 
 
+all_port_names = [*ports_distances]
+all_port_ids = [port_name_to_id(port_name) for port_name in all_port_names]
+
+world = {port_name_to_id(port_name): Port(port_name) for port_name in all_port_names}  # create port objects for all ports
+
+
+def id_to_port(port_id: str, _world=world) -> Port:
+    return _world[port_id]
+
+
 def name_to_port(port_name: str) -> Port:
     return id_to_port(port_name_to_id(port_name))
+
+def port_id_to_name(port_id: str, _world=world) -> str:
+    return _world[port_id].name
+
+
+
+

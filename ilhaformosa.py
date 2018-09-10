@@ -263,8 +263,12 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            print("You are in {}.".format(player.location.name))
-            print("Your map has these ports on it: {}".format(", ".join(all_ports)))
+            print("You are in {}. Your map has these ports on it:".format(player.location.name))
+            for port_id in all_port_ids:
+                if player.location.id == port_id:
+                    print("{} (current location)".format(player.location.name))
+                else:
+                    print("{} ({} nautical miles)".format(port_id_to_name(port_id), ports_distances[player.location.name][port_id_to_name(port_id)]))
             # TODO: Show an ascii map of the world.
 
     def do_market(self, input_arguments):

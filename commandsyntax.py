@@ -155,7 +155,7 @@ command_syntax = {
             "name": "destination",
             "type": "string",
             "required": True,
-            "valid_values": [port_name_to_id(port_name) for port_name in all_ports],
+            "valid_values": all_port_ids,
             "missing_value":"Use sail [destination] to sail to a port. You can see a list of ports using the map command.",
             "invalid_value": "{} is not a port on your map. You can see a list of ports using the 'map' command."
         }
