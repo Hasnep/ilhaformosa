@@ -121,11 +121,11 @@ def day_to_date(n_days_passed: int, _start_date: datetime.date=datetime.date(170
 
 
 # Parsing arguments
-def split_args(input_string: str) -> list:
+def split_args(input_string: str, split_string: str=" ") -> list:
     if input_string == "":
         return []
     else:
-        output_list = input_string.lower().split()
+        output_list = input_string.lower().split(split_string)
         if input_string[-1] == " ":
             output_list.append("")
     return output_list

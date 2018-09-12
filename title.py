@@ -1,7 +1,7 @@
-version_number = "v0.1.153"
+version_number = "v0.1.154"
 
 
-def title_print(ruler: str="~"):
+def title_print(ruler: str="="):
     title = " '||' '||  '||                '||''''| \n  ||   ||   || ..    ....      ||  .     ...   ... ..  .. .. ..     ...    ....   .... \n  ||   ||   ||' ||  '' .||     ||''|   .|  '|.  ||' ''  || || ||  .|  '|. ||. '  '' .|| \n  ||   ||   ||  ||  .|' ||     ||      ||   ||  ||      || || ||  ||   || . '|.. .|' || \n .||. .||. .||. ||. '|..'|'   .||.      '|..|' .||.    .|| || ||.  '|..|' |'..|' '|..'|' "
     title_width = max(len(line) for line in title.split("\n"))
     title = ruler * title_width + "\n\n" + title + "\n\n" + ruler * (title_width - len(version_number) - 3) + " " + version_number + " " + ruler

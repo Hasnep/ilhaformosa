@@ -361,7 +361,7 @@ class IlhaFormosa(cmd.Cmd):
 
     def do_rename(self, input_arguments):
         """Rename a ship."""
-        args = input_arguments.split(">")
+        args = split_args(input_arguments, ">")
         if len(args) == 2:
             old_nickname = args[0]
             new_nickname = args[1]
@@ -507,7 +507,7 @@ class IlhaFormosa(cmd.Cmd):
         print("'{}' is not a known command. Type ? for a list of commands.".format(command_name))
 
     def preloop(self):
-        title_print("=")
+        title_print()
 
     def postloop(self):
         print("Thank you for playing Ilha Formosa!")
