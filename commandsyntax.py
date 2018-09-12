@@ -19,7 +19,7 @@ command_syntax = {
         {
             "name": "amount",
             "type": "integer",
-            "required": False,
+            "required": True,
             "valid_values": (1, math.inf, ["max", "all"])
         }
     ],
@@ -96,7 +96,7 @@ command_syntax = {
         {
             "name": "product",
             "type": "string",
-            "required": False,
+            "required": True,
             "valid_values": ["food", "ship"] + cargo.types
         },
         {
@@ -117,7 +117,7 @@ command_syntax = {
         {
             "name": "amount",
             "type": "integer",
-            "required": False,
+            "required": True,
             "valid_values": (1, math.inf, ["max", "all"])
         }
     ],

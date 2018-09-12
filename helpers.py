@@ -211,7 +211,6 @@ def bar(value: int, out_of: int, units = str, label: str="", total_length: int=2
 # Input validation
 def syntax_checker(command_syntax) -> None:
     """Check that the supplied syntax list is valid and can be used for checking."""
-    which_elements_required = []
     for syntax_element in command_syntax:
         # check each element has a name, type and required attribute
         for required_attribute in ["name", "type", "required"]:
@@ -247,10 +246,6 @@ def syntax_checker(command_syntax) -> None:
                     raise TypeError("Attribute 'valid_values' of the argument '{}' must be a tuple of the form (min, max, [extra_values]).".format(syntax_element["name"]))
             else:
                 raise ValueError("'{}' is not a valid value for the attribute 'type' for the argument ''.".format(syntax_element["type"], syntax_element["name"]))
-        which_elements_required.append(syntax_element["required"])
-    # check that the required arguments are all first
-    if any(which_elements_required[sum(which_elements_required):]):
-        raise ValueError("Required arguments occur after optional arguments. {}".format(which_elements_required))
 
 
 def argument_parser(command_string, command_syntax):
@@ -307,6 +302,4 @@ def argument_parser(command_string, command_syntax):
 
 
 # TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
-# TODO: Required should accept a string/list of strings that will only require if those arguments are included
-# TODO: Output as dict of argument names and values
 # TODO: Option for final string argument to accept the tail of the input string (e.g. for the sail command)
