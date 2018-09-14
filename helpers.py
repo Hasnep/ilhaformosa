@@ -258,7 +258,10 @@ def argument_parser(command_string, command_syntax):
             argument_text = command_arguments[element_index]
         except IndexError:
             if syntax_element["required"]:
-                print("The argument '{}' is not specified.".format(syntax_element["name"]))
+                if "error_not_specified" in syntax_element:
+                    print(syntax_element["error_not_specified"].format(*command_arguments))
+                else:
+                    print("The argument '{}' is not specified.".format(syntax_element["name"]))
                 return
             else:
                 try:
@@ -270,8 +273,11 @@ def argument_parser(command_string, command_syntax):
                 if argument_text in syntax_element["valid_values"]:
                     pass
                 else:
-                    valid_values_string = ", ".join(syntax_element["valid_values"])
-                    print("'{}' is not a valid value for '{}' must be one of: {}.".format(argument_text, syntax_element["name"], valid_values_string))
+                    if "error_not_valid_value" in syntax_element:
+                        print(syntax_element["error_not_valid_value"].format(*command_arguments))
+                    else:
+                        valid_values_string = ", ".join(syntax_element["valid_values"])
+                        print("'{}' is not a valid value for '{}' must be one of: {}.".format(argument_text, syntax_element["name"], valid_values_string))
                     return
         elif syntax_element["type"] in ["integer", "float"]:
             if len(syntax_element["valid_values"]) == 3 and argument_text in syntax_element["valid_values"][2]:
@@ -280,7 +286,10 @@ def argument_parser(command_string, command_syntax):
                 try:
                     argument_text = float(argument_text)
                 except ValueError:
-                    print("The argument '{}' must be a number.".format(syntax_element["name"]))
+                    if "error_not_number" in syntax_element:
+                        print(syntax_element["error_not_number"].format(*command_arguments))
+                    else:
+                        print("The argument '{}' must be a number.".format(syntax_element["name"]))
                     return
                 if syntax_element["type"] == "integer":
                     argument_text = int(math.floor(argument_text))
@@ -290,16 +299,21 @@ def argument_parser(command_string, command_syntax):
                         if argument_text <= syntax_element["valid_values"][1]:
                             pass
                         else:
-                            print("'{}' is bigger than {}.".format(syntax_element["name"], syntax_element["valid_values"][1]))
+                            if "error_too_big" in syntax_element:
+                                print(syntax_element["error_too_big"].format(*command_arguments))
+                            else:
+                                print("'{}' is bigger than {}.".format(syntax_element["name"], syntax_element["valid_values"][1]))
                             return
                     else:
-                        print("'{}' is smaller than {}.".format(syntax_element["name"], syntax_element["valid_values"][0]))
+                        if "error_too_small" in syntax_element:
+                            print(syntax_element["error_too_small"].format(*command_arguments))
+                        else:
+                            print("'{}' is smaller than {}.".format(syntax_element["name"], syntax_element["valid_values"][0]))
                         return
         else:
-            raise ValueError("Invalid syntax element type: {}".format(syntax_element["type"]))
+            break
         output_arguments[syntax_element["name"]] = argument_text
     return output_arguments
-
 
 # TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
 # TODO: Option for final string argument to accept the tail of the input string (e.g. for the sail command)

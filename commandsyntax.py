@@ -14,13 +14,17 @@ command_syntax = {
             "name": "deposit/withdraw",
             "type": "string",
             "required": False,
-            "valid_values": ["deposit", "withdraw"]
+            "valid_values": ["deposit", "withdraw"],
+            "error_not_valid_value": "You can only deposit or withdraw from the bank."
         },
         {
             "name": "amount",
             "type": "integer",
             "required": True,
-            "valid_values": (1, math.inf, ["max", "all"])
+            "valid_values": (1, math.inf, ["max", "all"]),
+            "error_not_specified": "Amount to {0} not specified.",
+            "error_not_number": "Amount '{1}' must be a number.",
+            "error_too_small": "Amount '{1}' must be positive."
         }
     ],
     "borrow": [
@@ -28,7 +32,10 @@ command_syntax = {
             "name": "amount",
             "type": "integer",
             "required": True,
-            "valid_values": (1, math.inf, ["max", "all"])
+            "valid_values": (1, math.inf, ["max", "all"]),
+            "error_not_specified": "Amount to borrow not specified.",
+            "error_not_number": "Amount to borrow must be a number, not '{0}'.",
+            "error_too_small": "Amount to borrow must be positive."
         }
     ],
     "buy": [
@@ -36,7 +43,9 @@ command_syntax = {
             "name": "product",
             "type": "string",
             "required": True,
-            "valid_values": ["food", "ship"] + cargo.types
+            "valid_values": ["food", "ship"] + cargo.types,
+            "error_not_valid_value": "'{0}' is not a valid product.",
+            "error_not_specified": "You must specify what you want to buy."
         },
         {
             "name": "quantity",
@@ -52,8 +61,9 @@ command_syntax = {
             "type": "integer",
             "required": False,
             "valid_values": (1, 365 * 10),
-            "error_wrong_type": "Use calendar [days] to find out what the date will be in the future.",
-            "error_too_high": "Your calendar only has pages for the next 10 years."
+            "error_not_number": "Number of days '{0}' is not a number.",
+            "error_too_small": "You must enter a positive number of days.",
+            "error_too_big": "Your calendar only has pages for the next 10 years."
         }
     ],
     "cargo": [],
@@ -65,7 +75,10 @@ command_syntax = {
             "name": "amount",
             "type": "integer",
             "required": True,
-            "valid_values": (1, math.inf, ["max", "all"])
+            "valid_values": (1, math.inf, ["max", "all"]),
+            "error_not_specified": "Amount to deposit not specified.",
+            "error_not_number": "Amount to deposit must be a number, not '{0}'.",
+            "error_too_small": "Amount to deposit must be positive."
         }
     ],
     "fleet": [
@@ -81,7 +94,8 @@ command_syntax = {
             "name": "command",
             "type": "string",
             "required": False,
-            "valid_values": all_commands + ["all"]
+            "valid_values": all_commands + ["all"],
+            "error_not_valid_value": "Not a valid command. Use 'help' to see a list of commands."
         }
     ],
     "look": [],
@@ -156,8 +170,8 @@ command_syntax = {
             "type": "string",
             "required": True,
             "valid_values": all_port_ids,
-            "missing_value":"Use sail [destination] to sail to a port. You can see a list of ports using the map command.",
-            "invalid_value": "{} is not a port on your map. You can see a list of ports using the 'map' command."
+            "error_not_specified": "Use 'sail [destination]' to sail to a port. You can see a list of ports using the 'map' command.",
+            "invalid_value": "'{0}' is not a port on your map. You can see a list of ports using the 'map' command."
         }
     ],
     "shipyard": [
@@ -179,8 +193,8 @@ command_syntax = {
             "required": False,
             "valid_values": (1, 7),
             "default": 1,
-            "too_big": "You can only wait for one week at a time.",
-            "too_small": "You cannot go back in time."
+            "error_too_big": "You can only wait for one week at a time.",
+            "error_too_small": "You cannot go back in time."
         }
     ],
     "withdraw": [
