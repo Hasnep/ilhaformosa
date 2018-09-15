@@ -149,10 +149,19 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            print("Cash: " + money(player.cash))
-            print("Bank balance: " + money(player.balance))
-            print("Debt: " + money(player.debt))
-            print("Total: " + money(player.total_money))
+            table_aligned_print(
+                column_names=["Item", "Value"],
+                column_aligns=["r"],
+                row_keys=["Cash", "Bank balance", "Debt", "Total"],
+                column_dicts=[{
+                    "Cash": money(player.cash),
+                    "Bank balance": money(player.balance),
+                    "Debt": money(player.debt),
+                    "Total": money(player.total_money)
+                }],
+                show_header=False,
+                show_row_keys=True
+            )
 
     def do_credits(self, input_arguments):
         """Print the credits for the game."""
