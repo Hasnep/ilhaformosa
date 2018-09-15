@@ -181,9 +181,10 @@ command_syntax = {
             "required": False,
             "valid_values": ["buy", "sell"]
         },
-        {"name": "ship name",
-         "type": "string",
-         "required": False
+        {
+            "name": "product",
+            "type": "string",
+            "required": False
          }
     ],
     "wait": [

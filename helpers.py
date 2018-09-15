@@ -315,5 +315,4 @@ def argument_parser(command_string, command_syntax):
         output_arguments[syntax_element["name"]] = argument_text
     return output_arguments
 
-# TODO: Add custom error messages, e.g.: "error_missing_argument", "error_not_valid_string", "error_too_low", "error_too_high"
 # TODO: Option for final string argument to accept the tail of the input string (e.g. for the sail command)

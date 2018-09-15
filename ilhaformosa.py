@@ -20,12 +20,8 @@ class IlhaFormosa(cmd.Cmd):
                     self.onecmd("cash")
                     return
                 else:
-                    if len(args) == 1:  # TODO: Change this to use a required argument
-                        print("Use bank [deposit/withdraw] [amount] to withdraw or deposit money.")
-                        return
-                    else:
-                        self.onecmd(args["deposit/withdraw"] + " " + str(args["amount"]))
-                        return
+                    self.onecmd(args["deposit/withdraw"] + " " + str(args["amount"]))
+                    return
             else:
                 print("There is no bank in {}.".format(player.location.name))
                 return
@@ -138,7 +134,12 @@ class IlhaFormosa(cmd.Cmd):
         if args is None:
             return
         else:
-            table_aligned_print(column_names=["owned"], column_aligns=["r"], row_keys=cargo.types, column_dicts=[weight(player.cargo)], show_header=True, show_row_keys=True)
+            table_aligned_print(column_names=["owned"],
+                                column_aligns=["r"],
+                                row_keys=cargo.types,
+                                column_dicts=[weight(player.cargo)],
+                                show_header=True,
+                                show_row_keys=True)
             print("")
             bar(player.get_cargo_weight(), player.get_cargo_capacity(), units=weight)
 
@@ -301,12 +302,8 @@ class IlhaFormosa(cmd.Cmd):
                     self.onecmd("cash")
                     return
                 else:
-                    if len(args) == 1:  # TODO: Change this to use a required argument
-                        print("Use moneylender [borrow/repay] [amount] to borrow money or repay a debt.")
-                        return
-                    else:
-                        self.onecmd(args["borrow/repay"] + " " + str(args["amount"]))
-                        return
+                    self.onecmd(args["borrow/repay"] + " " + str(args["amount"]))
+                    return
             else:
                 print("There is no moneylender in {}.".format(player.location.name))
                 return
