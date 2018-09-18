@@ -12,27 +12,28 @@ I'm using this project to teach myself object-oriented programming in Python, so
 
 Use `help` or `?` to get a list of commands or `help/? [command]` to get information about a specific command.
 
-* `bank [withdraw/deposit] [amount/max/all]`
-* `borrow [amount/max/all]`
-* `buy [food/ship name/cargo name] [quantity]`
-* `calendar/cal [days]`
-* `cargo`
-* `cash`
-* `credits`
-* `deposit [amount/max/all]`
-* `fleet [ship name]`
-* `look`
-* `map`
-* `market`
-* `moneylender [borrow/repay] [amount/max/all]`
-* `options [option/default] [new value/default]`
-* `quit`
-* `rename [old ship name]>[new ship name]`
-* `repay [amount/max/all]`
-* `sail [destination]`
-* `shipyard`
-* `wait [number of days]`
-* `withdraw [amount/max/all]`
+* `bank [deposit/withdraw] <amount>` - Check your balance and deposit or withdraw cash.
+* `borrow <amount>` - Borrows money from the moneylender.
+* `buy <product> [quantity]` - Buy something from a shop.
+* `calendar [days]` - Find out what the date is or what the date will be in the future.
+* `cargo` - Show the fleet's current cargo.
+* `cash` - Show your current cash, bank balance and debt.
+* `credits` - Print the credits for the game.
+* `deposit <amount>` - Deposits money into a bank account.
+* `fleet [ship]` - Get information about a single ship or your whole fleet.
+* `help [command]` - List all the available commands or show help for a specific command.
+* `look` - Look around the port you are currently in.
+* `map` - List the locations on the map.
+* `market [buy/sell] <product> [quantity]` - Get the market's prices or buy and sell cargo.
+* `moneylender [borrow/repay] <amount>` - Borrow money or repay a debt.
+* `options [option] [value]` - View or modify an option or reset all options to default.
+* `quit` - Quit the game.
+* `rename <old name>new name>` - Rename a ship.
+* `repay <amount>` - Repays money to the moneylender.
+* `sail <destination>` - Set sail for a port.
+* `shipyard [buy/sell] [product]` - Look at what's for sale in the shipyard.
+* `wait [days]` - Wait for a specified number of days.
+* `withdraw <amount>` - Withdraws money from a bank account.
 
 Use the `tab` key to autocomplete commands and arguments.
 
