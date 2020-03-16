@@ -4,6 +4,7 @@ from ships import *
 
 class Player(object):
     """Define the player class."""
+
     def __init__(self):
         # money related variables
         self._cash = 9000
@@ -38,9 +39,13 @@ class Player(object):
             change_day_by = change_day_to - self._day
             if change_day_by > 0:
                 if self.balance > 0:
-                    self.balance = compound_interest(self.balance, self.bank_rate, change_day_by)
+                    self.balance = compound_interest(
+                        self.balance, self.bank_rate, change_day_by
+                    )
                 if self.debt > 0:
-                    self.debt = compound_interest(self.debt, self.lend_rate, change_day_by)
+                    self.debt = compound_interest(
+                        self.debt, self.lend_rate, change_day_by
+                    )
                 self._day = change_day_to
                 return
             elif change_day_by < 0:
@@ -112,7 +117,11 @@ class Player(object):
         else:
             if action == "deposit":
                 if action_amount > self.cash:
-                    print("You do not have enough money to deposit {}. You only have {}.".format(money(action_amount), money(self.cash)))
+                    print(
+                        "You do not have enough money to deposit {}. You only have {}.".format(
+                            money(action_amount), money(self.cash)
+                        )
+                    )
                     return
                 else:
                     self.balance += action_amount
@@ -120,7 +129,11 @@ class Player(object):
                     print("You deposit {} into the bank.".format(money(action_amount)))
             elif action == "withdraw":
                 if action_amount > self.balance:
-                    print("You do not have enough money in the bank to withdraw {}. You only have {}.".format(money(action_amount), money(self.balance)))
+                    print(
+                        "You do not have enough money in the bank to withdraw {}. You only have {}.".format(
+                            money(action_amount), money(self.balance)
+                        )
+                    )
                     return
                 else:
                     self.cash += action_amount
@@ -128,26 +141,44 @@ class Player(object):
                     print("You withdraw {} from the bank.".format(money(action_amount)))
             elif action == "borrow":
                 if player.debt + action_amount > self.max_debt:
-                    print("You cannot borrow more than {} at a time.".format(money(self.max_debt)))
+                    print(
+                        "You cannot borrow more than {} at a time.".format(
+                            money(self.max_debt)
+                        )
+                    )
                     return
                 else:
                     self.cash += action_amount
                     self.debt += action_amount
-                    print("You borrow {} from the moneylender.".format(money(action_amount)))
+                    print(
+                        "You borrow {} from the moneylender.".format(
+                            money(action_amount)
+                        )
+                    )
             elif action == "repay":
                 if self.debt == 0:
                     print("You have no debt to repay.")
                     return
                 if action_amount > self.cash:
-                    print("You do not have enough money to repay {} of debt. You only have {}.".format(money(action_amount), money(self.cash)))
+                    print(
+                        "You do not have enough money to repay {} of debt. You only have {}.".format(
+                            money(action_amount), money(self.cash)
+                        )
+                    )
                     return
                 elif action_amount > self.debt:
-                    print("You cannot repay more money than you have debt. You have {} of debt.".format(money(self.debt)))
+                    print(
+                        "You cannot repay more money than you have debt. You have {} of debt.".format(
+                            money(self.debt)
+                        )
+                    )
                     return
                 else:
                     self.cash -= action_amount
                     self.debt -= action_amount
-                    print("You repay {} to the moneylender.".format(money(action_amount)))
+                    print(
+                        "You repay {} to the moneylender.".format(money(action_amount))
+                    )
             else:
                 print("None of deposit, withdraw, borrow or repay specified.")
                 return
@@ -162,7 +193,9 @@ class Player(object):
 
     def set_cargo_quantity(self, cargo_type: str, quantity: int):
         if quantity > self.get_cargo_capacity():
-            print("Your fleet can only hold {}.".format(weight(self.get_cargo_capacity())))
+            print(
+                "Your fleet can only hold {}.".format(weight(self.get_cargo_capacity()))
+            )
         else:
             self.cargo[cargo_type] = quantity
         return

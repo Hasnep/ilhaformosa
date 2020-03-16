@@ -10,7 +10,7 @@ class Options(object):
             "distance": ["modern", "ancient"],  # TODO: implement distance units
             "weight": ["kg"],  # TODO: implement weight units
             "commas": ["on", "off"],
-            "date": ["ymd", "dmy"]
+            "date": ["ymd", "dmy"],
         }
         self.default_options = {key: value[0] for key, value in self.choices.items()}
         self.options = self.default_options
@@ -22,12 +22,18 @@ class Options(object):
     def set_option(self, option_name: str, value: str):
         """A function to set the value of an option."""
         if option_name in self.choices:  # if the key is the name of an option
-            if value in self.choices[option_name]:  # if the value is one of the available values
+            if (
+                value in self.choices[option_name]
+            ):  # if the value is one of the available values
                 self.options[option_name] = value  # set the value
                 print("'{}' has been set to '{}'.".format(option_name, value))
                 return
             else:
-                print("'{}' is not a valid value for the option '{}'.".format(value, option_name))
+                print(
+                    "'{}' is not a valid value for the option '{}'.".format(
+                        value, option_name
+                    )
+                )
                 return
         else:
             print("'{}' is not a valid option name.".format(option_name))

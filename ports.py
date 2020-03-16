@@ -11,7 +11,11 @@ class Port(object):
         self.last_visited = None
         self.discovered = False
         self.buildings = []
-        for k in all_building_types:  # TODO: Make the building selection process semi-random using a matrix
+        for (
+            k
+        ) in (
+            all_building_types
+        ):  # TODO: Make the building selection process semi-random using a matrix
             self.buildings.append(k)
 
         # shipyard
@@ -34,7 +38,9 @@ def port_name_to_id(port_name: str) -> str:
 all_port_names = [*ports_distances]
 all_port_ids = [port_name_to_id(port_name) for port_name in all_port_names]
 
-world = {port_name_to_id(port_name): Port(port_name) for port_name in all_port_names}  # create port objects for all ports
+world = {
+    port_name_to_id(port_name): Port(port_name) for port_name in all_port_names
+}  # create port objects for all ports
 
 
 def id_to_port(port_id: str, _world=world) -> Port:
@@ -44,9 +50,6 @@ def id_to_port(port_id: str, _world=world) -> Port:
 def name_to_port(port_name: str) -> Port:
     return id_to_port(port_name_to_id(port_name))
 
+
 def port_id_to_name(port_id: str, _world=world) -> str:
     return _world[port_id].name
-
-
-
-

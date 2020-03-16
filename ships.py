@@ -34,7 +34,10 @@ class Baochuan(Ship):
 
 
 all_ship_objects = [Junk, Baochuan]
-all_ship_types = ["junk", "baochuan"]  # TODO: Figure out how to get default values for a class in a loop
+all_ship_types = [
+    "junk",
+    "baochuan",
+]  # TODO: Figure out how to get default values for a class in a loop
 
 
 def print_ship_information(ship: all_ship_objects):
@@ -45,6 +48,3 @@ def print_ship_information(ship: all_ship_objects):
     print("Health: " + str(ship.health) + "/" + str(ship.max_health))
     print("Cannons: " + str(ship.cannons) + "/" + str(ship.max_cannons))
     print("Max cargo: " + str(ship.cargo_capacity))
-
-
-
